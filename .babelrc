@@ -1,0 +1,17 @@
+{
+  "plugins": ["transform-es2015-arrow-functions"],
+  "presets": [
+    [
+
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry"
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [["env"], "react"]
+    }
+  }
+}
