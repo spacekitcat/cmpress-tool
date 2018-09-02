@@ -4,7 +4,8 @@
   "description": "Command line tool for compressing files with the LZ77 algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --verbose",
+    "test:watch": "jest --verbose --watch",
     "build": "babel src --out-dir lib"
   },
   "keywords": [
@@ -15,7 +16,8 @@
   "author": "Lisa R Burton",
   "license": "MIT",
   "dependencies": {
-    "cli": "^1.0.1"
+    "cli": "^1.0.1",
+    "lodash": "^4.17.10"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
