@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import console from './console';
+import locateToken from './locate-token';
 
 /** I'll put this in it's own class with unit tests once I work out the exact specs.
  *  I think the slide mechanism can be controlled by a callback that's able to
@@ -11,6 +12,7 @@ class SlidingWindow {
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;
     this.cursor = 0;
+    this.compressedStream = [];
   }
 
   lookAhead() {
@@ -22,15 +24,34 @@ class SlidingWindow {
   }
 
   lookBack() {
-    let from =
-      this.cursor > this.lookBackLength ? this.cursor - this.lookBackLength : 0;
+    let from = Math.max(this.cursor - this.lookBackLength, 0);
     const backwardBuffer = this.stream.substring(from, this.cursor);
     return backwardBuffer;
   }
 
+  getCompressedStream() {
+    return this.compressedStream.reverse();
+  }
+
+  saveCompressedStreamPacket(symbol) {
+    this.compressedStream.push({ symbol });
+  }
+
+  slideBy(amount) {
+    this.cursor += amount;
+  }
+
   slide() {
-    console.log(`${this.lookBack()}\t|${this.lookAhead()}`);
-    this.cursor += 1;
+    let token = locateToken(
+      this.lookBack(),
+      this.lookBackLength,
+      this.lookAhead()
+    );
+
+    this.slideBy(
+      token.position + token.length > 0 ? token.position + token.length : 1
+    );
+    this.saveCompressedStreamPacket(token);
   }
 }
 
@@ -40,7 +61,12 @@ const compress = stream => {
   while (slidingWindow.lookAhead()) {
     slidingWindow.slide();
   }
-  return stream;
+
+  slidingWindow.getCompressedStream().forEach(item => {
+    console.log(item);
+  });
+
+  return slidingWindow.getCompressedStream();
 };
 
 export default compress;

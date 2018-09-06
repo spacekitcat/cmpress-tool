@@ -1,8 +1,6 @@
 #!/usr/bin/env node
-const compress = require('./src/compress');
+const compress = require('./lib/compress');
 
-require('cli').withInput(function(line, newline, eof) {
-  if (!eof) {
-    this.output(line + newline);
-  }
+require('cli').withInput(function(lines, newline) {
+  this.output(compress('aabaabaab'));
 });

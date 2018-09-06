@@ -4,9 +4,8 @@ import console from '../src/console';
 
 describe('inflate', () => {
   it('returns the input str, s, s + s', () => {
-    let result = compress('iquitelikecorvids');
+    let result = compress('ababcbababaaaaaa');
     let inflatwResult = inflate(result);
-
     //expect(result).toBe('abcd');
   });
 });
