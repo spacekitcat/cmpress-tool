@@ -4,13 +4,18 @@ const compressSlideImpl = (lookAhead, lookBack, lookBackLength) => {
   return locateToken(lookBack, lookBackLength, lookAhead);
 };
 
-export default class SlidingWindow {
-  constructor(stream, lookBackLength = 10, lookAheadLength = 4) {
+const deflateSlideImpl = (lookAhead, lookBack, lookBackLength) => {
+  return locateToken(lookBack, lookBackLength, lookAhead);
+};
+
+class SlidingWindow {
+  constructor(operation, stream, lookBackLength = 10, lookAheadLength = 4) {
     this.stream = stream;
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;
     this.cursor = 0;
     this.compressedStream = [];
+    this.operation = operation;
   }
 
   lookAhead() {
@@ -40,7 +45,7 @@ export default class SlidingWindow {
   }
 
   slide() {
-    let token = compressSlideImpl(
+    let token = this.operation(
       this.lookAhead(),
       this.lookBack(),
       this.lookBackLength
@@ -51,3 +56,5 @@ export default class SlidingWindow {
     this.saveCompressedStreamPacket(token);
   }
 }
+
+export { SlidingWindow, compressSlideImpl, deflateSlideImpl };

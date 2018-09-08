@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import console from './console';
-import SlidingWindow from './sliding-window';
+import { SlidingWindow, compressSlideImpl } from './sliding-window';
 
 const compress = stream => {
   console.log('currentmethod: compress');
-  let slidingWindow = new SlidingWindow(stream);
+  let slidingWindow = new SlidingWindow(compressSlideImpl, stream);
   while (slidingWindow.lookAhead()) {
     slidingWindow.slide();
   }
