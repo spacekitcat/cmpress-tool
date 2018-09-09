@@ -7,7 +7,7 @@
     "test": "jest --verbose",
     "test:watch": "jest --verbose --watch",
     "prebuild": "babel src --out-dir lib",
-    "build": "babel index.js --out-file runcompress.js"
+    "build": "babel runners --out-dir sampletarget"
   },
   "keywords": [
     "lz77",

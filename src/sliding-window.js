@@ -1,6 +1,7 @@
 import locateToken from './locate-token';
 
 const compressSlideImpl = (lookAhead, lookBack, lookBackLength) => {
+  // console.log(`${lookBack} ${lookAhead}`);
   return locateToken(lookBack, lookBackLength, lookAhead);
 };
 
@@ -50,8 +51,9 @@ class SlidingWindow {
       this.lookBack(),
       this.lookBackLength
     );
+
     if (token.prefix !== undefined) {
-      this.slideBy(token.prefix[1] + token.prefix[0]);
+      this.slideBy(token.prefix[1] + 1);
     } else {
       this.slideBy(1);
     }

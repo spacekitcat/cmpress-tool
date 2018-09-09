@@ -55,6 +55,8 @@ const locateToken = (dictionary, dictionarySize, buffer) => {
     nextLargestToken.token = buffer.charAt(nextLargestToken.prefix[1]);
   }
 
+  //console.log(`${nextLargestToken.prefix} ${nextLargestToken.token}`);
+
   return nextLargestToken;
 };
 

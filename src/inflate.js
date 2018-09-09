@@ -8,7 +8,7 @@ const reverseStr = string =>
     .reverse()
     .join('');
 
-const inflate = stream => {
+const inflate = (stream, dictionarySize, windowSize) => {
   let result = '';
   let dictionary = '';
 
