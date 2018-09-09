@@ -11,7 +11,7 @@ const reverseStr = string =>
 const inflate = stream => {
   let result = '';
   let dictionary = '';
-  //let slidingWindow = new SlidingWindow(deflateSlideImpl, stream);
+
   stream.forEach(item => {
     let expanded = '';
     if (item.prefix !== undefined) {
