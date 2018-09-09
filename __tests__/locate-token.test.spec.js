@@ -28,24 +28,24 @@ describe('locateToken()', () => {
 
   it('[] [] -> tuple(x, x, x)', () => {
     expect(locateToken('ab', 4, 'abcb')).toMatchObject({
-      position: 2,
-      length: 2,
+      position: 1,
+      length: 1,
       token: 'c'
     });
   });
 
   it('[] [] -> tuple(x, x, x)', () => {
     expect(locateToken('babc', 4, 'baba')).toMatchObject({
-      position: 0,
-      length: 3,
+      position: 1,
+      length: 2,
       token: 'a'
     });
   });
 
   it('[] [] -> tuple(x, x, x)', () => {
     expect(locateToken('baba', 4, 'baaa')).toMatchObject({
-      position: 0,
-      length: 2,
+      position: 1,
+      length: 1,
       token: 'a'
     });
   });

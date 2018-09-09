@@ -25,35 +25,29 @@ const findNextLargestToken = (dictionary, buffer) => {
   return match;
 };
 
-const extractToken = (dictionary, dictionarySize, buffer) => {
-  if (_.isEmpty(buffer)) {
+const substr = (dictionary, from, to) => {
+  let reversedDictionary = dictionary
+    .split('')
+    .reverse()
+    .join('');
+
+  if (from === to) {
+    return reversedDictionary.charAt(from);
+  }
+
+  return reversedDictionary
+    .substring(from, from + to)
+    .split('')
+    .reverse()
+    .join('');
+};
+
+const extractToken = (dictionary, dictionarySize, position, length) => {
+  if (_.isEmpty(dictionary) || dictionarySize === 0) {
     return undefined;
   }
 
-  if (dictionary.length === 0) {
-    return buffer.charAt(0);
-  }
-
-  let nextLargestToken = findNextLargestToken(dictionary, buffer);
-  if (!nextLargestToken) {
-    nextLargestToken = {
-      position: 0,
-      length: 0,
-      token: buffer.charAt(0)
-    };
-  } else {
-    let offset = 0;
-    if (dictionary.length < buffer.length) {
-      offset = dictionarySize - dictionary.length;
-    }
-    nextLargestToken = {
-      position: nextLargestToken.position + offset,
-      length: nextLargestToken.length,
-      token: buffer.charAt(nextLargestToken.length)
-    };
-  }
-
-  return nextLargestToken;
+  return substr(dictionary, position, length);
 };
 
 export default extractToken;

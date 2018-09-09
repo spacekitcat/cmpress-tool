@@ -9,7 +9,7 @@ const deflateSlideImpl = (lookAhead, lookBack, lookBackLength) => {
 };
 
 class SlidingWindow {
-  constructor(operation, stream, lookBackLength = 10, lookAheadLength = 4) {
+  constructor(operation, stream, lookBackLength = 4, lookAheadLength = 4) {
     this.stream = stream;
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;

@@ -1,24 +1,17 @@
+require('@babel/polyfill');
+
 import _ from 'lodash';
 import console from './console';
 import { SlidingWindow, deflateSlideImpl } from './sliding-window';
 
 const inflate = stream => {
+  let dictionary = '';
   let slidingWindow = new SlidingWindow(deflateSlideImpl, stream);
   stream.forEach(item => {
-    console.log(item);
+    dictionary += dictionary.substring(item.position, item.length) + item.token;
   });
-  while (slidingWindow.lookAhead()) {
-    slidingWindow.slide();
-  }
-  // console.log('currentmethod: inflate');
-  // let slidingWindow = new SlidingWindow(deflateSlideImpl, stream);
-  // while (slidingWindow.lookAhead()) {
-  //   slidingWindow.slide();
-  // }
-  // slidingWindow.getCompressedStream().forEach(item => {
-  //   console.log(item);
-  // });
-  // return slidingWindow.getCompressedStream();
+
+  return dictionary;
 };
 
 export default inflate;

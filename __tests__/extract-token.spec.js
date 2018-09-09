@@ -6,43 +6,27 @@ describe('extractToken()', () => {
     expect(extractToken()).toEqual(undefined);
   });
 
-  it('returns undefined for (null, null) arguments', () => {
-    expect(extractToken(null, 4, null)).toEqual(undefined);
+  it('returns undefined for a null dictionary', () => {
+    expect(extractToken(null, null, 0, 0)).toEqual(undefined);
   });
 
-  it('Empty dictionary, new buffer', () => {
-    expect(extractToken('', 4, 'abab')).toEqual('a');
+  it('returns undefined for an empty dictionary', () => {
+    expect(extractToken('', 4, 0, 0)).toEqual(undefined);
   });
 
-  it('one element dictionary', () => {
-    expect(extractToken('a', 4, 'babc')).toEqual({
-      position: 0,
-      length: 0,
-      token: 'b'
-    });
+  it('one element dictionary 0,0', () => {
+    expect(extractToken('a', 4, 0, 0)).toEqual('a');
   });
 
-  it('[] [] -> tuple(x, x, x)', () => {
-    expect(extractToken('ab', 4, 'abcb')).toEqual({
-      position: 2,
-      length: 2,
-      token: 'c'
-    });
+  it('full dictionary 0,0', () => {
+    expect(extractToken('dcba', 4, 0, 0)).toEqual('a');
   });
 
-  it('[] [] -> tuple(x, x, x)', () => {
-    expect(extractToken('babc', 4, 'baba')).toEqual({
-      position: 0,
-      length: 3,
-      token: 'a'
-    });
+  it('full dictionary 0, 3', () => {
+    expect(extractToken('dcba', 4, 0, 3)).toEqual('cba');
   });
 
-  it('[] [] -> tuple(x, x, x)', () => {
-    expect(extractToken('baba', 4, 'baaa')).toEqual({
-      position: 0,
-      length: 2,
-      token: 'a'
-    });
+  it('full dictionary 3, 2', () => {
+    expect(extractToken('dcbaxz', 6, 3, 2)).toEqual('cb');
   });
 });

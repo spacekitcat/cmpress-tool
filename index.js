@@ -1,6 +1,9 @@
 #!/usr/bin/env node
-const compress = require('./lib/compress');
+import compress from './lib/compress';
+import inflate from './lib/inflate';
 
-require('cli').withInput(function(lines, newline) {
-  this.output(compress('aabaabaab'));
-});
+let rawInput = 'aabaabaab';
+console.log(rawInput);
+let compressPackets = compress(rawInput);
+let decompressed = inflate(compressPackets);
+console.log(decompressed);
