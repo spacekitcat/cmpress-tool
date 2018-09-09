@@ -3,13 +3,22 @@ import _ from 'lodash';
 const getPossibleTokens = buffer => {
   let tokenList = [];
 
-  for (let i = 0; i < buffer.length - 1; ++i) {
-    for (let j = buffer.length - 1; j > i; --j) {
-      tokenList.push(buffer.substring(i, j));
-    }
+  for (let i = 1; i < buffer.length; ++i) {
+    tokenList.push(buffer.substring(0, i));
   }
 
-  return tokenList;
+  return tokenList.reverse();
+};
+
+const reverseStr = string =>
+  string
+    .split('')
+    .reverse()
+    .join('');
+
+const computeMatch = (dictionary, token) => {
+  let result = reverseStr(dictionary).indexOf(reverseStr(token));
+  return result > -1 ? result : undefined;
 };
 
 const findNextLargestToken = (dictionary, buffer) => {
@@ -17,11 +26,9 @@ const findNextLargestToken = (dictionary, buffer) => {
 
   let tokens = getPossibleTokens(buffer);
   for (let i = 0; i < tokens.length; ++i) {
-    let token = tokens[i];
-    if (dictionary.lastIndexOf(token) !== -1) {
+    if (computeMatch(dictionary, tokens[i]) !== undefined) {
       match = {
-        position: Math.max(dictionary.indexOf(token) - 1, 0),
-        length: token.length - 1
+        prefix: [computeMatch(dictionary, tokens[i]) + 1, tokens[i].length]
       };
       break;
     }
@@ -36,26 +43,19 @@ const locateToken = (dictionary, dictionarySize, buffer) => {
   }
 
   let nextLargestToken = findNextLargestToken(dictionary, buffer);
-  let nextToken = {};
   if (
     nextLargestToken === undefined ||
     (nextLargestToken.position === 0 && nextLargestToken.length === 0)
   ) {
-    nextToken = {
-      position: 0,
-      length: 0,
+    nextLargestToken = {
+      prefix: undefined,
       token: buffer.charAt(0)
     };
   } else {
-    let offset = 1;
-    nextToken = {
-      position: Math.max(nextLargestToken.position, 1),
-      length: Math.max(nextLargestToken.length, 1),
-      token: buffer.charAt(Math.max(nextLargestToken.length + 1, 1))
-    };
+    nextLargestToken.token = buffer.charAt(nextLargestToken.prefix[1]);
   }
 
-  return nextToken;
+  return nextLargestToken;
 };
 
 export default locateToken;

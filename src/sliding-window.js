@@ -33,7 +33,7 @@ class SlidingWindow {
   }
 
   getCompressedStream() {
-    return this.compressedStream.reverse();
+    return this.compressedStream;
   }
 
   saveCompressedStreamPacket(symbol) {
@@ -50,9 +50,11 @@ class SlidingWindow {
       this.lookBack(),
       this.lookBackLength
     );
-    this.slideBy(
-      token.position + token.length > 0 ? token.position + token.length : 1
-    );
+    if (token.prefix !== undefined) {
+      this.slideBy(token.prefix[1] + token.prefix[0]);
+    } else {
+      this.slideBy(1);
+    }
     this.saveCompressedStreamPacket(token);
   }
 }

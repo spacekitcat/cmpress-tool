@@ -11,20 +11,51 @@ describe('inflate', () => {
 
     it('frame 1', () => {
       expect(result[0]).toEqual(
-        expect.objectContaining({ token: 'a', position: 0, length: 0 })
+        expect.objectContaining({ token: 'a', prefix: undefined })
       );
     });
 
-    // it('frame 2', () => {
-    //   expect(result[1]).toEqual(
-    //     expect.objectContaining({ token: 'b', position: 0, length: 1 })
-    //   );
-    // });
+    it('frame 2', () => {
+      expect(result[1]).toEqual(
+        expect.objectContaining({ token: 'b', prefix: [1, 1] })
+      );
+    });
 
-    // it('frame 3', () => {
-    //   expect(result[2]).toEqual(
-    //     expect.objectContaining({ token: 'b', position: 1, length: 2 })
-    //   );
-    // });
+    it('frame 3', () => {
+      expect(result[2]).toEqual(
+        expect.objectContaining({ token: 'b', prefix: [2, 2] })
+      );
+    });
+  });
+
+  describe('when the compression string is aaba', () => {
+    let result;
+    beforeAll(() => {
+      result = compress('xxxxyxyy');
+    });
+
+    it('frame 1', () => {
+      expect(result[0]).toEqual(
+        expect.objectContaining({ token: 'x', prefix: undefined })
+      );
+    });
+
+    it('frame 2', () => {
+      expect(result[1]).toEqual(
+        expect.objectContaining({ token: 'x', prefix: [1, 1] })
+      );
+    });
+
+    it('frame 3', () => {
+      expect(result[2]).toEqual(
+        expect.objectContaining({ token: 'y', prefix: [1, 1] })
+      );
+    });
+
+    it('frame 4', () => {
+      expect(result[3]).toEqual(
+        expect.objectContaining({ token: 'y', prefix: [1, 2] })
+      );
+    });
   });
 });

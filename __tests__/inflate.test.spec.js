@@ -2,15 +2,21 @@ import inflate from '../src/inflate';
 
 describe('inflate', () => {
   describe('4 decompression frames', () => {
-    let result;
-    it('Decompresses back to abcabc', () => {
-      result = inflate([
-        { token: 'a', length: 0, position: 0 },
-        { token: 'b', length: 0, position: 0 },
-        { token: 'c', length: 0, position: 0 },
-        { token: '', length: 3, position: 0 }
+    it('Decompresses back to aab', () => {
+      let result = inflate([
+        { prefix: undefined, token: 'a' },
+        { prefix: [1, 1], token: 'b' }
       ]);
-      expect(result).toEqual('abcabc');
+      expect(result).toEqual('aab');
+    });
+
+    it('Decompresses back to aabaab', () => {
+      let result = inflate([
+        { prefix: undefined, token: 'a' },
+        { prefix: [1, 1], token: 'b' },
+        { prefix: [2, 2], token: 'b' }
+      ]);
+      expect(result).toEqual('aabaab');
     });
   });
 });
