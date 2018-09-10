@@ -55,7 +55,7 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 $ npm run build
 $ cd ./sampletarget
 $ ./runcompress.js ilovematthewromanoilovematthewromano
-ilovemathwrmnio
-41.67% of original size.
-ilovematthewromanoilovematthewromano
+Decompressed: ilovematthewromanoilovematthewromano
+Compressed to 41.67% of original size:
+Compressed: ilovemathwrmnio
 ```
