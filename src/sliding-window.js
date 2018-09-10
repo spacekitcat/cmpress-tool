@@ -4,7 +4,6 @@ class SlidingWindow {
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;
     this.cursor = 0;
-    this.compressedStream = [];
   }
 
   lookAhead() {
@@ -19,14 +18,6 @@ class SlidingWindow {
     let from = Math.max(this.cursor - this.lookBackLength, 0);
     const backwardBuffer = this.stream.substring(from, this.cursor);
     return backwardBuffer;
-  }
-
-  getCompressedStream() {
-    return this.compressedStream;
-  }
-
-  saveCompressedStreamPacket(symbol) {
-    this.compressedStream.push(symbol);
   }
 
   slideBy(amount) {
@@ -45,7 +36,7 @@ class SlidingWindow {
     } else {
       this.slideBy(1);
     }
-    this.saveCompressedStreamPacket(token);
+    return token;
   }
 }
 

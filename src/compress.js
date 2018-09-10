@@ -8,19 +8,18 @@ const compressSlideImpl = (lookAhead, lookBack, lookBackLength) => {
 };
 
 const compress = (stream, dictionarySize, windowSize) => {
+  let compressedStream = [];
+
   let slidingWindow = new SlidingWindow(stream, dictionarySize, windowSize);
   while (slidingWindow.lookAhead()) {
-    slidingWindow.slide(compressSlideImpl);
+    compressedStream.push(slidingWindow.slide(compressSlideImpl));
   }
 
-  let compact = slidingWindow
-    .getCompressedStream()
-    .map(item => item.token)
-    .join('');
+  let compact = compressedStream.map(item => item.token).join('');
 
   console.log(compact);
 
-  return slidingWindow.getCompressedStream();
+  return compressedStream;
 };
 
 export default compress;
