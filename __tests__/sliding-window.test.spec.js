@@ -34,9 +34,9 @@ describe('SlidingWindow', () => {
   describe('slide callback 2', () => {
     beforeAll(() => {
       slidingWindow = new SlidingWindow('aaba');
-      slidingWindow.slide((lookAhead, lookBack, lookbackLength) => {
-        prefix: [0, 0];
-      });
+      slidingWindow.slide((lookAhead, lookbackLength) => ({
+        prefix: [0, 0]
+      }));
     });
 
     it('has the correct lookAhead contents', () => {

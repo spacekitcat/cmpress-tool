@@ -3,8 +3,8 @@ import console from './console';
 import locateToken from './locate-token';
 import { SlidingWindow } from './sliding-window';
 
-const compressSlideImpl = (lookAhead, lookBack, lookBackLength) => {
-  return locateToken(lookBack, lookBackLength, lookAhead);
+const compressSlideImpl = (lookAhead, lookBack) => {
+  return locateToken(lookBack, lookAhead);
 };
 
 const compress = (stream, dictionarySize, windowSize) => {
@@ -14,10 +14,6 @@ const compress = (stream, dictionarySize, windowSize) => {
   while (slidingWindow.lookAhead()) {
     compressedStream.push(slidingWindow.slide(compressSlideImpl));
   }
-
-  let compact = compressedStream.map(item => item.token).join('');
-
-  console.log(compact);
 
   return compressedStream;
 };
