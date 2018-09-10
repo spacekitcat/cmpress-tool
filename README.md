@@ -2,7 +2,9 @@ Project in progress...
 
 ## synopsis
 
-A basic implementation of the Lz77 streaming compression algorithm. Each compression frame describes the next token and may also contain a pointer for a prefix for the current token. A prefix address describes a position and length relative to the currently visible dictionary. The dictionary view changes after each compression frame. The dictionary addresses assume the current token as at the front of the dictionary (this is an important detail for how the prefix pointer code works).
+This is my implementation of the LZ77 compression algorithm described by Yaakov Ziv and Abraham Lempel in thier 1977 paper. LZ77 utilises a structure often described as a sliding window. I like to view the sliding window as a variation of the Cursor (Iterator in _Design Patterns: Elements of Reusable Object-Oriented Software_) pattern, where instead of describing a single index, the current position describes a range of elements and the traversal rate has no connection to the cursor size. The sliding window designates the bottom half of the cursor as the dictionary and the top half as the input stream.
+
+The compression process produces a series of compressed frames, each one describing a single token and a pointer onto a range in the dictionary, relative to the current cursor position.
 
 - [x] Skeleton with tests, jests, vests, babel and npm build and test scripts.
 - [x] Basic sliding window with lookahead and lookbehind.
