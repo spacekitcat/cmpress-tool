@@ -25,7 +25,7 @@ class SlidingWindow {
   }
 
   slide(operation) {
-    let token = operation(this.lookAhead(), this.lookBack());
+    let token = operation(this.lookBack(), this.lookAhead());
 
     if (token.prefix !== undefined) {
       this.slideBy(token.prefix[1] + 1);
