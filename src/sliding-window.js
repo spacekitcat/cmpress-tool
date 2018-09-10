@@ -1,22 +1,10 @@
-import locateToken from './locate-token';
-
-const compressSlideImpl = (lookAhead, lookBack, lookBackLength) => {
-  // console.log(`${lookBack} ${lookAhead}`);
-  return locateToken(lookBack, lookBackLength, lookAhead);
-};
-
-const deflateSlideImpl = (lookAhead, lookBack, lookBackLength) => {
-  return locateToken(lookBack, lookBackLength, lookAhead);
-};
-
 class SlidingWindow {
-  constructor(operation, stream, lookBackLength = 4, lookAheadLength = 4) {
+  constructor(stream, lookBackLength = 4, lookAheadLength = 4) {
     this.stream = stream;
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;
     this.cursor = 0;
     this.compressedStream = [];
-    this.operation = operation;
   }
 
   lookAhead() {
@@ -45,8 +33,8 @@ class SlidingWindow {
     this.cursor += amount;
   }
 
-  slide() {
-    let token = this.operation(
+  slide(operation) {
+    let token = operation(
       this.lookAhead(),
       this.lookBack(),
       this.lookBackLength
@@ -61,4 +49,4 @@ class SlidingWindow {
   }
 }
 
-export { SlidingWindow, compressSlideImpl, deflateSlideImpl };
+export { SlidingWindow };
