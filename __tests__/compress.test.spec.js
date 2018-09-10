@@ -1,6 +1,4 @@
 import compress from '../src/compress';
-import inflate from '../src/inflate';
-import console from '../src/console';
 
 describe('inflate', () => {
   describe('when the compression string is aaba', () => {

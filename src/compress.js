@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import console from './console';
 import locateToken from './locate-token';
 import { SlidingWindow } from './sliding-window';
 

@@ -1,5 +1,4 @@
 import locateToken from '../src/locate-token';
-import console from '../src/console';
 
 describe('locateToken()', () => {
   it('returns undefined for zero arguments', () => {

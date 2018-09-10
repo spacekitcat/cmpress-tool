@@ -1,5 +1,4 @@
 import extractToken from '../src/extract-token';
-import console from '../src/console';
 
 describe('extractToken()', () => {
   it('returns undefined for zero arguments', () => {
