@@ -2,7 +2,7 @@ Project in progress...
 
 ## synopsis
 
-A basic implementation of the Lz77 streaming compression algorithm. I think it's a really cool algorithm. Each frame describes the next token and some of the frames can also contain an address for a prefix value. A prefix address describes a position and length relative to the current frame. The current frame includes the current token (this is an important detail for how the prefix pointer code works).
+A basic implementation of the Lz77 streaming compression algorithm. Each compression frame describes the next token and may also contain a pointer for a prefix for the current token. A prefix address describes a position and length relative to the currently visible dictionary. The dictionary view changes after each compression frame. The dictionary addresses assume the current token as at the front of the dictionary (this is an important detail for how the prefix pointer code works).
 
 - [x] Skeleton with tests, jests, vests, babel and npm build and test scripts.
 - [x] Basic sliding window with lookahead and lookbehind.
@@ -10,7 +10,7 @@ A basic implementation of the Lz77 streaming compression algorithm. I think it's
 - [x] Basic compression algorithm
 - [x] Basic inflate algorithm
 - [x] Seperate the slide logic from the SlidingWindow (pass an external function)
-- [ ] Seperate the compression frame storage from the SlidingWindow
+- [x] Seperate the compression frame storage from the SlidingWindow
 - [ ] Integration tests to verify the integrity of compress to decompress relationship (combined with the unit tests seems appropriate for the size of the project)
 - [ ] Custom iterator for the dictionary to abstract some of the dictionary lookup operations.
 - [ ] Proper, unit tested sliding window system
