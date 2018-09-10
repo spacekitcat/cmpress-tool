@@ -8,23 +8,21 @@ const reverseStr = string =>
     .reverse()
     .join('');
 
-const inflate = (stream, dictionarySize = 64, windowSize = 32) => {
+const inflate = stream => {
   let result = '';
-  let dictionary = '';
 
   stream.forEach(item => {
     let expanded = '';
     if (item.prefix !== undefined) {
-      expanded = reverseStr(dictionary + item.token).substring(
+      expanded = reverseStr(result + item.token).substring(
         item.prefix[0],
         item.prefix[0] + item.prefix[1]
       );
     }
-    dictionary += reverseStr(expanded) + item.token;
     result += reverseStr(expanded) + item.token;
   });
 
-  return dictionary;
+  return result;
 };
 
 export default inflate;
