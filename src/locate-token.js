@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import reverseString from './reverse-string';
 
 const getPossibleTokens = buffer => {
   let tokenList = [];
@@ -10,14 +11,8 @@ const getPossibleTokens = buffer => {
   return tokenList.reverse();
 };
 
-const reverseStr = string =>
-  string
-    .split('')
-    .reverse()
-    .join('');
-
 const computeMatch = (dictionary, token) => {
-  let result = reverseStr(dictionary).indexOf(reverseStr(token));
+  let result = reverseString(dictionary).indexOf(reverseString(token));
   return result > -1 ? result : undefined;
 };
 
@@ -43,10 +38,7 @@ const locateToken = (dictionary, buffer) => {
   }
 
   let nextLargestToken = findNextLargestToken(dictionary, buffer);
-  if (
-    nextLargestToken === undefined ||
-    (nextLargestToken.position === 0 && nextLargestToken.length === 0)
-  ) {
+  if (nextLargestToken === undefined) {
     nextLargestToken = {
       prefix: undefined,
       token: buffer.charAt(0)

@@ -1,68 +1,96 @@
 import locateToken from '../src/locate-token';
 
 describe('locateToken()', () => {
-  it('returns undefined for zero arguments', () => {
-    expect(locateToken()).toEqual(undefined);
-  });
-
-  it('returns undefined for (null, null) arguments', () => {
-    expect(locateToken(null, null)).toEqual(undefined);
-  });
-
-  it('Empty dictionary, new buffer', () => {
-    expect(locateToken('', 'abab')).toMatchObject({
-      prefix: undefined,
-      token: 'a'
+  describe('No arguments are provided', () => {
+    it('returns undefined', () => {
+      expect(locateToken()).toEqual(undefined);
     });
   });
 
-  it('one element dictionary', () => {
-    expect(locateToken('a', 'babc')).toMatchObject({
-      prefix: undefined,
-      token: 'b'
+  describe('Both arguments are null', () => {
+    it('returns undefined', () => {
+      expect(locateToken(null, null)).toEqual(undefined);
     });
   });
 
-  it('[] [] -> tuple(x, x, x)', () => {
-    expect(locateToken('ab', 'abcb')).toMatchObject({
-      prefix: [1, 2],
-      token: 'c'
+  describe('The history buffer is null', () => {
+    const dictionaryValue = null;
+    describe('The input buffer is not provided', () => {
+      it('returns undefined', () => {
+        expect(locateToken(dictionaryValue)).toEqual(undefined);
+      });
+    });
+
+    describe('The input buffer is an empty string', () => {
+      it('returns undefined', () => {
+        expect(locateToken(dictionaryValue, '')).toEqual(undefined);
+      });
+    });
+
+    describe('The input buffer is a string of length three', () => {
+      it('returns the next character from the input buffer', () => {
+        expect(locateToken(dictionaryValue, 'xyz')).toEqual({
+          prefix: undefined,
+          token: 'x'
+        });
+      });
     });
   });
 
-  it('[] [] -> tuple(x, x, x)', () => {
-    expect(locateToken('babc', 'baba')).toMatchObject({
-      prefix: [2, 3],
-      token: 'a'
+  describe('The history buffer is empty', () => {
+    const dictionaryValue = '';
+    describe('The input buffer is not provided', () => {
+      it('returns undefined', () => {
+        expect(locateToken(dictionaryValue)).toEqual(undefined);
+      });
+    });
+
+    describe('The input buffer is an empty string', () => {
+      it('returns undefined', () => {
+        expect(locateToken(dictionaryValue, '')).toEqual(undefined);
+      });
+    });
+
+    describe('The input buffer is a string of length three', () => {
+      it('returns the next character from the input buffer', () => {
+        expect(locateToken(dictionaryValue, 'xyz')).toEqual({
+          prefix: undefined,
+          token: 'x'
+        });
+      });
     });
   });
 
-  it('[] [] -> tuple(x, x, x)', () => {
-    expect(locateToken('baba', 'baaa')).toMatchObject({
-      prefix: [1, 2],
-      token: 'a'
+  describe('The history buffer has a length of 3', () => {
+    const dictionaryValue = 'xyz';
+    describe('The input buffer is not provided', () => {
+      it('returns undefined', () => {
+        expect(locateToken(dictionaryValue)).toEqual(undefined);
+      });
     });
-  });
 
-  it('Empty dictionary, new buffer', () => {
-    expect(locateToken('', 'aaca')).toMatchObject({
-      prefix: undefined,
-
-      token: 'a'
+    describe('The input buffer is an empty string', () => {
+      it('returns undefined', () => {
+        expect(locateToken(dictionaryValue, '')).toEqual(undefined);
+      });
     });
-  });
 
-  it('a -> abaa', () => {
-    expect(locateToken('a', 'abaa')).toMatchObject({
-      prefix: [1, 1],
-      token: 'b'
+    describe('The input buffer contains characters which are not in the history buffer', () => {
+      it('returns the next character from the input buffer', () => {
+        expect(locateToken(dictionaryValue, 'abc')).toEqual({
+          prefix: undefined,
+          token: 'a'
+        });
+      });
     });
-  });
 
-  it('ab -> aab', () => {
-    expect(locateToken('ab', 'aab')).toMatchObject({
-      prefix: [2, 1],
-      token: 'a'
+    describe('The input buffer contains characters which are not in the histroy buffer', () => {
+      it('returns the next character from the input buffer', () => {
+        expect(locateToken(dictionaryValue, 'yza')).toEqual({
+          prefix: [1, 2],
+          token: 'a'
+        });
+      });
     });
   });
 });

@@ -1,25 +1,28 @@
 {
-  "name": "cmpress-tool",
+  "name": "libz7",
   "version": "0.1.0",
-  "description": "Command line tool for compressing files with the LZ77 algorithm",
-  "main": "index.js",
+  "description": "Compression library based on the LZ77 algorithm",
+  "main": "dist/libz7.js",
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest --verbose --coverage",
     "test:watch": "jest --verbose --watch",
     "prebuild": "babel src --out-dir lib",
-    "build": "babel samples --out-dir samplestarget"
+    "build": "npm run test && babel samples --out-dir samplestarget",
+    "prepackage": "npm run build",
+    "package": "webpack --config webpack.config.js"
   },
   "keywords": [
     "lz77",
     "compress",
     "cli"
   ],
-  "author": "Lisa R Burton",
+  "author": "Lisa Burton",
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "cli": "^1.0.1",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -27,8 +30,11 @@
     "@babel/preset-env": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
+    "babel-loader": "^8.0.2",
     "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "jest": "^23.5.0"
+    "jest": "^23.5.0",
+    "webpack": "^4.18.0",
+    "webpack-cli": "^3.1.0"
   }
 }

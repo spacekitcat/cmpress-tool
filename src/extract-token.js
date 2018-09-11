@@ -1,45 +1,14 @@
 import _ from 'lodash';
-
-const getPossibleTokens = buffer => {
-  let tokenList = [];
-
-  for (let i = 1; i <= buffer.length; ++i) {
-    tokenList.push(buffer.substring(0, i));
-  }
-
-  return tokenList.reverse();
-};
-
-const findNextLargestToken = (dictionary, buffer) => {
-  let match = undefined;
-
-  getPossibleTokens(buffer).forEach((token, index) => {
-    if (dictionary.indexOf(token) !== -1 && !match) {
-      match = {
-        position: dictionary.indexOf(token),
-        length: token.length
-      };
-    }
-  });
-
-  return match;
-};
+import reverseString from './reverse-string';
 
 const substr = (dictionary, from, to) => {
-  let reversedDictionary = dictionary
-    .split('')
-    .reverse()
-    .join('');
+  let reversedDictionary = reverseString(dictionary);
 
   if (from === to) {
     return reversedDictionary.charAt(from);
   }
 
-  return reversedDictionary
-    .substring(from, from + to)
-    .split('')
-    .reverse()
-    .join('');
+  return reverseString(reversedDictionary.substring(from, from + to));
 };
 
 const extractToken = (dictionary, dictionarySize, position, length) => {
