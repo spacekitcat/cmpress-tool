@@ -15,7 +15,7 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Seperate the compression frame storage from the SlidingWindow
 - [ ] Integration tests to verify the integrity of compress to decompress relationship (combined with the unit tests seems appropriate for the size of the project)
 - [ ] Custom iterator for the dictionary to abstract some of the dictionary lookup operations.
-- [ ] Proper, unit tested sliding window system
+- [x] Proper, unit tested sliding window system
 - [ ] Release system
 
 # Building
