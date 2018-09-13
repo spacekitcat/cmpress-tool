@@ -1,5 +1,6 @@
 class SlidingWindow {
   constructor(stream, lookBackLength, lookAheadLength, inputStream) {
+    this.inputStream = inputStream;
     this.stream = stream;
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;
@@ -22,6 +23,9 @@ class SlidingWindow {
 
   slideBy(amount) {
     this.cursor += amount;
+    if (this.inputStream) {
+      this.inputStream.read(amount);
+    }
   }
 
   slide(operation) {
