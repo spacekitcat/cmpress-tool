@@ -7,12 +7,7 @@ describe('SlidingWindow', () => {
   let slidingWindow;
   describe('intial cursor', () => {
     beforeAll(() => {
-      slidingWindow = new SlidingWindow(
-        ['a', 'a', 'b', 'a'],
-        4,
-        4,
-        inputStream
-      );
+      slidingWindow = new SlidingWindow(inputStream, 4, 4);
     });
 
     it('has the correct lookAhead contents', () => {
@@ -26,12 +21,7 @@ describe('SlidingWindow', () => {
 
   describe('slide 2', () => {
     beforeAll(() => {
-      slidingWindow = new SlidingWindow(
-        ['a', 'a', 'b', 'a'],
-        4,
-        4,
-        inputStream
-      );
+      slidingWindow = new SlidingWindow(inputStream, 4, 4);
       slidingWindow.slideBy(2);
     });
 
@@ -46,12 +36,7 @@ describe('SlidingWindow', () => {
 
   describe('slide callback 2', () => {
     beforeAll(() => {
-      slidingWindow = new SlidingWindow(
-        ['a', 'a', 'b', 'a'],
-        4,
-        4,
-        inputStream
-      );
+      slidingWindow = new SlidingWindow(inputStream, 4, 4);
       slidingWindow.slide((lookAhead, lookbackLength) => ({
         prefix: [0, 0]
       }));
