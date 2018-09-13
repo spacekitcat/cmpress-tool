@@ -11,7 +11,7 @@ const compress = (stream, dictionarySize = 64, windowSize = 32) => {
     dictionarySize,
     windowSize,
     {
-      read: n => ['a', 'b', 'c', 'e']
+      read: n => stream.split('')
     }
   );
   while (slidingWindow.lookAhead().length > 0) {

@@ -1,7 +1,7 @@
 class SlidingWindow {
   constructor(stream, lookBackLength, lookAheadLength, inputStream) {
     this.inputStream = inputStream;
-    this.stream = stream;
+    this.stream = this.inputStream.read(lookAheadLength);
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;
     this.cursor = 0;
