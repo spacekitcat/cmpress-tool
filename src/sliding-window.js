@@ -7,16 +7,15 @@ class SlidingWindow {
   }
 
   lookAhead() {
-    const forwardBuffer = this.stream.substring(
-      this.cursor,
-      this.cursor + this.lookAheadLength
-    );
+    const forwardBuffer = this.stream
+      .slice(this.cursor, this.cursor + this.lookAheadLength)
+      .join('');
     return forwardBuffer;
   }
 
   lookBack() {
     let from = Math.max(this.cursor - this.lookBackLength, 0);
-    const backwardBuffer = this.stream.substring(from, this.cursor);
+    const backwardBuffer = this.stream.slice(from, this.cursor).join('');
     return backwardBuffer;
   }
 
