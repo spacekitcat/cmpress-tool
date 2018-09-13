@@ -33,8 +33,11 @@ const findNextLargestToken = (dictionary, buffer) => {
 };
 
 const locateToken = (dictionary, buffer) => {
-  if (_.isEmpty(buffer)) {
-    return undefined;
+  if (!buffer || buffer.length === 0) {
+    return {
+      prefix: undefined,
+      token: undefined
+    };
   }
 
   let nextLargestToken = findNextLargestToken(dictionary, buffer);

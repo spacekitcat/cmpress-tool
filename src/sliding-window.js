@@ -7,15 +7,16 @@ class SlidingWindow {
   }
 
   lookAhead() {
-    const forwardBuffer = this.stream
-      .slice(this.cursor, this.cursor + this.lookAheadLength)
-      .join('');
+    const forwardBuffer = this.stream.slice(
+      this.cursor,
+      this.cursor + this.lookAheadLength
+    );
     return forwardBuffer;
   }
 
   lookBack() {
     let from = Math.max(this.cursor - this.lookBackLength, 0);
-    const backwardBuffer = this.stream.slice(from, this.cursor).join('');
+    const backwardBuffer = this.stream.slice(from, this.cursor);
     return backwardBuffer;
   }
 
@@ -24,7 +25,7 @@ class SlidingWindow {
   }
 
   slide(operation) {
-    let token = operation(this.lookBack(), this.lookAhead());
+    let token = operation(this.lookBack().join(''), this.lookAhead().join(''));
 
     if (token.prefix !== undefined) {
       this.slideBy(token.prefix[1] + 1);

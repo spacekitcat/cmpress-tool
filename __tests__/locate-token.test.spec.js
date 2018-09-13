@@ -3,13 +3,19 @@ import locateToken from '../src/locate-token';
 describe('locateToken()', () => {
   describe('No arguments are provided', () => {
     it('returns undefined', () => {
-      expect(locateToken()).toEqual(undefined);
+      expect(locateToken()).toEqual({
+        prefix: undefined,
+        token: undefined
+      });
     });
   });
 
   describe('Both arguments are null', () => {
     it('returns undefined', () => {
-      expect(locateToken(null, null)).toEqual(undefined);
+      expect(locateToken(null, null)).toEqual({
+        prefix: undefined,
+        token: undefined
+      });
     });
   });
 
@@ -17,13 +23,19 @@ describe('locateToken()', () => {
     const dictionaryValue = null;
     describe('The input buffer is not provided', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue)).toEqual(undefined);
+        expect(locateToken(dictionaryValue)).toEqual({
+          prefix: undefined,
+          token: undefined
+        });
       });
     });
 
     describe('The input buffer is an empty string', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue, '')).toEqual(undefined);
+        expect(locateToken(dictionaryValue, '')).toEqual({
+          prefix: undefined,
+          token: undefined
+        });
       });
     });
 
@@ -41,13 +53,19 @@ describe('locateToken()', () => {
     const dictionaryValue = '';
     describe('The input buffer is not provided', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue)).toEqual(undefined);
+        expect(locateToken(dictionaryValue)).toEqual({
+          prefix: undefined,
+          token: undefined
+        });
       });
     });
 
     describe('The input buffer is an empty string', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue, '')).toEqual(undefined);
+        expect(locateToken(dictionaryValue, '')).toEqual({
+          prefix: undefined,
+          token: undefined
+        });
       });
     });
 
@@ -65,13 +83,19 @@ describe('locateToken()', () => {
     const dictionaryValue = 'xyz';
     describe('The input buffer is not provided', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue)).toEqual(undefined);
+        expect(locateToken(dictionaryValue)).toEqual({
+          prefix: undefined,
+          token: undefined
+        });
       });
     });
 
     describe('The input buffer is an empty string', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue, '')).toEqual(undefined);
+        expect(locateToken(dictionaryValue, '')).toEqual({
+          prefix: undefined,
+          token: undefined
+        });
       });
     });
 

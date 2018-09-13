@@ -11,7 +11,7 @@ const compress = (stream, dictionarySize = 64, windowSize = 32) => {
     dictionarySize,
     windowSize
   );
-  while (slidingWindow.lookAhead()) {
+  while (slidingWindow.lookAhead().length > 0) {
     compressedStream.push(slidingWindow.slide(locateToken));
   }
 

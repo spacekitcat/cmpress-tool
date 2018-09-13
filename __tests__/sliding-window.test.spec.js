@@ -8,11 +8,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual('aaba');
+      expect(slidingWindow.lookAhead()).toEqual(['a', 'a', 'b', 'a']);
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual('');
+      expect(slidingWindow.lookBack()).toEqual([]);
     });
   });
 
@@ -23,11 +23,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual('ba');
+      expect(slidingWindow.lookAhead()).toEqual(['b', 'a']);
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual('aa');
+      expect(slidingWindow.lookBack()).toEqual(['a', 'a']);
     });
   });
 
@@ -40,11 +40,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual('aba');
+      expect(slidingWindow.lookAhead()).toEqual(['a', 'b', 'a']);
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual('a');
+      expect(slidingWindow.lookBack()).toEqual(['a']);
     });
   });
 });
