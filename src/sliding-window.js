@@ -23,9 +23,7 @@ class SlidingWindow {
 
   slideBy(amount) {
     this.cursor += amount;
-    if (this.inputStream) {
-      this.inputStream.read(amount);
-    }
+    this.inputStream.read(amount);
   }
 
   slide(operation) {

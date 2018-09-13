@@ -9,7 +9,10 @@ const compress = (stream, dictionarySize = 64, windowSize = 32) => {
   let slidingWindow = new SlidingWindow(
     uncompressedStream,
     dictionarySize,
-    windowSize
+    windowSize,
+    {
+      read: n => ['a', 'b', 'c', 'e']
+    }
   );
   while (slidingWindow.lookAhead().length > 0) {
     compressedStream.push(slidingWindow.slide(locateToken));
