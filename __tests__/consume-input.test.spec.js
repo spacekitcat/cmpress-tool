@@ -121,28 +121,40 @@ describe('cosumeInput', () => {
   describe('Buffer has four elements', () => {
     const bufferContent = ['a', 'b', 'c', 'd'];
     describe('Input is undefined', () => {
-      it('should return an empty buffer copy', () => {
+      it('should advance the buffer by 1', () => {
         expect(consumeInput(bufferContent, 4, undefined)).toEqual({
-          buffer: bufferContent,
-          discard: []
+          buffer: ['b', 'c', 'd'],
+          discard: ['a']
         });
       });
     });
 
     describe('Input is null', () => {
-      it('should return an empty buffer copy', () => {
-        expect(consumeInput(bufferContent, 4, null)).toEqual({
-          buffer: bufferContent,
-          discard: []
+      it('should advance the buffer by 1', () => {
+        expect(consumeInput(bufferContent, 4, undefined)).toEqual({
+          buffer: ['b', 'c', 'd'],
+          discard: ['a']
         });
       });
     });
 
     describe('Input is empty', () => {
-      it('should return an empty buffer copy', () => {
+      it('should advance the buffer by 1', () => {
         expect(consumeInput(bufferContent, 4, [])).toEqual({
-          buffer: bufferContent,
-          discard: []
+          buffer: ['b', 'c', 'd'],
+          discard: ['a']
+        });
+      });
+
+      describe('Second input is empty', () => {
+        it('should advance the buffer by 1', () => {
+          let result = consumeInput(bufferContent, 4, []);
+          result = consumeInput(result.buffer, 4, []);
+
+          expect(result).toEqual({
+            buffer: ['c', 'd'],
+            discard: ['b']
+          });
         });
       });
     });
