@@ -1,6 +1,5 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
-import { Readable, Writable } from 'stream';
-import fs from 'fs';
+import { Readable } from 'stream';
 
 let buildTestInputStream = () => {
   let inputStream = new Readable();
@@ -34,6 +33,7 @@ describe('CompressorTransformer', () => {
     inputStream.push('a');
     inputStream.push(null);
   });
+
   it('compresses aaba', () => {
     let inputStream = buildTestInputStream();
 
@@ -57,31 +57,6 @@ describe('CompressorTransformer', () => {
     });
 
     inputStream.push('aaba');
-    inputStream.push(null);
-  });
-
-  it('compresses aaa', () => {
-    let inputStream = buildTestInputStream();
-
-    let compressorTransformer = new CompressorTransformer({
-      objectMode: true
-    });
-
-    inputStream.pipe(compressorTransformer);
-
-    let outputAccumulator = [];
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator.push(compressedPacket);
-    });
-
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual([
-        { token: 'a', prefix: undefined },
-        { token: 'a', prefix: [1, 1] }
-      ]);
-    });
-
-    inputStream.push('aaa');
     inputStream.push(null);
   });
 

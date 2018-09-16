@@ -1,23 +1,34 @@
 import _ from 'lodash';
-import locateToken from './locate-token';
-import { SlidingWindow } from './sliding-window';
+import { CompressorTransformer } from './compressor-transformer';
+import { Readable } from 'stream';
 
 const compress = (stream, dictionarySize = 64, windowSize = 32) => {
-  let uncompressedStream = stream.split('');
   let compressedStream = [];
 
-  let slidingWindow = new SlidingWindow(
-    {
-      read: n => uncompressedStream
-    },
-    dictionarySize,
-    windowSize
-  );
-  while (slidingWindow.lookAhead().length > 0) {
-    compressedStream.push(slidingWindow.slide(locateToken));
-  }
+  let inputStream = new Readable();
+  inputStream._read = () => {};
 
-  return compressedStream;
+  let compressorTransformer = new CompressorTransformer({
+    objectMode: true
+  });
+
+  inputStream.pipe(compressorTransformer);
+
+  compressorTransformer.on('data', compressedPacket => {
+    compressedStream.push(compressedPacket);
+  });
+
+  let val = new Promise((resolve, reject) => {
+    compressorTransformer.on('finish', () => {
+      console.log('Compression process complete.');
+      resolve(compressedStream);
+    });
+  });
+
+  inputStream.push(stream);
+  inputStream.push(null);
+
+  return val;
 };
 
 export default compress;
