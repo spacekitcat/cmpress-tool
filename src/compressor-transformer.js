@@ -29,37 +29,22 @@ class CompressorTransformer extends Transform {
     }
   }
 
-  next(chunk, idx) {
-    return idx > chunk.length ? undefined : chunk.charAt(idx);
-  }
-
   _transform(chunk, encoding, callback) {
     this.frontLoadBuffer(chunk, encoding);
 
-    let idx = this.currentWindowBufferSize - 1;
-    while (this.currentWindowBuffer.buffer.length > 0) {
-      let nextToken = locateToken(
-        this.historyBuffer.buffer.join(''),
-        this.currentWindowBuffer.buffer.join('')
-      );
+    let stop = 0;
+    let index = this.currentWindowBufferSize;
 
-      this.push(nextToken);
+    let uncompressedStream = chunk.toString('utf8').split('');
+    let compressedStream = [];
 
-      let advanceBy = nextToken.prefix
-        ? nextToken.prefix[0] + nextToken.prefix[1]
-        : 1;
-      for (let i = 0; i < advanceBy; ++i) {
-        this.currentWindowBuffer = consumeInput(
-          this.currentWindowBuffer.buffer,
-          this.historyBufferSize,
-          this.next(chunk.toString('utf8'), idx++)
-        );
-      }
-      this.historyBuffer = consumeInput(
-        this.historyBuffer.buffer,
-        this.historyBufferSize,
-        nextToken.token
-      );
+    let slidingWindow = new SlidingWindow(
+      { read: n => uncompressedStream },
+      4,
+      4
+    );
+    while (slidingWindow.lookAhead().length > 0) {
+      this.push(slidingWindow.slide(locateToken));
     }
 
     callback();
