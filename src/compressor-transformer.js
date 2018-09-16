@@ -36,15 +36,18 @@ class CompressorTransformer extends Transform {
   _transform(chunk, encoding, callback) {
     this.frontLoadBuffer(chunk, encoding);
 
-    let idx = this.currentWindowBufferSize;
-    while (this.currentWindowBuffer.buffer.length > 0 && idx < 8) {
+    let idx = this.currentWindowBufferSize - 1;
+    while (this.currentWindowBuffer.buffer.length > 0) {
       let nextToken = locateToken(
         this.historyBuffer.buffer.join(''),
         this.currentWindowBuffer.buffer.join('')
       );
+
       this.push(nextToken);
 
-      let advanceBy = 1 + (nextToken.prefix ? nextToken.prefix[0] : 0);
+      let advanceBy = nextToken.prefix
+        ? nextToken.prefix[0] + nextToken.prefix[1]
+        : 1;
       for (let i = 0; i < advanceBy; ++i) {
         this.currentWindowBuffer = consumeInput(
           this.currentWindowBuffer.buffer,
