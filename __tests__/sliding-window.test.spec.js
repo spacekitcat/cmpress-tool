@@ -1,9 +1,8 @@
 import { SlidingWindow } from '../src/sliding-window';
 
 describe('SlidingWindow', () => {
-  let inputStream = {
-    read: n => ['a', 'a', 'b', 'a']
-  };
+  let inputStream = ['a', 'a', 'b', 'a'];
+
   let slidingWindow;
   describe('intial cursor', () => {
     beforeAll(() => {

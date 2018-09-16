@@ -13,7 +13,7 @@ class CompressorTransformer extends Transform {
     let uncompressedStream = chunk.toString(encoding).split('');
 
     let slidingWindow = new SlidingWindow(
-      { read: n => uncompressedStream },
+      uncompressedStream,
       this.historyBufferSize,
       this.currentWindowBufferSize
     );

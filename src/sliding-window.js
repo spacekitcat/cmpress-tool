@@ -1,14 +1,13 @@
 class SlidingWindow {
   constructor(inputStream, lookBackLength, lookAheadLength) {
     this.inputStream = inputStream;
-    this.stream = this.inputStream.read(lookAheadLength);
     this.lookBackLength = lookBackLength;
     this.lookAheadLength = lookAheadLength;
     this.cursor = 0;
   }
 
   lookAhead() {
-    const forwardBuffer = this.stream.slice(
+    const forwardBuffer = this.inputStream.slice(
       this.cursor,
       this.cursor + this.lookAheadLength
     );
@@ -17,13 +16,12 @@ class SlidingWindow {
 
   lookBack() {
     let from = Math.max(this.cursor - this.lookBackLength, 0);
-    const backwardBuffer = this.stream.slice(from, this.cursor);
+    const backwardBuffer = this.inputStream.slice(from, this.cursor);
     return backwardBuffer;
   }
 
   slideBy(amount) {
     this.cursor += amount;
-    this.inputStream.read(amount);
   }
 
   slide(operation) {
