@@ -19,7 +19,7 @@ let rawInput = process.argv[2];
 if (rawInput) {
   compress(rawInput, dictionaryLen, windowLen).then(compressedPackets => {
     inflate(compressedPackets, dictionaryLen, windowLen).then(decompressed => {
-      console.log(`   ⌨  input: ${rawInput}`);
+      console.log(`   📥  input: ${rawInput}`);
       console.log(
         `  🙌  ratio: ${calculateReductionPercentage(
           compressedPackets,
