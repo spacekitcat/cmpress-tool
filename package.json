@@ -4,8 +4,8 @@
   "description": "Compression library based on the LZ77 algorithm",
   "main": "dist/libz7.js",
   "scripts": {
-    "test": "jest --verbose --coverage",
-    "test:watch": "jest --verbose --watch",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "prebuild": "babel src --out-dir lib",
     "build": "npm run test && babel samples --out-dir samplestarget",
     "prepackage": "npm run build",

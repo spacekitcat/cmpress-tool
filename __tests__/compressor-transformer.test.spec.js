@@ -8,7 +8,7 @@ let buildTestInputStream = () => {
 };
 
 describe('CompressorTransformer', () => {
-  it('it compresses a to a', () => {
+  it('compresses a to a', () => {
     let inputStream = buildTestInputStream();
 
     let compressorTransformer = new CompressorTransformer({
