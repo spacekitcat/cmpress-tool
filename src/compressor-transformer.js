@@ -5,8 +5,8 @@ import locateToken from './locate-token.js';
 class CompressorTransformer extends Transform {
   constructor(options) {
     super(options);
-    this.historyBufferSize = 4;
-    this.currentWindowBufferSize = 4;
+    this.historyBufferSize = 32;
+    this.currentWindowBufferSize = 32;
   }
 
   _transform(chunk, encoding, callback) {

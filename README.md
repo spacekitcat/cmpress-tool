@@ -54,14 +54,10 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 ### Runcompress
 
 ```bash
-$ npm run build
-$ cd ./sampletarget
-$ ./runcompress.js ilovematthewromanoilovematthewromano
 Compression process complete.
 Inflation process complete.
-   ⌨  input: ilovematthewromanoilovematthewromano
-  🙌  ratio: 88.89%
-  💤  compressed: ilovemathewromanilvemathewromano
-  💣  deecompressed: ilovematthewromanilnvematthewromano
-mc-n347390 :: ~/lisa-workspace/libz7 ‹master*› %
+  📥  input: ilovemathewromanilvemathewromano
+  🙌  ratio: 46.88%
+  💤  compressed: ilovemathwrmnvo
+  💣  deecompressed: ilovemathewrlmenvilovemathwro
 ```

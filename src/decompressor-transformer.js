@@ -7,8 +7,8 @@ import consumeInput from './consume-input';
 class DecompressorTransformer extends Transform {
   constructor(options) {
     super(options);
-    this.historyBufferSize = 4;
-    this.currentWindowBufferSize = 4;
+    this.historyBufferSize = 32;
+    this.currentWindowBufferSize = 32;
     this.history_buffer = consumeInput([], this.historyBufferSize, []);
   }
 
