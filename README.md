@@ -13,11 +13,12 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Basic inflate algorithm
 - [x] Seperate the slide logic from the SlidingWindow (pass an external function)
 - [x] Seperate the compression frame storage from the SlidingWindow
-- [ ] Replace the string buffers in
+- [x] Make this work with nodejs streams
 - [ ] Integration tests to verify the integrity of compress to decompress relationship (combined with the unit tests seems appropriate for the size of the project)
-- [ ] Custom iterator for the dictionary to abstract some of the dictionary lookup operations.
+- [x] Custom iterator for the dictionary to abstract some of the dictionary lookup operations.
 - [x] Proper, unit tested sliding window system
 - [ ] Release system
+- [ ] The compression streams resets after every read chunk. This shouldn't have too big an impact for most cases, but it's still rubbish.
 
 # Building
 
@@ -39,10 +40,10 @@ Successfully compiled 1 file with Babel.
 
 ```
 $ npm run test
-Test Suites: 5 passed, 5 total
-Tests:       37 passed, 37 total
+Test Suites: 7 passed, 7 total
+Tests:       52 passed, 52 total
 Snapshots:   0 total
-Time:        1.259s
+Time:        1.221s
 Ran all test suites.
 ```
 
@@ -56,7 +57,11 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 $ npm run build
 $ cd ./sampletarget
 $ ./runcompress.js ilovematthewromanoilovematthewromano
-Decompressed: ilovematthewromanoilovematthewromano
-Compressed to 41.67% of original size:
-Compressed: ilovemathwrmnio
+Compression process complete.
+Inflation process complete.
+   ⌨  input: ilovematthewromanoilovematthewromano
+  🙌  ratio: 88.89%
+  💤  compressed: ilovemathewromanilvemathewromano
+  💣  deecompressed: ilovematthewromanilnvematthewromano
+mc-n347390 :: ~/lisa-workspace/libz7 ‹master*› %
 ```

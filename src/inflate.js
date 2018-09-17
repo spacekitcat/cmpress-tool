@@ -1,28 +1,42 @@
-require('@babel/polyfill');
-
 import _ from 'lodash';
+import { DecompressorTransformer } from './decompressor-transformer';
+import { Readable } from 'stream';
 
-const reverseStr = string =>
-  string
-    .split('')
-    .reverse()
-    .join('');
+let buildTestInputStream = () => {
+  let inputStream = new Readable({ objectMode: true });
+  inputStream._read = () => {};
+  return inputStream;
+};
 
-const inflate = stream => {
-  let result = '';
+const inflate = (stream, dictionarySize = 64, windowSize = 32) => {
+  let compressedStream = [];
+  let inputStream = buildTestInputStream();
 
-  stream.forEach(item => {
-    let expanded = '';
-    if (item.prefix !== undefined) {
-      expanded = reverseStr(result + item.token).substring(
-        item.prefix[0],
-        item.prefix[0] + item.prefix[1]
-      );
-    }
-    result += reverseStr(expanded) + item.token;
+  let decompressorTransformer = new DecompressorTransformer({
+    objectMode: true
   });
 
-  return result;
+  inputStream.pipe(decompressorTransformer);
+
+  let outputAccumulator = [];
+  decompressorTransformer.on('data', decompressedPacket => {
+    outputAccumulator.push(decompressedPacket);
+  });
+
+  let val = new Promise((resolve, reject) => {
+    decompressorTransformer.on('finish', () => {
+      console.log('Inflation process complete.');
+      resolve(outputAccumulator);
+    });
+  });
+
+  stream.forEach(item => {
+    inputStream.push(item);
+  });
+
+  inputStream.push(null);
+
+  return val;
 };
 
 export default inflate;
