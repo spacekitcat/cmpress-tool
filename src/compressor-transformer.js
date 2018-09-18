@@ -7,19 +7,20 @@ class CompressorTransformer extends Transform {
     super(options);
     this.historyBufferSize = 32;
     this.currentWindowBufferSize = 32;
+
+    this.slidingWindow = new SlidingWindow(
+      [],
+      this.historyBufferSize,
+      this.currentWindowBufferSize
+    );
   }
 
   _transform(chunk, encoding, callback) {
     let uncompressedStream = chunk.toString(encoding).split('');
+    this.slidingWindow.setInput(uncompressedStream);
 
-    let slidingWindow = new SlidingWindow(
-      uncompressedStream,
-      this.historyBufferSize,
-      this.currentWindowBufferSize
-    );
-
-    while (slidingWindow.lookAhead().length > 0) {
-      this.push(slidingWindow.slide(locateToken));
+    while (this.slidingWindow.lookAhead().length > 0) {
+      this.push(this.slidingWindow.slide(locateToken));
     }
 
     callback();

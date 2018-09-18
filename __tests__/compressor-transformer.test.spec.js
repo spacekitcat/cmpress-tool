@@ -1,8 +1,8 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
 import { Readable } from 'stream';
 
-let buildTestInputStream = () => {
-  let inputStream = new Readable();
+let buildTestInputStream = (options = {}) => {
+  let inputStream = new Readable(options);
   inputStream._read = () => {};
   return inputStream;
 };
@@ -111,5 +111,36 @@ describe('CompressorTransformer', () => {
 
     inputStream.push('aaabbc');
     inputStream.push(null);
+  });
+
+  describe('where the stream transform involves multiple calls', () => {
+    /** The sliding window need to maintain state between 'chunks' (the argument passed to the transformer) */
+    it('does not reset the sliding window', () => {
+      let inputStream = buildTestInputStream();
+
+      let compressorTransformer = new CompressorTransformer({
+        objectMode: true
+      });
+
+      inputStream.pipe(compressorTransformer);
+
+      let outputAccumulator = [];
+      compressorTransformer.on('data', compressedPacket => {
+        outputAccumulator.push(compressedPacket);
+      });
+
+      compressorTransformer.on('finish', () => {
+        expect(outputAccumulator).toEqual([
+          { token: 'a', prefix: undefined },
+          { token: 'a', prefix: [1, 1] },
+          { token: 'a', prefix: [1, 1] }
+        ]);
+      });
+
+      inputStream.push('aaaaa');
+      inputStream.push('aa');
+
+      inputStream.push(null);
+    });
   });
 });

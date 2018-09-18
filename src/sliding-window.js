@@ -6,6 +6,10 @@ class SlidingWindow {
     this.cursor = 0;
   }
 
+  setInput(inputStream) {
+    this.inputStream = inputStream;
+  }
+
   lookAhead() {
     const forwardBuffer = this.inputStream.slice(
       this.cursor,
