@@ -51,6 +51,13 @@ Ran all test suites.
 
 The **./sampletarget** folder contains small demonstration scripts which demonstrate interaction with the compress and inflate methods.
 
+### Filecompresssimulate
+
+```bash
+libz7 ‹master*› % samplestarget/filecompresssimulate.js ~/Downloads/Wireshark\ 2.6.1\ Intel\ 64.dmg
+   ->MUST<-   ->COMPRESS<-   33416 160073045     🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱
+```
+
 ### Runcompress
 
 ```bash

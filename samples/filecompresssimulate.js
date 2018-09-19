@@ -46,7 +46,7 @@ compressorTransformer.on('data', compressedPacket => {
     process.stdout.write(
       '   ->MUST<-   ->COMPRESS<-   ' +
         `${outputAccumulator.length} ${rawBytes.length}` +
-        '            🦊  🦊  🦊  🦊  🦊                                       ' +
+        '    🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊  🦊' +
         ' \r'
     );
     alt++;
@@ -54,7 +54,7 @@ compressorTransformer.on('data', compressedPacket => {
     process.stdout.write(
       '   ->MUST<-   ->COMPRESS<-   ' +
         `${outputAccumulator.length} ${rawBytes.length}` +
-        '      🐱  🐱  🐱  🐱  🐱                                             ' +
+        '      🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱 ' +
         ' \r'
     );
     alt++;
