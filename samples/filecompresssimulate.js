@@ -45,16 +45,16 @@ compressorTransformer.on('data', compressedPacket => {
   } else if (alt >= 5000) {
     process.stdout.write(
       '   ->MUST<-   ->COMPRESS<-   ' +
-        calculateReductionPercentage(outputAccumulator, rawBytes) +
-        '    🦊  🦊  🦊  🦊  🦊                         ' +
+        `${outputAccumulator.length} ${rawBytes.length}` +
+        '            🦊  🦊  🦊  🦊  🦊                                       ' +
         ' \r'
     );
     alt++;
   } else {
     process.stdout.write(
       '   ->MUST<-   ->COMPRESS<-   ' +
-        calculateReductionPercentage(outputAccumulator, rawBytes) +
-        '      🐱  🐱  🐱  🐱  🐱                                       ' +
+        `${outputAccumulator.length} ${rawBytes.length}` +
+        '      🐱  🐱  🐱  🐱  🐱                                             ' +
         ' \r'
     );
     alt++;
@@ -65,7 +65,7 @@ compressorTransformer.on('data', compressedPacket => {
 compressorTransformer.on('end', () => {
   process.stdout.write(
     '   ->MUST<-   ->COMPRESS<-   ' +
-      calculateReductionPercentage(outputAccumulator, rawBytes) +
+      `${outputAccumulator.length} ${rawBytes.length}` +
       '' +
       '\n'
   );
