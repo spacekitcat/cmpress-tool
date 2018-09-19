@@ -18,7 +18,7 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Custom iterator for the dictionary to abstract some of the dictionary lookup operations.
 - [x] Proper, unit tested sliding window system
 - [ ] Release system
-- [ ] The compression streams resets after every read chunk. This shouldn't have too big an impact for most cases, but it's still rubbish.
+- [x] The compression streams resets after every read chunk. This shouldn't have too big an impact for most cases, but it's still rubbish.
 
 # Building
 
