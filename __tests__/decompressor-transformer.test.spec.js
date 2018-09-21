@@ -31,4 +31,41 @@ describe('DecompressorTransformer', () => {
     inputStream.push({ token: 'a', prefix: undefined });
     inputStream.push(null);
   });
+
+  it('inflates hellohello', () => {
+    let inputStream = buildTestInputStream();
+
+    let decompressorTransformer = new DecompressorTransformer({
+      objectMode: true
+    });
+
+    inputStream.pipe(decompressorTransformer);
+
+    let outputAccumulator = [];
+    decompressorTransformer.on('data', decompressedPacket => {
+      outputAccumulator.push(decompressedPacket);
+    });
+
+    decompressorTransformer.on('finish', () => {
+      expect(outputAccumulator).toEqual([
+        'h',
+        'e',
+        'l',
+        'l',
+        'o',
+        'h',
+        'e',
+        'l',
+        'l',
+        'o'
+      ]);
+    });
+
+    inputStream.push({ token: 'h', prefix: undefined });
+    inputStream.push({ token: 'e', prefix: undefined });
+    inputStream.push({ token: 'l', prefix: undefined });
+    inputStream.push({ token: 'o', prefix: [1, 1] });
+    inputStream.push({ token: 'o', prefix: [2, 4] });
+    inputStream.push(null);
+  });
 });

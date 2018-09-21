@@ -15,6 +15,7 @@ const compress = (stream, dictionarySize = 64, windowSize = 32) => {
   inputStream.pipe(compressorTransformer);
 
   compressorTransformer.on('data', compressedPacket => {
+    console.log(compressedPacket);
     compressedStream.push(compressedPacket);
   });
 
