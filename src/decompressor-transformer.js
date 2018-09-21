@@ -13,27 +13,32 @@ class DecompressorTransformer extends Transform {
   }
 
   _transform(chunk, encoding, callback) {
+    if (chunk.prefix) {
+      let result = extractToken(
+        this.history_buffer.buffer.join(''),
+        this.historyBufferSize,
+        chunk.prefix[0] - 1,
+        chunk.prefix[1]
+      );
+
+      if (result) {
+        this.history_buffer = consumeInput(
+          this.history_buffer.buffer,
+          this.historyBufferSize,
+          result.split('')
+        );
+        this.push(result);
+        this.push(chunk.token);
+      }
+    } else {
+      this.push(chunk.token);
+    }
+
     this.history_buffer = consumeInput(
       this.history_buffer.buffer,
       this.historyBufferSize,
       chunk.token
     );
-
-    if (chunk.prefix) {
-      let result = extractToken(
-        this.history_buffer.buffer.join(''),
-        this.historyBufferSize,
-        chunk.prefix[0],
-        chunk.prefix[1]
-      );
-
-      //this.push(this.history_buffer.buffer);
-      if (result) {
-        this.push(result);
-      }
-    }
-
-    this.push(chunk.token);
 
     callback();
 
