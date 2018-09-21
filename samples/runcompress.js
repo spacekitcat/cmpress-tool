@@ -31,7 +31,7 @@ if (rawInput) {
           compressedPackets
         )}`
       );
-      console.log(`  💣  deecompressed: ${decompressed.join('')}`);
+      console.log(`  💣  decompressed: ${decompressed.join('')}`);
     });
   });
 } else {

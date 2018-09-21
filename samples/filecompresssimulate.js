@@ -69,6 +69,10 @@ compressorTransformer.on('end', () => {
       '' +
       '\n'
   );
+
+  outputAccumulator.forEach(item => {
+    console.log(item);
+  });
 });
 
 fileReadStream

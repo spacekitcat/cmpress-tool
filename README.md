@@ -1,4 +1,4 @@
-Project in progress...
+Project in progress. It's a first pass at this stage. The samples can compress and decompress string values and the one can simulate file compression (WARNING: works in memory, so large files will likely crash it, depending on how your nodejs install is configured).
 
 ## synopsis
 
@@ -29,6 +29,10 @@ The compression process produces a series of compressed frames, each one describ
 # Building
 
 ```bash
+$ npm install
+```
+
+```bash
 $ npm run build
 
 > cmpress-tool@0.1.0 prebuild /Users/burtol86/lisa-workspace/cmpress-tool
@@ -45,11 +49,35 @@ Successfully compiled 1 file with Babel.
 # Unit tests
 
 ```
-$ npm run test
+libz7 ‹master› % npm run test
+
+> libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
+> jest --coverage
+
+ PASS  __tests__/extract-token.spec.js
+ PASS  __tests__/decompressor-transformer.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
+ PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/reverse-string.test.spec.js
+ PASS  __tests__/compressor-transformer.test.spec.js
+-----------------------------|----------|----------|----------|----------|-------------------|
+File                         |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+-----------------------------|----------|----------|----------|----------|-------------------|
+All files                    |    81.11 |    85.29 |       80 |    81.82 |                   |
+ compressor-transformer.js   |    44.44 |      100 |       50 |    44.44 |    19,20,22,23,26 |
+ consume-input.js            |      100 |      100 |      100 |      100 |                   |
+ decompressor-transformer.js |    28.57 |        0 |    33.33 |    30.77 |... 30,31,34,37,43 |
+ extract-token.js            |      100 |      100 |      100 |      100 |                   |
+ locate-token.js             |      100 |      100 |      100 |      100 |                   |
+ reverse-string.js           |      100 |      100 |      100 |      100 |                   |
+ sliding-window.js           |     87.5 |       50 |    83.33 |     87.5 |             10,37 |
+-----------------------------|----------|----------|----------|----------|-------------------|
+
 Test Suites: 7 passed, 7 total
-Tests:       52 passed, 52 total
+Tests:       54 passed, 54 total
 Snapshots:   0 total
-Time:        1.221s
+Time:        2.266s
 Ran all test suites.
 ```
 
@@ -67,10 +95,27 @@ libz7 ‹master*› % samplestarget/filecompresssimulate.js ~/Downloads/Wireshar
 ### Runcompress
 
 ```bash
+libz7 ‹master› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromano
+{ prefix: undefined, token: 'i' }
+{ prefix: undefined, token: 'l' }
+{ prefix: undefined, token: 'o' }
+{ prefix: undefined, token: 'v' }
+{ prefix: undefined, token: 'e' }
+{ prefix: undefined, token: 'm' }
+{ prefix: undefined, token: 'a' }
+{ prefix: undefined, token: 't' }
+{ prefix: [ 1, 1 ], token: 'h' }
+{ prefix: [ 6, 1 ], token: 'w' }
+{ prefix: undefined, token: 'r' }
+{ prefix: [ 11, 1 ], token: 'm' }
+{ prefix: [ 9, 1 ], token: 'n' }
+{ prefix: [ 4, 1 ], token: 'i' }
+{ prefix: [ 1, 18 ], token: 'l' }
+{ prefix: [ 4, 15 ], token: 'o' }
 Compression process complete.
 Inflation process complete.
-  📥  input: ilovemathewromanilvemathewromano
-  🙌  ratio: 46.88%
-  💤  compressed: ilovemathwrmnvo
-  💣  deecompressed: ilovemathewrlmenvilovemathwro
+  📥  input: ilovematthewromanoilovematthewromanoilovematthewromano
+  🙌  ratio: 29.63%
+  💤  compressed: ilovemathwrmnilo
+  💣  decompressed: ilovematthewromanoilovematthewromanoilovematthewromano
 ```
