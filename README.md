@@ -19,6 +19,12 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Proper, unit tested sliding window system
 - [ ] Release system
 - [x] The compression streams resets after every read chunk. This shouldn't have too big an impact for most cases, but it's still rubbish.
+- [ ] Make everything use arrays instead of strings. This will improve data intergrity because it will use explicit unicode charcodes. It should also make it faster by eliminating string conversions.
+- [ ] A sample program that can compress and save a file. the sample `filecompresssimulate` keeps it in memory because I'd need to define an actual file format for serialising the compressed stream. The file format needs to strip each packet down to the essentials to reduce size overhead and its header needs to define all of the settings used to ensure decompression will know what to do.
+- [ ] A sample program that can decompress the above
+- [ ] Allow an explicit character encoing and for this to be consistent everywhere
+- [ ] User configuratble window size and history buffer size
+- [ ] Consistent domain language. The 'dictionary' (from the original paper, it's a different world) should be call the history_buffer everywhere and the window should be called the window or frame.
 
 # Building
 
