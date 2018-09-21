@@ -32,7 +32,7 @@ describe('DecompressorTransformer', () => {
     inputStream.push(null);
   });
 
-  it('inflates hellohello', () => {
+  it('inflates hellohello (multi-character history buffer results)', () => {
     let inputStream = buildTestInputStream();
 
     let decompressorTransformer = new DecompressorTransformer({
