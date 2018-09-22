@@ -15,7 +15,7 @@ class DecompressorTransformer extends Transform {
   _transform(chunk, encoding, callback) {
     if (chunk.prefix) {
       let result = extractToken(
-        this.history_buffer.buffer.join(''),
+        this.history_buffer.buffer,
         this.historyBufferSize,
         chunk.prefix[0] - 1,
         chunk.prefix[1]
@@ -25,9 +25,9 @@ class DecompressorTransformer extends Transform {
         this.history_buffer = consumeInput(
           this.history_buffer.buffer,
           this.historyBufferSize,
-          result.split('')
+          result
         );
-        result.split('').forEach(token => this.push(token));
+        result.forEach(token => this.push(token));
         this.push(chunk.token);
       }
     } else {
@@ -41,15 +41,6 @@ class DecompressorTransformer extends Transform {
     );
 
     callback();
-
-    // this.history_buffer = consumeInput(
-    //   this.history_buffer.buffer,
-    //   this.historyBufferSize,
-    //   chunk.token
-    // );
-
-    // let uncompressedStream = chunk.toString(encoding).split('');
-    // chunk.prefix === undefined ? '' : this.push(chunk.token);
   }
 }
 

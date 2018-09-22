@@ -1,22 +1,19 @@
 import _ from 'lodash';
-import reverseString from './reverse-string';
-
-const substr = (dictionary, from, to) => {
-  let reversedDictionary = reverseString(dictionary);
-
-  if (from === to) {
-    return reversedDictionary.charAt(from);
-  }
-
-  return reverseString(reversedDictionary.substring(from, from + to));
-};
 
 const extractToken = (dictionary, dictionarySize, position, length) => {
   if (_.isEmpty(dictionary) || dictionarySize === 0) {
     return undefined;
   }
 
-  return substr(dictionary, position, length);
+  if (position === length) {
+    return [dictionary.slice().reverse()[position]];
+  }
+
+  return dictionary
+    .slice()
+    .reverse()
+    .slice(position, position + length)
+    .reverse();
 };
 
 export default extractToken;

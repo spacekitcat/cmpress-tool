@@ -10,22 +10,29 @@ describe('extractToken()', () => {
   });
 
   it('returns undefined for an empty dictionary', () => {
-    expect(extractToken('', 4, 0, 0)).toEqual(undefined);
+    expect(extractToken([], 4, 0, 0)).toEqual(undefined);
   });
 
   it('one element dictionary 0,0', () => {
-    expect(extractToken('a', 4, 0, 0)).toEqual('a');
+    expect(extractToken(['a'], 4, 0, 0)).toEqual(['a']);
   });
 
   it('full dictionary 0,0', () => {
-    expect(extractToken('dcba', 4, 0, 0)).toEqual('a');
+    expect(extractToken(['d', 'c', 'b', 'a'], 4, 0, 0)).toEqual(['a']);
   });
 
   it('full dictionary 0, 3', () => {
-    expect(extractToken('dcba', 4, 0, 3)).toEqual('cba');
+    expect(extractToken(['d', 'c', 'b', 'a'], 4, 0, 3)).toEqual([
+      'c',
+      'b',
+      'a'
+    ]);
   });
 
   it('full dictionary 3, 2', () => {
-    expect(extractToken('dcbaxz', 6, 3, 2)).toEqual('cb');
+    expect(extractToken(['d', 'c', 'b', 'a', 'x', 'z'], 6, 3, 2)).toEqual([
+      'c',
+      'b'
+    ]);
   });
 });

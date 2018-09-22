@@ -16,8 +16,7 @@ class CompressorTransformer extends Transform {
   }
 
   _transform(chunk, encoding, callback) {
-    let uncompressedStream = chunk.toString(encoding).split('');
-    this.slidingWindow.setInput(uncompressedStream);
+    this.slidingWindow.setInput(chunk);
 
     while (this.slidingWindow.lookAhead().length > 0) {
       this.push(this.slidingWindow.slide(locateToken));

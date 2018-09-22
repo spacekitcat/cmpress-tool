@@ -7,7 +7,7 @@ class SlidingWindow {
   }
 
   setInput(inputStream) {
-    this.inputStream = inputStream;
+    this.inputStream = inputStream.toString('utf8').split('');
   }
 
   lookAhead() {
@@ -29,7 +29,7 @@ class SlidingWindow {
   }
 
   slide(operation) {
-    let token = operation(this.lookBack().join(''), this.lookAhead().join(''));
+    let token = operation(this.lookBack(), this.lookAhead());
 
     if (token.prefix !== undefined) {
       this.slideBy(token.prefix[1] + 1);

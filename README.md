@@ -19,12 +19,13 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Proper, unit tested sliding window system
 - [ ] Release system
 - [x] The compression streams resets after every read chunk. This shouldn't have too big an impact for most cases, but it's still rubbish.
-- [ ] Make everything use arrays instead of strings. This will improve data intergrity because it will use explicit unicode charcodes. It should also make it faster by eliminating string conversions.
+- [x] Make everything use arrays instead of strings. This will improve data intergrity because it will use explicit unicode charcodes. It should also make it faster by eliminating string conversions.
 - [ ] A sample program that can compress and save a file. the sample `filecompresssimulate` keeps it in memory because I'd need to define an actual file format for serialising the compressed stream. The file format needs to strip each packet down to the essentials to reduce size overhead and its header needs to define all of the settings used to ensure decompression will know what to do.
 - [ ] A sample program that can decompress the above
 - [ ] Allow an explicit character encoing and for this to be consistent everywhere
 - [ ] User configuratble window size and history buffer size
 - [ ] Consistent domain language. The 'dictionary' (from the original paper, it's a different world) should be call the history_buffer everywhere and the window should be called the window or frame.
+- [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
 
 # Building
 
@@ -51,34 +52,33 @@ Successfully compiled 1 file with Babel.
 ```
 libz7 ‹master› % npm run test
 
-> libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
+> libz7@0.1.0 test libz7
 > jest --coverage
 
- PASS  __tests__/extract-token.spec.js
+ PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/decompressor-transformer.test.spec.js
  PASS  __tests__/consume-input.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
  PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/sliding-window.test.spec.js
- PASS  __tests__/reverse-string.test.spec.js
- PASS  __tests__/compressor-transformer.test.spec.js
+ PASS  __tests__/extract-token.spec.js
 -----------------------------|----------|----------|----------|----------|-------------------|
 File                         |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------|----------|----------|----------|----------|-------------------|
-All files                    |    81.11 |    85.29 |       80 |    81.82 |                   |
- compressor-transformer.js   |    44.44 |      100 |       50 |    44.44 |    19,20,22,23,26 |
+All files                    |    83.84 |    88.64 |    78.95 |    84.69 |                   |
+ compressor-transformer.js   |       50 |      100 |       50 |       50 |       19,21,22,25 |
  consume-input.js            |      100 |      100 |      100 |      100 |                   |
  decompressor-transformer.js |    28.57 |        0 |    33.33 |    30.77 |... 30,31,34,37,43 |
  extract-token.js            |      100 |      100 |      100 |      100 |                   |
+ find-index-of-subarray.js   |      100 |      100 |      100 |      100 |                   |
  locate-token.js             |      100 |      100 |      100 |      100 |                   |
- reverse-string.js           |      100 |      100 |      100 |      100 |                   |
  sliding-window.js           |     87.5 |       50 |    83.33 |     87.5 |             10,37 |
 -----------------------------|----------|----------|----------|----------|-------------------|
 
 Test Suites: 7 passed, 7 total
-Tests:       54 passed, 54 total
+Tests:       61 passed, 61 total
 Snapshots:   0 total
-Time:        2.266s
-Ran all test suites.
+Time:        1.456s
 ```
 
 # Examples
