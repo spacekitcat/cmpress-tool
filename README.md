@@ -26,6 +26,7 @@ The compression process produces a series of compressed frames, each one describ
 - [ ] User configuratble window size and history buffer size
 - [ ] Consistent domain language. The 'dictionary' (from the original paper, it's a different world) should be call the history_buffer everywhere and the window should be called the window or frame.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
+- [ ] The compressor should output encoding bytes rather than utf8 values
 
 # Building
 
@@ -85,14 +86,14 @@ Time:        1.456s
 
 The **./sampletarget** folder contains small demonstration scripts which demonstrate interaction with the compress and inflate methods.
 
-### Filecompresssimulate
+### Filecompresssimulate.js
 
 ```bash
 libz7 ‹master*› % samplestarget/filecompresssimulate.js ~/Downloads/Wireshark\ 2.6.1\ Intel\ 64.dmg
    ->MUST<-   ->COMPRESS<-   33416 160073045     🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱
 ```
 
-### Runcompress
+### runcompress.js
 
 ```bash
 libz7 ‹master› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromano
@@ -118,4 +119,11 @@ Inflation process complete.
   🙌  ratio: 29.63%
   💤  compressed: ilovemathwrmnilo
   💣  decompressed: ilovematthewromanoilovematthewromanoilovematthewromano
+```
+
+### filecompress.js
+
+```
+libz7 ‹master› % samplestarget/filecompress.js ~/Pictures/2843_regular_show.jpg
+Compression complete.
 ```
