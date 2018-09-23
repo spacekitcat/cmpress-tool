@@ -31,7 +31,7 @@ describe('CompressorTransformer', () => {
       );
     });
 
-    inputStream.push('a');
+    inputStream.push('a', 'utf8');
     inputStream.push(null);
   });
 
@@ -57,7 +57,7 @@ describe('CompressorTransformer', () => {
       ]);
     });
 
-    inputStream.push('aaba');
+    inputStream.push('aaba', 'utf8');
     inputStream.push(null);
   });
 
@@ -83,7 +83,7 @@ describe('CompressorTransformer', () => {
       ]);
     });
 
-    inputStream.push('aaaa');
+    inputStream.push('aaaa', 'utf8');
     inputStream.push(null);
   });
 
@@ -110,7 +110,7 @@ describe('CompressorTransformer', () => {
       ]);
     });
 
-    inputStream.push('aaabbc');
+    inputStream.push('aaabbc', 'utf8');
     inputStream.push(null);
   });
 
@@ -138,8 +138,8 @@ describe('CompressorTransformer', () => {
         ]);
       });
 
-      inputStream.push('aaaaa');
-      inputStream.push('aa');
+      inputStream.push('aaaaa', 'utf8');
+      inputStream.push('aa', 'utf8');
 
       inputStream.push(null);
     });
