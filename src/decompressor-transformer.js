@@ -1,6 +1,4 @@
 import { Transform } from 'stream';
-import { SlidingWindow } from './sliding-window.js';
-import locateToken from './locate-token.js';
 import extractToken from './extract-token.js';
 import consumeInput from './consume-input';
 
