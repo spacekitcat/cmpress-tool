@@ -4,6 +4,7 @@ import { Readable } from 'stream';
 let buildTestInputStream = (options = {}) => {
   let inputStream = new Readable(options);
   inputStream._read = () => {};
+  inputStream.setEncoding('utf8');
   return inputStream;
 };
 

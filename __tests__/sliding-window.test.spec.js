@@ -1,7 +1,7 @@
 import { SlidingWindow } from '../src/sliding-window';
 
 describe('SlidingWindow', () => {
-  let inputStream = ['a', 'a', 'b', 'a'];
+  let inputStream = [97, 97, 98, 97];
 
   let slidingWindow;
   describe('intial cursor', () => {
@@ -10,7 +10,7 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual(['a', 'a', 'b', 'a']);
+      expect(slidingWindow.lookAhead()).toEqual([97, 97, 98, 97]);
     });
 
     it('has the correct lookBack contents', () => {
@@ -25,11 +25,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual(['b', 'a']);
+      expect(slidingWindow.lookAhead()).toEqual([98, 97]);
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual(['a', 'a']);
+      expect(slidingWindow.lookBack()).toEqual([97, 97]);
     });
   });
 
@@ -42,11 +42,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual(['a', 'b', 'a']);
+      expect(slidingWindow.lookAhead()).toEqual([97, 98, 97]);
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual(['a']);
+      expect(slidingWindow.lookBack()).toEqual([97]);
     });
   });
 });
