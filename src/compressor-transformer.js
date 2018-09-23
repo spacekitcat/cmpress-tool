@@ -9,7 +9,6 @@ class CompressorTransformer extends Transform {
     this.currentWindowBufferSize = 32;
 
     this.slidingWindow = new SlidingWindow(
-      [],
       this.historyBufferSize,
       this.currentWindowBufferSize
     );
