@@ -66,20 +66,20 @@ libz7 ‹master› % npm run test
 -----------------------------|----------|----------|----------|----------|-------------------|
 File                         |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------|----------|----------|----------|----------|-------------------|
-All files                    |    83.84 |    88.64 |    78.95 |    84.69 |                   |
- compressor-transformer.js   |       50 |      100 |       50 |       50 |       19,21,22,25 |
+All files                    |    84.69 |    88.64 |    84.21 |    85.57 |                   |
+ compressor-transformer.js   |       50 |      100 |       50 |       50 |       18,20,21,24 |
  consume-input.js            |      100 |      100 |      100 |      100 |                   |
- decompressor-transformer.js |    28.57 |        0 |    33.33 |    30.77 |... 30,31,34,37,43 |
+ decompressor-transformer.js |    28.57 |        0 |    33.33 |    30.77 |... 28,29,32,35,41 |
  extract-token.js            |      100 |      100 |      100 |      100 |                   |
  find-index-of-subarray.js   |      100 |      100 |      100 |      100 |                   |
  locate-token.js             |      100 |      100 |      100 |      100 |                   |
- sliding-window.js           |     87.5 |       50 |    83.33 |     87.5 |             10,37 |
+ sliding-window.js           |    93.33 |       50 |      100 |    93.33 |                43 |
 -----------------------------|----------|----------|----------|----------|-------------------|
 
 Test Suites: 7 passed, 7 total
 Tests:       61 passed, 61 total
 Snapshots:   0 total
-Time:        1.456s
+Time:        1.441s
 ```
 
 # Examples
