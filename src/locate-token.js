@@ -12,10 +12,7 @@ const getPossibleTokens = buffer => {
 };
 
 const computeMatch = (dictionary, token) => {
-  let result = findIndexOfSubarray(
-    dictionary.slice().reverse(),
-    token.slice().reverse()
-  );
+  let result = findIndexOfSubarray(dictionary, token);
 
   return result > -1 ? result : undefined;
 };

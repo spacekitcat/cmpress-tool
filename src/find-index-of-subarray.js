@@ -15,6 +15,9 @@ const findIndexOfSubarray = (searcharray, subarray) => {
     return match;
   }
 
+  searcharray = searcharray.slice().reverse();
+  subarray = subarray.slice().reverse();
+
   let loopRange = searcharray.length - subarray.length;
   for (let i = 0; i <= loopRange; ++i) {
     if (startsWith(searcharray.slice(i), subarray)) {

@@ -56,7 +56,7 @@ describe('findIndexOfSubarray', () => {
     const searchArray = [6, 'b', 9, '$'];
     describe('and a length=1, matching subarray arg is provided', () => {
       it('returns index', () => {
-        expect(findIndexOfSubarray(searchArray, [9])).toEqual(2);
+        expect(findIndexOfSubarray(searchArray, [9])).toEqual(1);
       });
     });
 
@@ -73,12 +73,12 @@ describe('findIndexOfSubarray', () => {
     });
   });
 
-  describe('and a length=6 searchArray arg with duplicate matches is provided', () => {
-    const searchArray = [6, 'b', 9, '$', 'b', '9'];
+  describe('and a length=7 searchArray arg with duplicate matches is provided', () => {
+    const searchArray = [6, 'b', 9, '$', 'b', 9, '$'];
 
     describe('and a length=2, matching subarray arg is provided', () => {
       it('returns index', () => {
-        expect(findIndexOfSubarray(searchArray, [9, '$'])).toEqual(2);
+        expect(findIndexOfSubarray(searchArray, [9, '$'])).toEqual(0);
       });
     });
   });
