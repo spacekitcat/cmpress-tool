@@ -18,7 +18,10 @@ class CompressorTransformer extends Transform {
     this.slidingWindow.setInput(chunk);
 
     while (this.slidingWindow.lookAhead().length > 0) {
-      this.push(this.slidingWindow.slide(locateToken));
+      let nextBytes = this.slidingWindow.slide(locateToken);
+      if (nextBytes) {
+        this.push(nextBytes);
+      }
     }
 
     callback();

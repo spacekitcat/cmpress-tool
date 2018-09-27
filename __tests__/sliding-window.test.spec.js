@@ -11,7 +11,7 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual([97, 97, 98, 97]);
+      expect(slidingWindow.lookAhead()).toEqual(['61', '61', '62', '61']);
     });
 
     it('has the correct lookBack contents', () => {
@@ -27,11 +27,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual([98, 97]);
+      expect(slidingWindow.lookAhead()).toEqual(['62', '61']);
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual([97, 97]);
+      expect(slidingWindow.lookBack()).toEqual(['61', '61']);
     });
   });
 
@@ -45,11 +45,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual([97, 98, 97]);
+      expect(slidingWindow.lookAhead()).toEqual(['61', '62', '61']);
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual([97]);
+      expect(slidingWindow.lookBack()).toEqual(['61']);
     });
   });
 });

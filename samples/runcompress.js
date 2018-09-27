@@ -2,6 +2,8 @@
 import compress from '../lib/compress';
 import inflate from '../lib/inflate';
 
+const { StringDecoder } = require('string_decoder');
+
 let dictionaryLen = 32;
 let windowLen = 32;
 
@@ -9,9 +11,12 @@ let calculateReductionPercentage = (compressedPackets, originalInput) =>
   ((compressedPackets.length / rawInput.length) * 100).toFixed(2);
 
 let extractCompressedPacketsTokenString = compressedPackets =>
-  compressedPackets
+  compressedPackets.map(item => item.token);
+
+let hexArrayToString = hexArray =>
+  hexArray
     .map(item => {
-      return item.token;
+      if (item) return Buffer.from(item, 'hex').toString('utf8');
     })
     .join('');
 
@@ -31,7 +36,7 @@ if (rawInput) {
           compressedPackets
         )}`
       );
-      console.log(`  💣  inflated:    ${decompressed.join('')}`);
+      console.log(`  💣  inflated:    ${hexArrayToString(decompressed)}`);
     });
   });
 } else {

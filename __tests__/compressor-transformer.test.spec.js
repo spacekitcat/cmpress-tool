@@ -26,7 +26,7 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ token: 'a', prefix: undefined })
+          expect.objectContaining({ token: '61', prefix: undefined })
         ])
       );
     });
@@ -51,9 +51,9 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
-        { token: 'a', prefix: undefined },
-        { token: 'b', prefix: [1, 1] },
-        { token: 'a', prefix: undefined }
+        { token: '61', prefix: undefined },
+        { token: '62', prefix: [1, 1] },
+        { token: '61', prefix: undefined }
       ]);
     });
 
@@ -77,9 +77,9 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
-        { token: 'a', prefix: undefined },
-        { token: 'a', prefix: [1, 1] },
-        { token: 'a', prefix: undefined }
+        { token: '61', prefix: undefined },
+        { token: '61', prefix: [1, 1] },
+        { token: '61', prefix: undefined }
       ]);
     });
 
@@ -103,10 +103,10 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
-        { token: 'a', prefix: undefined },
-        { token: 'a', prefix: [1, 1] },
-        { token: 'b', prefix: undefined },
-        { token: 'c', prefix: [1, 1] }
+        { token: '61', prefix: undefined },
+        { token: '61', prefix: [1, 1] },
+        { token: '62', prefix: undefined },
+        { token: '63', prefix: [1, 1] }
       ]);
     });
 
@@ -132,9 +132,9 @@ describe('CompressorTransformer', () => {
 
       compressorTransformer.on('finish', () => {
         expect(outputAccumulator).toEqual([
-          { token: 'a', prefix: undefined },
-          { token: 'a', prefix: [1, 1] },
-          { token: 'a', prefix: [1, 1] }
+          { token: '61', prefix: undefined },
+          { token: '61', prefix: [1, 1] },
+          { token: '61', prefix: [1, 1] }
         ]);
       });
 

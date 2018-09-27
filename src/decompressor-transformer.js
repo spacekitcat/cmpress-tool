@@ -25,7 +25,11 @@ class DecompressorTransformer extends Transform {
           this.historyBufferSize,
           result
         );
-        result.forEach(token => this.push(token));
+        result.forEach(token => {
+          if (token) {
+            this.push(token);
+          }
+        });
         this.push(chunk.token);
       }
     } else {

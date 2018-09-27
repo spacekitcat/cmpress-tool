@@ -14,18 +14,18 @@ describe('extractToken()', () => {
   });
 
   it('one element dictionary 0,0', () => {
-    expect(extractToken(['a'], 4, 0, 0)).toEqual(['a']);
+    expect(extractToken(['61'], 4, 0, 0)).toEqual(['61']);
   });
 
   it('full dictionary 0,0', () => {
-    expect(extractToken(['d', 'c', 'b', 'a'], 4, 0, 0)).toEqual(['a']);
+    expect(extractToken(['64', '63', '62', '61'], 4, 0, 0)).toEqual(['61']);
   });
 
   it('full dictionary 0, 3', () => {
-    expect(extractToken(['d', 'c', 'b', 'a'], 4, 0, 3)).toEqual([
-      'c',
-      'b',
-      'a'
+    expect(extractToken(['64', '63', '62', '61'], 4, 0, 3)).toEqual([
+      '63',
+      '62',
+      '61'
     ]);
   });
 

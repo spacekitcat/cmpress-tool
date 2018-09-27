@@ -41,9 +41,9 @@ describe('locateToken()', () => {
 
     describe('The input buffer is a string of length three', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [120, 121, 122])).toEqual({
+        expect(locateToken(dictionaryValue, [78, 79, 80])).toEqual({
           prefix: undefined,
-          token: 120
+          token: 78
         });
       });
     });
@@ -71,16 +71,16 @@ describe('locateToken()', () => {
 
     describe('The input buffer is a string of length three', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [120, 121, 122])).toEqual({
+        expect(locateToken(dictionaryValue, [78, 79, 80])).toEqual({
           prefix: undefined,
-          token: 120
+          token: 78
         });
       });
     });
   });
 
   describe('The history buffer has a length of 3', () => {
-    const dictionaryValue = [120, 121, 122];
+    const dictionaryValue = [78, 79, 80];
     describe('The input buffer is not provided', () => {
       it('returns undefined', () => {
         expect(locateToken(dictionaryValue)).toEqual({
@@ -110,7 +110,7 @@ describe('locateToken()', () => {
 
     describe('The input buffer contains characters which are in the histroy buffer', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [121, 122, 97])).toEqual({
+        expect(locateToken(dictionaryValue, [79, 80, 97])).toEqual({
           prefix: [1, 2],
           token: 97
         });

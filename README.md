@@ -26,7 +26,7 @@ The compression process produces a series of compressed frames, each one describ
 - [ ] User configuratble window size and history buffer size
 - [ ] Consistent domain language. The 'dictionary' (from the original paper, it's a different world) should be call the history_buffer everywhere and the window should be called the window or frame.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
-- [ ] The compressor should output encoding bytes rather than utf8 values
+- [x] The compressor should output encoded bytes (UTF-8/ASCII codeset) rather than utf8 values
 
 # Building
 
@@ -35,51 +35,46 @@ $ npm install
 ```
 
 ```bash
-$ npm run build
+ibz7 ‹master*› % npm run build
 
-> cmpress-tool@0.1.0 prebuild /Users/burtol86/lisa-workspace/cmpress-tool
-> babel src --out-dir lib
+> libz7@0.1.0 prebuild /Users/burtol86/lisa-workspace/libz7
+> babel src --out-dir lib --source-maps && babel samples --out-dir samplestarget --source-maps
 
-Successfully compiled 7 files with Babel.
-
-> cmpress-tool@0.1.0 build /Users/burtol86/lisa-workspace/cmpress-tool
-> babel runners --out-dir sampletarget
-
-Successfully compiled 1 file with Babel.
+Successfully compiled 10 files with Babel.
+Successfully compiled 3 files with Babel.
 ```
 
 # Unit tests
 
 ```
-libz7 ‹master› % npm run test
-
-> libz7@0.1.0 test libz7
+libz7
 > jest --coverage
 
- PASS  __tests__/sliding-window.test.spec.js
- PASS  __tests__/compressor-transformer.test.spec.js
- PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
- PASS  __tests__/locate-token.test.spec.js
  PASS  __tests__/extract-token.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
+ PASS  __tests__/compressor-transformer.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
+ PASS  __tests__/decompressor-transformer.test.spec.js
+ PASS  __tests__/sliding-window.test.spec.js
 -----------------------------|----------|----------|----------|----------|-------------------|
 File                         |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------|----------|----------|----------|----------|-------------------|
-All files                    |    84.69 |    88.64 |    84.21 |    85.57 |                   |
- compressor-transformer.js   |       50 |      100 |       50 |       50 |       18,20,21,24 |
+All files                    |    82.52 |    81.25 |    84.21 |    82.52 |                   |
+ compressor-transformer.js   |       40 |        0 |       50 |       40 | 18,20,21,22,23,27 |
  consume-input.js            |      100 |      100 |      100 |      100 |                   |
- decompressor-transformer.js |    28.57 |        0 |    33.33 |    30.77 |... 28,29,32,35,41 |
+ decompressor-transformer.js |    26.67 |        0 |    33.33 |    26.67 |... 30,33,36,39,45 |
  extract-token.js            |      100 |      100 |      100 |      100 |                   |
  find-index-of-subarray.js   |      100 |      100 |      100 |      100 |                   |
  locate-token.js             |      100 |      100 |      100 |      100 |                   |
- sliding-window.js           |    93.33 |       50 |      100 |    93.33 |                43 |
+ sliding-window.js           |    93.33 |       50 |      100 |    93.33 |                38 |
 -----------------------------|----------|----------|----------|----------|-------------------|
 
 Test Suites: 7 passed, 7 total
-Tests:       61 passed, 61 total
+Tests:       62 passed, 62 total
 Snapshots:   0 total
-Time:        1.441s
+Time:        1.408s
+Ran all test suites.
 ```
 
 # Examples
@@ -96,29 +91,29 @@ libz7 ‹master*› % samplestarget/filecompresssimulate.js ~/Downloads/Wireshar
 ### runcompress.js
 
 ```bash
-libz7 ‹master› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromano
-{ prefix: undefined, token: 'i' }
-{ prefix: undefined, token: 'l' }
-{ prefix: undefined, token: 'o' }
-{ prefix: undefined, token: 'v' }
-{ prefix: undefined, token: 'e' }
-{ prefix: undefined, token: 'm' }
-{ prefix: undefined, token: 'a' }
-{ prefix: undefined, token: 't' }
-{ prefix: [ 1, 1 ], token: 'h' }
-{ prefix: [ 6, 1 ], token: 'w' }
-{ prefix: undefined, token: 'r' }
-{ prefix: [ 11, 1 ], token: 'm' }
-{ prefix: [ 9, 1 ], token: 'n' }
-{ prefix: [ 4, 1 ], token: 'i' }
-{ prefix: [ 1, 18 ], token: 'l' }
-{ prefix: [ 4, 15 ], token: 'o' }
+libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromano
+{ prefix: undefined, token: '69' }
+{ prefix: undefined, token: '6c' }
+{ prefix: undefined, token: '6f' }
+{ prefix: undefined, token: '76' }
+{ prefix: undefined, token: '65' }
+{ prefix: undefined, token: '6d' }
+{ prefix: undefined, token: '61' }
+{ prefix: undefined, token: '74' }
+{ prefix: [ 1, 1 ], token: '68' }
+{ prefix: [ 6, 1 ], token: '77' }
+{ prefix: undefined, token: '72' }
+{ prefix: [ 11, 1 ], token: '6d' }
+{ prefix: [ 9, 1 ], token: '6e' }
+{ prefix: [ 4, 1 ], token: '69' }
+{ prefix: [ 1, 18 ], token: '6c' }
+{ prefix: [ 4, 15 ], token: '6f' }
 Compression process complete.
 Inflation process complete.
-  📥  input: ilovematthewromanoilovematthewromanoilovematthewromano
-  🙌  ratio: 29.63%
-  💤  compressed: ilovemathwrmnilo
-  💣  decompressed: ilovematthewromanoilovematthewromanoilovematthewromano
+  📥  input:       ilovematthewromanoilovematthewromanoilovematthewromano
+  🙌  ratio:       29.63%
+  💤  compressed:  69,6c,6f,76,65,6d,61,74,68,77,72,6d,6e,69,6c,6f
+  💣  inflated:    ilovematthewromanoilovematthewromanoilovematthewromano
 ```
 
 ### filecompress.js
