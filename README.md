@@ -91,7 +91,6 @@ libz7 ‹master*› % samplestarget/filecompresssimulate.js ~/Downloads/Wireshar
 ### runcompress.js
 
 ```bash
-libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromano
 { prefix: undefined, token: '69' }
 { prefix: undefined, token: '6c' }
 { prefix: undefined, token: '6f' }
@@ -100,19 +99,27 @@ libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthe
 { prefix: undefined, token: '6d' }
 { prefix: undefined, token: '61' }
 { prefix: undefined, token: '74' }
-{ prefix: [ 1, 1 ], token: '68' }
-{ prefix: [ 6, 1 ], token: '77' }
+{ prefix: undefined, token: '74' }
+{ prefix: undefined, token: '68' }
+{ prefix: undefined, token: '65' }
+{ prefix: undefined, token: '77' }
 { prefix: undefined, token: '72' }
-{ prefix: [ 11, 1 ], token: '6d' }
-{ prefix: [ 9, 1 ], token: '6e' }
-{ prefix: [ 4, 1 ], token: '69' }
-{ prefix: [ 1, 18 ], token: '6c' }
+{ prefix: undefined, token: '6f' }
+{ prefix: undefined, token: '6d' }
+{ prefix: undefined, token: '61' }
+{ prefix: undefined, token: '6e' }
+{ prefix: undefined, token: '6f' }
+{ prefix: [ 4, 15 ], token: '61' }
 { prefix: [ 4, 15 ], token: '6f' }
+{ prefix: undefined, token: '6d' }
+{ prefix: undefined, token: '61' }
+{ prefix: undefined, token: '6e' }
+{ prefix: undefined, token: '6f' }
 Compression process complete.
 Inflation process complete.
   📥  input:       ilovematthewromanoilovematthewromanoilovematthewromano
-  🙌  ratio:       29.63%
-  💤  compressed:  69,6c,6f,76,65,6d,61,74,68,77,72,6d,6e,69,6c,6f
+  🙌  ratio:       44.44%
+  💤  compressed:  69,6c,6f,76,65,6d,61,74,74,68,65,77,72,6f,6d,61,6e,6f,61,6f,6d,61,6e,6f
   💣  inflated:    ilovematthewromanoilovematthewromanoilovematthewromano
 ```
 
@@ -122,7 +129,9 @@ Inflation process complete.
 libz7 ‹master› % samplestarget/filecompress.js ~/Pictures/2843_regular_show.jpg
 Compression complete.
 ```
+
 ### Interesting observations
+
 LZ77 is a very old compression algorithm. It isn't the most optimal, but it's the spark for a whole generation of compression systems and a very nice one to look at for a side project. I thought I'd list some observations I found interesting.
 
-- Compressing jpeg files with this implementation of LZ77 actually make it larger than the original file! It makes sense when you think about it. The sliding window is equivilent to a look up table (LZ78 showed this, citations when I have the spoons), so the thing making it compress like it does is Run Length Encodings (RLEs). The overhead for each compression packet will always be larger than the token assigned to the packet, so you only start to get returns once the prefix entries reference RLEs larger than storage overhead for each packet. I calculate the overhead for an 8 bit token to amount to a minimum overhead 48 bits, which means the prefix must be above 4 characters to actually give a reduction in storage requirements. Calculations are based on the assumption that each compression packet is stored as "T,S,E" where T is the token (8 bits), S (8 bits) is the prefix start index in the current sliding window frame and E (8 bits) is end index offset from S of the prefix. Those three pieces of data give 24 bits, the other 24 bits are the comma seperators and the terminator for each packet (newline, space etc). Anyway, the point I'm making is that JPEGs use much *much* more sophisticated compression strategies (plural!) in comparison to LZ77 which means the compressed output contains virtually no RLE blocks. I don't know a great deal about JPEG so far, but what I've read is exciting and I hope I can start taking those algorithms apart too. 
+- Compressing jpeg files with this implementation of LZ77 actually make it larger than the original file! It makes sense when you think about it. The sliding window is equivilent to a look up table (LZ78 showed this, citations when I have the spoons), so the thing making it compress like it does is Run Length Encodings (RLEs). The overhead for each compression packet will always be larger than the token assigned to the packet, so you only start to get returns once the prefix entries reference RLEs larger than storage overhead for each packet. I calculate the overhead for an 8 bit token to amount to a minimum overhead 48 bits, which means the prefix must be above 4 characters to actually give a reduction in storage requirements. Calculations are based on the assumption that each compression packet is stored as "T,S,E" where T is the token (8 bits), S (8 bits) is the prefix start index in the current sliding window frame and E (8 bits) is end index offset from S of the prefix. Those three pieces of data give 24 bits, the other 24 bits are the comma seperators and the terminator for each packet (newline, space etc). Anyway, the point I'm making is that JPEGs use much _much_ more sophisticated compression strategies (plural!) in comparison to LZ77 which means the compressed output contains virtually no RLE blocks. I don't know a great deal about JPEG so far, but what I've read is exciting and I hope I can start taking those algorithms apart too.
