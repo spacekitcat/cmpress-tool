@@ -52,7 +52,8 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
         { token: '61', prefix: undefined },
-        { token: '62', prefix: [1, 1] },
+        { token: '61', prefix: undefined },
+        { token: '62', prefix: undefined },
         { token: '61', prefix: undefined }
       ]);
     });
@@ -78,12 +79,41 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
         { token: '61', prefix: undefined },
-        { token: '61', prefix: [1, 1] },
+        { token: '61', prefix: undefined },
+        { token: '61', prefix: undefined },
         { token: '61', prefix: undefined }
       ]);
     });
 
     inputStream.push('aaaa', 'utf8');
+    inputStream.push(null);
+  });
+
+  it('compresses aaaaaaaab', () => {
+    let inputStream = buildTestInputStream();
+
+    let compressorTransformer = new CompressorTransformer({
+      objectMode: true
+    });
+
+    inputStream.pipe(compressorTransformer);
+
+    let outputAccumulator = [];
+    compressorTransformer.on('data', compressedPacket => {
+      outputAccumulator.push(compressedPacket);
+    });
+
+    compressorTransformer.on('finish', () => {
+      expect(outputAccumulator).toEqual([
+        { token: '61', prefix: undefined },
+        { token: '61', prefix: undefined },
+        { token: '61', prefix: undefined },
+        { token: '61', prefix: undefined },
+        { token: '62', prefix: [1, 4] }
+      ]);
+    });
+
+    inputStream.push('aaaaaaaab', 'utf8');
     inputStream.push(null);
   });
 
@@ -104,9 +134,11 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
         { token: '61', prefix: undefined },
-        { token: '61', prefix: [1, 1] },
+        { token: '61', prefix: undefined },
+        { token: '61', prefix: undefined },
         { token: '62', prefix: undefined },
-        { token: '63', prefix: [1, 1] }
+        { token: '62', prefix: undefined },
+        { token: '63', prefix: undefined }
       ]);
     });
 
@@ -133,8 +165,10 @@ describe('CompressorTransformer', () => {
       compressorTransformer.on('finish', () => {
         expect(outputAccumulator).toEqual([
           { token: '61', prefix: undefined },
-          { token: '61', prefix: [1, 1] },
-          { token: '61', prefix: [1, 1] }
+          { token: '61', prefix: undefined },
+          { token: '61', prefix: undefined },
+          { token: '61', prefix: undefined },
+          { token: '61', prefix: undefined }
         ]);
       });
 

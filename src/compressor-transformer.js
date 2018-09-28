@@ -5,8 +5,8 @@ import locateToken from './locate-token.js';
 class CompressorTransformer extends Transform {
   constructor(options) {
     super(options);
-    this.historyBufferSize = 32;
-    this.currentWindowBufferSize = 32;
+    this.historyBufferSize = 128;
+    this.currentWindowBufferSize = 16;
 
     this.slidingWindow = new SlidingWindow(
       this.historyBufferSize,

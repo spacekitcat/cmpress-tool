@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { CompressorTransformer } from '../lib/compressor-transformer';
+import { DecompressorTransformer } from '../lib/decompressor-transformer';
 
 import fs from 'fs';
 
@@ -18,13 +18,13 @@ if (!filePath) {
 
 let fileReadStream = fs.createReadStream(filePath, 'utf8');
 
-let compressorTransformer = new CompressorTransformer({
+let compressorTransformer = new DecompressorTransformer({
   objectMode: true
 });
 
-let fileWriteStream = fs.createWriteStream(`${filePath}.77z`);
+let fileWriteStream = fs.createWriteStream(`${filePath}-decompress`);
 
-compressorTransformer.on('data', input => {
+fileReadStream.on('data', input => {
   if (input.prefix) {
     fileWriteStream.write(
       `${input.token},${input.prefix[0]},${input.prefix[1]}\n`
@@ -41,7 +41,7 @@ const progressOutput = 'Compressing file: ';
 let packets = 0;
 compressorTransformer.on('data', compressedPacket => {
   packets++;
-  // process.stdout.write(progressOutput + packets + '              \r');
+  process.stdout.write(progressOutput + packets + '              \r');
 });
 
 compressorTransformer.on('end', () => {
