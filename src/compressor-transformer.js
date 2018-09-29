@@ -5,12 +5,23 @@ import locateToken from './locate-token.js';
 class CompressorTransformer extends Transform {
   constructor(options) {
     super(options);
-    this.historyBufferSize = 128;
-    this.currentWindowBufferSize = 16;
+
+    this.historyBufferSize = 256;
+    this.currentBufferSize = 256;
+
+    if (options) {
+      if (options.historyBufferSize) {
+        this.historyBufferSize = options.historyBufferSize;
+      }
+
+      if (options.currentBufferSize) {
+        this.currentBufferSize = options.currentBufferSize;
+      }
+    }
 
     this.slidingWindow = new SlidingWindow(
       this.historyBufferSize,
-      this.currentWindowBufferSize
+      this.currentBufferSize
     );
   }
 

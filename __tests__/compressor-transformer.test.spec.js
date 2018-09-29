@@ -1,4 +1,5 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
+import { SlidingWindow } from '../src/sliding-window.js';
 import { Readable } from 'stream';
 
 let buildTestInputStream = (options = {}) => {
@@ -9,6 +10,72 @@ let buildTestInputStream = (options = {}) => {
 };
 
 describe('CompressorTransformer', () => {
+  const defaultHistoryBufferSize = 256;
+  const defaultCurrentBufferSize = 256;
+
+  let testTarget;
+  beforeAll(() => {
+    testTarget = new CompressorTransformer({
+      historyBufferSize: defaultHistoryBufferSize,
+      currentBufferSize: defaultCurrentBufferSize
+    });
+  });
+
+  it('uses the expected default historyBufferSize', () => {
+    expect(new CompressorTransformer()).toHaveProperty(
+      'historyBufferSize',
+      defaultHistoryBufferSize
+    );
+  });
+
+  it('uses the expected default currentBufferSize', () => {
+    expect(new CompressorTransformer()).toHaveProperty(
+      'currentBufferSize',
+      defaultCurrentBufferSize
+    );
+  });
+
+  it('constructs the SlidingWindow with the expected parameters', () => {
+    expect(new CompressorTransformer()).toHaveProperty(
+      'slidingWindow',
+      new SlidingWindow(defaultHistoryBufferSize, defaultCurrentBufferSize)
+    );
+  });
+
+  describe('and a custom historyBufferSize is provided', () => {
+    beforeAll(() => {
+      testTarget = new CompressorTransformer({ historyBufferSize: 512 });
+    });
+
+    it('uses the expected value', () => {
+      expect(testTarget).toHaveProperty('historyBufferSize', 512);
+    });
+
+    it('constructs the SlidingWindow with the expected parameters', () => {
+      expect(testTarget).toHaveProperty(
+        'slidingWindow',
+        new SlidingWindow(512, defaultCurrentBufferSize)
+      );
+    });
+  });
+
+  describe('and a custom currentBufferSize is provided', () => {
+    beforeAll(() => {
+      testTarget = new CompressorTransformer({ currentBufferSize: 512 });
+    });
+
+    it('uses the expected value', () => {
+      expect(testTarget).toHaveProperty('currentBufferSize', 512);
+    });
+
+    it('constructs the SlidingWindow with the expected parameters', () => {
+      expect(testTarget).toHaveProperty(
+        'slidingWindow',
+        new SlidingWindow(defaultHistoryBufferSize, 512)
+      );
+    });
+  });
+
   it('compresses a to a', () => {
     let inputStream = buildTestInputStream();
 
