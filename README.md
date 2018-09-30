@@ -51,30 +51,32 @@ Successfully compiled 1 file with Babel.
 /libz7
 > jest --coverage
 
- PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/extract-token.spec.js
- PASS  __tests__/sliding-window.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
  PASS  __tests__/compressor-transformer.test.spec.js
+ PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/decompressor-transformer.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
+ PASS  __tests__/serialize-packet.spec.js
+ PASS  __tests__/extract-token.spec.js
  PASS  __tests__/find-index-of-subarray.test.spec.js
 -----------------------------|----------|----------|----------|----------|-------------------|
 File                         |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------|----------|----------|----------|----------|-------------------|
-All files                    |      100 |    94.44 |      100 |      100 |                   |
- compressor-transformer.js   |      100 |     87.5 |      100 |      100 |                38 |
+All files                    |      100 |    94.64 |      100 |      100 |                   |
+ compressor-transformer.js   |      100 |     87.5 |      100 |      100 |                34 |
  consume-input.js            |      100 |      100 |      100 |      100 |                   |
- decompressor-transformer.js |      100 |    66.67 |      100 |      100 |             28,35 |
+ decompressor-transformer.js |      100 |    66.67 |      100 |      100 |             27,34 |
  extract-token.js            |      100 |      100 |      100 |      100 |                   |
  find-index-of-subarray.js   |      100 |      100 |      100 |      100 |                   |
  locate-token.js             |      100 |      100 |      100 |      100 |                   |
+ serialize-packet.js         |      100 |      100 |      100 |      100 |                   |
  sliding-window.js           |      100 |      100 |      100 |      100 |                   |
 -----------------------------|----------|----------|----------|----------|-------------------|
 
-Test Suites: 7 passed, 7 total
-Tests:       74 passed, 74 total
+Test Suites: 8 passed, 8 total
+Tests:       77 passed, 77 total
 Snapshots:   0 total
-Time:        1.345s
+Time:        2.049s
 Ran all test suites.
 ```
 
