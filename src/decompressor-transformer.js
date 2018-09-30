@@ -16,7 +16,6 @@ class DecompressorTransformer extends Transform {
   }
 
   _transform(chunk, encoding, callback) {
-    //this.push(Buffer.from(chunk, 'ucs2').toString('utf8'));
     chunk = this.decodeCompressionPacket(chunk);
     if (chunk.p) {
       let result = extractToken(

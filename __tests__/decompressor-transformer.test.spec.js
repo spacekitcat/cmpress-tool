@@ -1,14 +1,6 @@
 import { DecompressorTransformer } from '../src/decompressor-transformer';
-import { Readable } from 'stream';
-import BSON from 'bson';
+import serializePacket from '../src/serialize-packet.js';
 
-let buildTestInputStream = () => {
-  let inputStream = new Readable({ objectMode: true });
-  inputStream._read = () => {};
-  return inputStream;
-};
-
-const bson = new BSON();
 const encodeCompressionPacket = (t, from, to) => {
   let encoded = {};
   encoded = { t: t };
@@ -16,7 +8,7 @@ const encodeCompressionPacket = (t, from, to) => {
     encoded = { p: [from, to], t: t };
   }
 
-  return Buffer.from(bson.serialize(encoded)).toString('ucs2');
+  return serializePacket(encoded);
 };
 
 describe('DecompressorTransformer', () => {

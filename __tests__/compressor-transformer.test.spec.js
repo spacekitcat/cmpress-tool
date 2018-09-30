@@ -1,6 +1,6 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
-import BSON from 'bson';
+import serializePacket from '../src/serialize-packet.js';
 
 describe('CompressorTransformer', () => {
   const defaultHistoryBufferSize = 256;
@@ -69,7 +69,6 @@ describe('CompressorTransformer', () => {
     });
   });
 
-  const bson = new BSON();
   const buildExpectedCompressionPacket = (t, from, to) => {
     let encoded = {};
     encoded = { t: t };
@@ -77,7 +76,7 @@ describe('CompressorTransformer', () => {
       encoded = { p: [from, to], t: t };
     }
 
-    return Buffer.from(bson.serialize(encoded)).toString('ucs2');
+    return serializePacket(encoded);
   };
 
   it('compresses a to a', () => {
