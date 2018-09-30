@@ -47,35 +47,35 @@ Successfully compiled 3 files with Babel.
 # Unit tests
 
 ```
-‹master*› % npm run test
+‹libz7 ‹master*› % npm run test
 
-> libz7@0.1.0 test /libz7
+> libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
 > jest --coverage
 
  PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
  PASS  __tests__/extract-token.spec.js
+ PASS  __tests__/decompressor-transformer.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
 -----------------------------|----------|----------|----------|----------|-------------------|
 File                         |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------|----------|----------|----------|----------|-------------------|
-All files                    |    83.33 |    79.63 |    84.21 |    83.33 |                   |
- compressor-transformer.js   |       60 |       75 |       50 |       60 | 29,31,32,33,34,38 |
+All files                    |    89.91 |    87.04 |    89.47 |    89.91 |                   |
+ compressor-transformer.js   |      100 |     87.5 |      100 |      100 |                36 |
  consume-input.js            |      100 |      100 |      100 |      100 |                   |
  decompressor-transformer.js |    26.67 |        0 |    33.33 |    26.67 |... 30,33,36,39,45 |
  extract-token.js            |      100 |      100 |      100 |      100 |                   |
  find-index-of-subarray.js   |      100 |      100 |      100 |      100 |                   |
- locate-token.js             |      100 |    84.62 |      100 |      100 |             17,25 |
- sliding-window.js           |    93.33 |       50 |      100 |    93.33 |                38 |
+ locate-token.js             |      100 |      100 |      100 |      100 |                   |
+ sliding-window.js           |      100 |      100 |      100 |      100 |                   |
 -----------------------------|----------|----------|----------|----------|-------------------|
 
 Test Suites: 7 passed, 7 total
 Tests:       74 passed, 74 total
 Snapshots:   0 total
-Time:        1.269s
+Time:        1.363s
 Ran all test suites.
 ```
 
@@ -93,31 +93,10 @@ libz7 ‹master*› % samplestarget/filecompresssimulate.js ~/Downloads/Wireshar
 ### runcompress.js
 
 ```bash
-{ prefix: undefined, token: '69' }
-{ prefix: undefined, token: '6c' }
-{ prefix: undefined, token: '6f' }
-{ prefix: undefined, token: '76' }
-{ prefix: undefined, token: '65' }
-{ prefix: undefined, token: '6d' }
-{ prefix: undefined, token: '61' }
-{ prefix: undefined, token: '74' }
-{ prefix: undefined, token: '74' }
-{ prefix: undefined, token: '68' }
-{ prefix: undefined, token: '65' }
-{ prefix: undefined, token: '77' }
-{ prefix: undefined, token: '72' }
-{ prefix: undefined, token: '6f' }
-{ prefix: undefined, token: '6d' }
-{ prefix: undefined, token: '61' }
-{ prefix: undefined, token: '6e' }
-{ prefix: undefined, token: '6f' }
-{ prefix: [ 1, 18 ], token: '69' }
-{ prefix: [ 3, 16 ], token: '6f' }
-Compression process complete.
-Inflation process complete.
-  📥  input:       ilovematthewromanoilovematthewromanoilovematthewromano
-  🙌  ratio:       37.04%
-  💤  compressed:  69,6c,6f,76,65,6d,61,74,74,68,65,77,72,6f,6d,61,6e,6f,69,6f
+/mc-n347390 :: ~/lisa-workspace/libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
+📥         input : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
+💤    compressed : 琂Ȁ椀琂Ȁ氀琂Ȁ漀琂Ȁ瘀琂Ȁ攀琂Ȁ洀琂Ȁ愀琂Ȁ琀琂Ȁ琀琂Ȁ栀琂Ȁ攀琂Ȁ眀琂Ȁ爀琂Ȁ漀琂Ȁ洀琂Ȁ愀琂Ȁ渀琂Ȁ漀$瀄ጀက0ㄐሀ琂Ȁ椀$瀄ጀက0ㄐ␀琂Ȁ氀$瀄ጀက0ㄐ䠀琂Ȁ漀$瀄ጀက0ㄐ退琂Ȁ瘀$瀄ጀက0ㄐ謀琂Ȁ漀
+🙌         ratio : 50%
 ```
 
 ### filecompress.js

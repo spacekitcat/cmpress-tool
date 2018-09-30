@@ -1,13 +1,7 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
 import { Readable } from 'stream';
-
-let buildTestInputStream = (options = {}) => {
-  let inputStream = new Readable(options);
-  inputStream._read = () => {};
-  inputStream.setEncoding('utf8');
-  return inputStream;
-};
+import BSON from 'bson';
 
 describe('CompressorTransformer', () => {
   const defaultHistoryBufferSize = 256;
@@ -76,14 +70,21 @@ describe('CompressorTransformer', () => {
     });
   });
 
-  it('compresses a to a', () => {
-    let inputStream = buildTestInputStream();
+  const bson = new BSON();
+  const buildExpectedCompressionPacket = (t, from, to) => {
+    let encoded = {};
+    encoded = { t: t };
+    if (from && to) {
+      encoded = { p: [from, to], t: t };
+    }
 
+    return Buffer.from(bson.serialize(encoded)).toString('ucs2');
+  };
+
+  it('compresses a to a', () => {
     let compressorTransformer = new CompressorTransformer({
       objectMode: true
     });
-
-    inputStream.pipe(compressorTransformer);
 
     let outputAccumulator = [];
     compressorTransformer.on('data', compressedPacket => {
@@ -91,25 +92,17 @@ describe('CompressorTransformer', () => {
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ token: '61', prefix: undefined })
-        ])
-      );
+      expect(outputAccumulator).toEqual([buildExpectedCompressionPacket('a')]);
     });
 
-    inputStream.push('a', 'utf8');
-    inputStream.push(null);
+    compressorTransformer.write('a');
+    compressorTransformer.end();
   });
 
   it('compresses aaba', () => {
-    let inputStream = buildTestInputStream();
-
     let compressorTransformer = new CompressorTransformer({
       objectMode: true
     });
-
-    inputStream.pipe(compressorTransformer);
 
     let outputAccumulator = [];
     compressorTransformer.on('data', compressedPacket => {
@@ -118,25 +111,21 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '62', prefix: undefined },
-        { token: '61', prefix: undefined }
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('b'),
+        buildExpectedCompressionPacket('a')
       ]);
     });
 
-    inputStream.push('aaba', 'utf8');
-    inputStream.push(null);
+    compressorTransformer.write('aaba');
+    compressorTransformer.end();
   });
 
   it('compresses aaaa', () => {
-    let inputStream = buildTestInputStream();
-
     let compressorTransformer = new CompressorTransformer({
       objectMode: true
     });
-
-    inputStream.pipe(compressorTransformer);
 
     let outputAccumulator = [];
     compressorTransformer.on('data', compressedPacket => {
@@ -145,25 +134,21 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined }
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a')
       ]);
     });
 
-    inputStream.push('aaaa', 'utf8');
-    inputStream.push(null);
+    compressorTransformer.write('aaaa');
+    compressorTransformer.end();
   });
 
   it('compresses aaaaaaaab', () => {
-    let inputStream = buildTestInputStream();
-
     let compressorTransformer = new CompressorTransformer({
       objectMode: true
     });
-
-    inputStream.pipe(compressorTransformer);
 
     let outputAccumulator = [];
     compressorTransformer.on('data', compressedPacket => {
@@ -172,26 +157,22 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '62', prefix: [1, 4] }
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('b', 1, 4)
       ]);
     });
 
-    inputStream.push('aaaaaaaab', 'utf8');
-    inputStream.push(null);
+    compressorTransformer.write('aaaaaaaab');
+    compressorTransformer.end();
   });
 
   it('compresses aaabbc', () => {
-    let inputStream = buildTestInputStream();
-
     let compressorTransformer = new CompressorTransformer({
       objectMode: true
     });
-
-    inputStream.pipe(compressorTransformer);
 
     let outputAccumulator = [];
     compressorTransformer.on('data', compressedPacket => {
@@ -200,29 +181,25 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toEqual([
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '61', prefix: undefined },
-        { token: '62', prefix: undefined },
-        { token: '62', prefix: undefined },
-        { token: '63', prefix: undefined }
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('a'),
+        buildExpectedCompressionPacket('b'),
+        buildExpectedCompressionPacket('b'),
+        buildExpectedCompressionPacket('c')
       ]);
     });
 
-    inputStream.push('aaabbc', 'utf8');
-    inputStream.push(null);
+    compressorTransformer.write('aaabbc');
+    compressorTransformer.end();
   });
 
   describe('where the stream transform involves multiple calls', () => {
     /** The sliding window need to maintain state between 'chunks' (the argument passed to the transformer) */
     it('does not reset the sliding window', () => {
-      let inputStream = buildTestInputStream();
-
       let compressorTransformer = new CompressorTransformer({
         objectMode: true
       });
-
-      inputStream.pipe(compressorTransformer);
 
       let outputAccumulator = [];
       compressorTransformer.on('data', compressedPacket => {
@@ -231,18 +208,18 @@ describe('CompressorTransformer', () => {
 
       compressorTransformer.on('finish', () => {
         expect(outputAccumulator).toEqual([
-          { token: '61', prefix: undefined },
-          { token: '61', prefix: undefined },
-          { token: '61', prefix: undefined },
-          { token: '61', prefix: undefined },
-          { token: '61', prefix: undefined }
+          buildExpectedCompressionPacket('a'),
+          buildExpectedCompressionPacket('a'),
+          buildExpectedCompressionPacket('a'),
+          buildExpectedCompressionPacket('a'),
+          buildExpectedCompressionPacket('a')
         ]);
       });
 
-      inputStream.push('aaaaa', 'utf8');
-      inputStream.push('aa', 'utf8');
+      compressorTransformer.write('aaaaa');
+      compressorTransformer.write('aa');
 
-      inputStream.push(null);
+      compressorTransformer.end();
     });
   });
 });

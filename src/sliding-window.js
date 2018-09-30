@@ -6,9 +6,9 @@ class SlidingWindow {
   }
 
   setInput(inputStream) {
-    this.inputStream = Buffer.from(inputStream)
-      .toString('hex')
-      .match(/.{1,2}/g);
+    this.inputStream = Buffer.from(inputStream).toString('utf8').split('')
+      //.toString('hex')
+      //.match(/.{1,2}/g);
   }
 
   lookAhead() {
@@ -32,8 +32,8 @@ class SlidingWindow {
   slide(operation) {
     let token = operation(this.lookBack(), this.lookAhead());
 
-    if (token.prefix !== undefined) {
-      this.slideBy(token.prefix[1] + 1);
+    if (token.p !== undefined) {
+      this.slideBy(token.p[1] + 1);
     } else {
       this.slideBy(1);
     }

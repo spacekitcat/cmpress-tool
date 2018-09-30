@@ -24,7 +24,7 @@ const findNextLargestToken = (dictionary, buffer) => {
   for (let i = 0; i < tokens.length; ++i) {
     if (computeMatch(dictionary, tokens[i]) !== undefined) {
       match = {
-        prefix: [computeMatch(dictionary, tokens[i]) + 1, tokens[i].length]
+        p: [computeMatch(dictionary, tokens[i]) + 1, tokens[i].length]
       };
       break;
     }
@@ -36,8 +36,7 @@ const findNextLargestToken = (dictionary, buffer) => {
 const locateToken = (dictionary, buffer) => {
   if (buffer === null || buffer === undefined || buffer.length === 0) {
     return {
-      prefix: undefined,
-      token: undefined
+      t: undefined
     };
   }
   if (dictionary === null) {
@@ -48,11 +47,10 @@ const locateToken = (dictionary, buffer) => {
 
   if (nextLargestToken === undefined) {
     nextLargestToken = {
-      prefix: undefined,
-      token: buffer[0]
+      t:buffer[0]
     };
   } else {
-    nextLargestToken.token = buffer[nextLargestToken.prefix[1]];
+    nextLargestToken.t = buffer[nextLargestToken.p[1]];
   }
 
   return nextLargestToken;

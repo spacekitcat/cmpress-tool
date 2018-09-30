@@ -19,6 +19,7 @@
   "author": "Lisa Burton",
   "license": "MIT",
   "dependencies": {
+    "bson": "^3.0.2",
     "cli": "^1.0.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.2"

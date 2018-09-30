@@ -1,11 +1,10 @@
-import locateToken from '../src/locate-token';
+import locateToken from '../src/locate-token.js';
 
-describe('locateToken()', () => {
+describe('locatet()', () => {
   describe('No arguments are provided', () => {
     it('returns undefined', () => {
       expect(locateToken()).toEqual({
-        prefix: undefined,
-        token: undefined
+        t: undefined
       });
     });
   });
@@ -13,8 +12,7 @@ describe('locateToken()', () => {
   describe('Both arguments are null', () => {
     it('returns undefined', () => {
       expect(locateToken(null, null)).toEqual({
-        prefix: undefined,
-        token: undefined
+        t: undefined
       });
     });
   });
@@ -24,8 +22,7 @@ describe('locateToken()', () => {
     describe('The input buffer is not provided', () => {
       it('returns undefined', () => {
         expect(locateToken(dictionaryValue)).toEqual({
-          prefix: undefined,
-          token: undefined
+          t: undefined
         });
       });
     });
@@ -33,8 +30,7 @@ describe('locateToken()', () => {
     describe('The input buffer is an empty string', () => {
       it('returns undefined', () => {
         expect(locateToken(dictionaryValue, [])).toEqual({
-          prefix: undefined,
-          token: undefined
+          t: undefined
         });
       });
     });
@@ -42,8 +38,7 @@ describe('locateToken()', () => {
     describe('The input buffer is a string of length three', () => {
       it('returns the next character from the input buffer', () => {
         expect(locateToken(dictionaryValue, [78, 79, 80])).toEqual({
-          prefix: undefined,
-          token: 78
+          t: 78
         });
       });
     });
@@ -54,8 +49,7 @@ describe('locateToken()', () => {
     describe('The input buffer is not provided', () => {
       it('returns undefined', () => {
         expect(locateToken(dictionaryValue)).toEqual({
-          prefix: undefined,
-          token: undefined
+          t: undefined
         });
       });
     });
@@ -63,8 +57,7 @@ describe('locateToken()', () => {
     describe('The input buffer is an empty string', () => {
       it('returns undefined', () => {
         expect(locateToken(dictionaryValue, [])).toEqual({
-          prefix: undefined,
-          token: undefined
+          t: undefined
         });
       });
     });
@@ -72,8 +65,7 @@ describe('locateToken()', () => {
     describe('The input buffer is a string of length three', () => {
       it('returns the next character from the input buffer', () => {
         expect(locateToken(dictionaryValue, [78, 79, 80])).toEqual({
-          prefix: undefined,
-          token: 78
+          t: 78
         });
       });
     });
@@ -84,8 +76,7 @@ describe('locateToken()', () => {
     describe('The input buffer is not provided', () => {
       it('returns undefined', () => {
         expect(locateToken(dictionaryValue)).toEqual({
-          prefix: undefined,
-          token: undefined
+          t: undefined
         });
       });
     });
@@ -93,8 +84,7 @@ describe('locateToken()', () => {
     describe('The input buffer is an empty array', () => {
       it('returns undefined', () => {
         expect(locateToken(dictionaryValue, [])).toEqual({
-          prefix: undefined,
-          token: undefined
+          t: undefined
         });
       });
     });
@@ -102,8 +92,7 @@ describe('locateToken()', () => {
     describe('The input buffer contains characters which are not in the history buffer', () => {
       it('returns the next character from the input buffer', () => {
         expect(locateToken(dictionaryValue, [97, 98, 99])).toEqual({
-          prefix: undefined,
-          token: 97
+          t: 97
         });
       });
     });
@@ -111,8 +100,7 @@ describe('locateToken()', () => {
     describe('The input buffer contains characters which are in the histroy buffer', () => {
       it('returns the next character from the input buffer', () => {
         expect(locateToken(dictionaryValue, [79, 80, 97])).toEqual({
-          prefix: undefined,
-          token: 79
+          t: 79
         });
       });
     });
@@ -124,38 +112,36 @@ describe('locateToken()', () => {
     describe('The input buffer contains characters which are not in the history buffer', () => {
       it('returns the next character from the input buffer', () => {
         expect(locateToken(dictionaryValue, [97, 98, 99])).toEqual({
-          prefix: undefined,
-          token: 97
+          t: 97
         });
       });
     });
 
     describe('The input buffer contains characters which are in the histroy buffer', () => {
       describe('and the match is on the threshold (4)', () => {
-        it('returns the match as a prefix', () => {
+        it('returns the match as a p', () => {
           expect(locateToken(dictionaryValue, [81, 82, 83, 84, 100])).toEqual({
-            prefix: [4, 4],
-            token: 100
+            p: [4, 4],
+            t: 100
           });
         });
       });
 
       describe('and the match is below the threshold (4)', () => {
-        it('returns no prefix', () => {
+        it('returns no p', () => {
           expect(locateToken(dictionaryValue, [78, 79, 80, 100])).toEqual({
-            prefix: undefined,
-            token: 78
+            t: 78
           });
         });
       });
 
       describe('and the match is above the threshold (4)', () => {
-        it('returns the match as a prefix', () => {
+        it('returns the match as a p', () => {
           expect(
             locateToken(dictionaryValue, [81, 82, 83, 84, 85, 100])
           ).toEqual({
-            prefix: [3, 5],
-            token: 100
+            p: [3, 5],
+            t: 100
           });
         });
       });
