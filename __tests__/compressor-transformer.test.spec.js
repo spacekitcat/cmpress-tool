@@ -1,6 +1,5 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
-import { Readable } from 'stream';
 import BSON from 'bson';
 
 describe('CompressorTransformer', () => {

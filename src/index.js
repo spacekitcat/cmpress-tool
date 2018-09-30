@@ -1,4 +1,4 @@
-import { compress } from './compress.js';
-import { inflate } from './inflate.js';
+import { CompressorTransformer } from './compressor-transformer.js';
+import { DecompressorTransformer } from './decompressor-transformer.js';
 
-export { compress, inflate };
+export { CompressorTransformer, DecompressorTransformer };

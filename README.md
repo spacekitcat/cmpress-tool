@@ -26,7 +26,8 @@ The compression process produces a series of compressed frames, each one describ
 - [ ] User configuratble window size and history buffer size
 - [ ] Consistent domain language. The 'dictionary' (from the original paper, it's a different world) should be call the history_buffer everywhere and the window should be called the window or frame.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
-- [x] The compressor should output encoded bytes (UTF-8/ASCII codeset) rather than utf8 values
+- [x] ~~The compressor should output encoded bytes (UTF-8/ASCII codeset) rather than utf8 values~~
+- [x] The compressor should output UCS2 encoded BISON encoded JSON.
 
 # Building
 
@@ -40,32 +41,30 @@ ibz7 ‹master*› % npm run build
 > libz7@0.1.0 prebuild /Users/burtol86/lisa-workspace/libz7
 > babel src --out-dir lib --source-maps && babel samples --out-dir samplestarget --source-maps
 
-Successfully compiled 10 files with Babel.
-Successfully compiled 3 files with Babel.
+Successfully compiled 8 files with Babel.
+Successfully compiled 1 file with Babel.
 ```
 
 # Unit tests
 
 ```
-‹libz7 ‹master*› % npm run test
-
-> libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
+/libz7
 > jest --coverage
 
- PASS  __tests__/compressor-transformer.test.spec.js
+ PASS  __tests__/decompressor-transformer.test.spec.js
  PASS  __tests__/locate-token.test.spec.js
  PASS  __tests__/extract-token.spec.js
- PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
+ PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/find-index-of-subarray.test.spec.js
 -----------------------------|----------|----------|----------|----------|-------------------|
 File                         |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------|----------|----------|----------|----------|-------------------|
-All files                    |    89.91 |    87.04 |    89.47 |    89.91 |                   |
- compressor-transformer.js   |      100 |     87.5 |      100 |      100 |                36 |
+All files                    |      100 |    94.44 |      100 |      100 |                   |
+ compressor-transformer.js   |      100 |     87.5 |      100 |      100 |                38 |
  consume-input.js            |      100 |      100 |      100 |      100 |                   |
- decompressor-transformer.js |    26.67 |        0 |    33.33 |    26.67 |... 30,33,36,39,45 |
+ decompressor-transformer.js |      100 |    66.67 |      100 |      100 |             28,35 |
  extract-token.js            |      100 |      100 |      100 |      100 |                   |
  find-index-of-subarray.js   |      100 |      100 |      100 |      100 |                   |
  locate-token.js             |      100 |      100 |      100 |      100 |                   |
@@ -75,7 +74,7 @@ All files                    |    89.91 |    87.04 |    89.47 |    89.91 |      
 Test Suites: 7 passed, 7 total
 Tests:       74 passed, 74 total
 Snapshots:   0 total
-Time:        1.363s
+Time:        1.345s
 Ran all test suites.
 ```
 
@@ -83,30 +82,20 @@ Ran all test suites.
 
 The **./sampletarget** folder contains small demonstration scripts which demonstrate interaction with the compress and inflate methods.
 
-### Filecompresssimulate.js
-
-```bash
-libz7 ‹master*› % samplestarget/filecompresssimulate.js ~/Downloads/Wireshark\ 2.6.1\ Intel\ 64.dmg
-   ->MUST<-   ->COMPRESS<-   33416 160073045     🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱  🐱
-```
-
 ### runcompress.js
 
 ```bash
-/mc-n347390 :: ~/lisa-workspace/libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
+libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
 📥         input : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
 💤    compressed : 琂Ȁ椀琂Ȁ氀琂Ȁ漀琂Ȁ瘀琂Ȁ攀琂Ȁ洀琂Ȁ愀琂Ȁ琀琂Ȁ琀琂Ȁ栀琂Ȁ攀琂Ȁ眀琂Ȁ爀琂Ȁ漀琂Ȁ洀琂Ȁ愀琂Ȁ渀琂Ȁ漀$瀄ጀက0ㄐሀ琂Ȁ椀$瀄ጀက0ㄐ␀琂Ȁ氀$瀄ጀက0ㄐ䠀琂Ȁ漀$瀄ጀက0ㄐ退琂Ȁ瘀$瀄ጀက0ㄐ謀琂Ȁ漀
 🙌         ratio : 50%
+
+📥         input : 琂Ȁ椀琂Ȁ氀琂Ȁ漀琂Ȁ瘀琂Ȁ攀琂Ȁ洀琂Ȁ愀琂Ȁ琀琂Ȁ琀琂Ȁ栀琂Ȁ攀琂Ȁ眀琂Ȁ爀琂Ȁ漀琂Ȁ洀琂Ȁ愀琂Ȁ渀琂Ȁ漀$瀄ጀက0ㄐሀ琂Ȁ椀$瀄ጀက0ㄐ␀琂Ȁ氀$瀄ጀက0ㄐ䠀琂Ȁ漀$瀄ጀက0ㄐ退琂Ȁ瘀$瀄ጀက0ㄐ謀琂Ȁ漀
+💤  decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
+🙌         ratio : 200%
 ```
 
-### filecompress.js
-
-```
-libz7 ‹master› % samplestarget/filecompress.js ~/Pictures/2843_regular_show.jpg
-Compression complete.
-```
-
-### Interesting observations
+## Observations
 
 LZ77 is a very old compression algorithm. It isn't the most optimal, but it's the spark for a whole generation of compression systems and a very nice one to look at for a side project. I thought I'd list some observations I found interesting.
 

@@ -1,5 +1,6 @@
 import { DecompressorTransformer } from '../src/decompressor-transformer';
 import { Readable } from 'stream';
+import BSON from 'bson';
 
 let buildTestInputStream = () => {
   let inputStream = new Readable({ objectMode: true });
@@ -7,65 +8,53 @@ let buildTestInputStream = () => {
   return inputStream;
 };
 
+const bson = new BSON();
+const encodeCompressionPacket = (t, from, to) => {
+  let encoded = {};
+  encoded = { t: t };
+  if (from && to) {
+    encoded = { p: [from, to], t: t };
+  }
+
+  return Buffer.from(bson.serialize(encoded)).toString('ucs2');
+};
+
 describe('DecompressorTransformer', () => {
   it('inflates aaba', () => {
-    let inputStream = buildTestInputStream();
+    let decompressorTransformer = new DecompressorTransformer();
 
-    let decompressorTransformer = new DecompressorTransformer({
-      objectMode: true
-    });
-
-    inputStream.pipe(decompressorTransformer);
-
-    let outputAccumulator = [];
+    let outputAccumulator = '';
     decompressorTransformer.on('data', decompressedPacket => {
-      outputAccumulator.push(decompressedPacket);
+      outputAccumulator += decompressedPacket;
     });
 
     decompressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual(['a', 'a', 'b', 'a']);
+      expect(outputAccumulator.toString('utf8')).toEqual('aaba');
     });
 
-    inputStream.push({ token: 'a', prefix: undefined });
-    inputStream.push({ token: 'b', prefix: [1, 1] });
-    inputStream.push({ token: 'a', prefix: undefined });
-    inputStream.push(null);
+    decompressorTransformer.write(encodeCompressionPacket('a'));
+    decompressorTransformer.write(encodeCompressionPacket('b', 1, 1));
+    decompressorTransformer.write(encodeCompressionPacket('a'));
+    decompressorTransformer.end();
   });
 
   it('inflates hellohello (multi-character history buffer results)', () => {
-    let inputStream = buildTestInputStream();
+    let decompressorTransformer = new DecompressorTransformer();
 
-    let decompressorTransformer = new DecompressorTransformer({
-      objectMode: true
-    });
-
-    inputStream.pipe(decompressorTransformer);
-
-    let outputAccumulator = [];
+    let outputAccumulator = '';
     decompressorTransformer.on('data', decompressedPacket => {
-      outputAccumulator.push(decompressedPacket);
+      outputAccumulator += decompressedPacket;
     });
 
     decompressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual([
-        'h',
-        'e',
-        'l',
-        'l',
-        'o',
-        'h',
-        'e',
-        'l',
-        'l',
-        'o'
-      ]);
+      expect(outputAccumulator).toEqual('hellohello');
     });
 
-    inputStream.push({ token: 'h', prefix: undefined });
-    inputStream.push({ token: 'e', prefix: undefined });
-    inputStream.push({ token: 'l', prefix: undefined });
-    inputStream.push({ token: 'o', prefix: [1, 1] });
-    inputStream.push({ token: 'o', prefix: [2, 4] });
-    inputStream.push(null);
+    decompressorTransformer.write(encodeCompressionPacket('h'));
+    decompressorTransformer.write(encodeCompressionPacket('e'));
+    decompressorTransformer.write(encodeCompressionPacket('l'));
+    decompressorTransformer.write(encodeCompressionPacket('o', 1, 1));
+    decompressorTransformer.write(encodeCompressionPacket('o', 2, 4));
+    decompressorTransformer.end();
   });
 });

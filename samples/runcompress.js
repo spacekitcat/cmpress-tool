@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { CompressorTransformer } from '../lib/compressor-transformer';
+import { DecompressorTransformer } from '../lib/decompressor-transformer';
 
 let rawInput = process.argv[2];
 if (!rawInput) {
@@ -7,9 +8,8 @@ if (!rawInput) {
   process.exit(-1);
 }
 
-let compressorTransformer = new CompressorTransformer({
-  objectMode: true
-});
+let compressorTransformer = new CompressorTransformer();
+let decompressorTransformer = new DecompressorTransformer();
 
 let accumulator = '';
 compressorTransformer.on('data', chunk => {
@@ -23,5 +23,19 @@ compressorTransformer.on('finish', () => {
   console.log(`🙌         ratio : ${ratio}%`);
 });
 
+let deaccumulator = '';
+decompressorTransformer.on('data', chunk => {
+  deaccumulator += chunk;
+});
+
+decompressorTransformer.on('finish', () => {
+  let ratio = (deaccumulator.length / accumulator.length) * 100;
+  console.log();
+  console.log(`📥         input : ${accumulator}`);
+  console.log(`💤  decompressed : ${deaccumulator}`);
+  console.log(`🙌         ratio : ${ratio}%`);
+});
+
+compressorTransformer.pipe(decompressorTransformer);
 compressorTransformer.write(rawInput);
 compressorTransformer.end();
