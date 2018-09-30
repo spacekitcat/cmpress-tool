@@ -1,4 +1,4 @@
-Project in progress. It's a first pass at this stage. The samples can compress and decompress string values and the one can simulate file compression (WARNING: works in memory, so large files will likely crash it, depending on how your nodejs install is configured).
+Project in progress. It's a first pass at this stage. The samples do lots of work in memory, so don't do anything stupid, such as feeding it a 16GB string.
 
 ## synopsis
 
