@@ -1,10 +1,20 @@
-const invalidInputType = input => typeof input !== 'object';
-const invalidInputTokenField = input =>
-  !input || (input.t && typeof input.t !== 'string');
+const missingTokenField = input =>
+  typeof input === 'object' && input.t === undefined;
 
-const invalidSafeToIgnoreInput = input => !input || input === '';
+const validateTokenField = input =>
+  input.t === undefined || input.t === null || typeof input.t === 'string';
+
+const validatePrefixField = input =>
+  input.p === undefined || input.p === null || input.p.length === 2;
+
+const invalidSafeToIgnoreInput = input =>
+  input === undefined || input === null || missingTokenField(input);
+
 const invalidFatalInput = input =>
-  invalidInputType(input) || invalidInputTokenField(input);
+  typeof input !== 'object' ||
+  !input ||
+  (input.t && !validateTokenField(input)) ||
+  (input.p && !validatePrefixField(input));
 
 const serializePacketToBinary = compressionPackets => {
   if (invalidSafeToIgnoreInput(compressionPackets)) {
@@ -15,11 +25,15 @@ const serializePacketToBinary = compressionPackets => {
     throw new Error('Error: Invalid compression packet format.');
   }
 
+  let output = '';
   if (compressionPackets.t) {
-    return '1g';
+    output = `${compressionPackets.t}`;
+    if (compressionPackets.p && validatePrefixField(compressionPackets.p)) {
+      output += `P${compressionPackets.p[0]},${compressionPackets.p[1]}`;
+    }
   }
 
-  return '';
+  return output;
 };
 
 export default serializePacketToBinary;
