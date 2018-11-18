@@ -5,20 +5,21 @@ const deserializePacketFromBinary = serializedString => {
     throw new Error('Error: Invalid compression serialisation stream format.');
   }
 
-  let inputPointer = 1;
   let output = { t: serializedString[0] };
-  while (inputPointer < serializedString.length) {
-    if (serializedString[inputPointer] === 'P') {
-      ++inputPointer;
-      let prefixFieldValue = serializedString.substr(
-        inputPointer,
-        serializedString.indexOf('.') - 2
-      );
-      let prefix = prefixFieldValue.split(',');
+  if (serializedString.length >= 2) {
+    if (serializedString[1] === 'P') {
+      if (serializedString.length < 5) {
+        throw new Error(
+          'Invalid compression serialization stream prefix value'
+        );
+      }
+
+      let prefix = serializedString
+        .substr(2, serializedString.length - 1)
+        .split(',');
       output.p = [parseInt(prefix[0]), parseInt(prefix[1])];
-      inputPointer += prefixFieldValue.length;
     } else {
-      ++inputPointer;
+      throw new Error('Error: Invalid compression serialisation stream field.');
     }
   }
 

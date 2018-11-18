@@ -37,22 +37,38 @@ describe('deserializePacketFromBinary', () => {
       result = deserializePacketFromBinary(argument);
     });
 
-    it('should return a blank string', () => {
+    it('should deserialize with the expected token', () => {
       expect(result).toMatchObject({ t: 'a' });
     });
   });
 
   describe('when the input has a prefix field', () => {
     beforeAll(() => {
-      argument = 'aP0,9.';
+      argument = 'aP0,9';
     });
 
     beforeEach(() => {
       result = deserializePacketFromBinary(argument);
     });
 
-    it('should return a blank string', () => {
+    it('should deserialize with the expected prefix', () => {
       expect(result).toMatchObject({ t: 'a', p: [0, 9] });
+    });
+  });
+
+  describe('when the input has a prefix field, but does not define a prefix', () => {
+    it('should throw an Error', () => {
+      expect(() => deserializePacketFromBinary('aP')).toThrowError(
+        'Invalid compression serialization stream prefix value'
+      );
+    });
+  });
+
+  describe('when the input has a unrecognized field', () => {
+    it('should throw an Error', () => {
+      expect(() => deserializePacketFromBinary('aK')).toThrowError(
+        'Invalid compression serialisation stream field'
+      );
     });
   });
 });
