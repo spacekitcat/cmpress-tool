@@ -56,6 +56,20 @@ describe('deserializePacketFromBinary', () => {
     });
   });
 
+  describe('when the input has prefix values above 10', () => {
+    beforeAll(() => {
+      argument = 'aP10,123';
+    });
+
+    beforeEach(() => {
+      result = deserializePacketFromBinary(argument);
+    });
+
+    it('should deserialize with the expected prefix', () => {
+      expect(result).toMatchObject({ t: 'a', p: [10, 123] });
+    });
+  });
+
   describe('when the input has a prefix field, but does not define a prefix', () => {
     it('should throw an Error', () => {
       expect(() => deserializePacketFromBinary('aP')).toThrowError(
