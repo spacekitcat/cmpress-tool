@@ -1,5 +1,7 @@
 const invalidFatalInput = input => typeof input !== 'string' || !input;
 
+const hasPrefixField = input => input.length >= 5 && input[1] === 'P';
+
 const deserializePacketFromBinary = serializedString => {
   if (invalidFatalInput(serializedString)) {
     throw new Error('Error: Invalid compression serialisation stream format.');
@@ -7,7 +9,7 @@ const deserializePacketFromBinary = serializedString => {
 
   let output = { t: serializedString[0] };
 
-  if (serializedString.length >= 5 && serializedString[1] === 'P') {
+  if (hasPrefixField(serializedString)) {
     let prefix = serializedString
       .substr(2, serializedString.length - 1)
       .split(',');
@@ -17,9 +19,7 @@ const deserializePacketFromBinary = serializedString => {
       throw new Error('Invalid compression serialization stream prefix value');
     }
     output.p = [prefixValue1, prefixValue2];
-  } else if (serializedString.length >= 2 && serializedString[1] !== 'P') {
-    throw new Error('Error: Invalid compression serialisation stream field.');
-  } else if (serializedString.length < 5 && serializedString[1] === 'P') {
+  } else if (serializedString.length >= 2) {
     throw new Error('Error: Invalid compression serialisation stream field.');
   }
 
