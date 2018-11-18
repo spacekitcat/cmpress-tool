@@ -1,14 +1,10 @@
-const validTokenField = input =>
-  typeof input.t === 'string' &&
-  input.t !== undefined &&
-  input.t !== null &&
-  input.t !== '';
+const validTokenField = input => typeof input.t === 'string' && input.t;
 
 const prefixFieldExists = input => input.p !== undefined;
-const validPrefixField = input => input.p !== null && input.p.length === 2;
+const validPrefixField = input => input.p && input.p.length === 2;
 
 const invalidInput = input =>
-  input === null ||
+  !input ||
   typeof input !== 'object' ||
   !validTokenField(input) ||
   (prefixFieldExists(input) && !validPrefixField(input));

@@ -1,8 +1,4 @@
-const invalidFatalInput = input =>
-  typeof input !== 'string' ||
-  input === undefined ||
-  input === null ||
-  input === '';
+const invalidFatalInput = input => typeof input !== 'string' || !input;
 
 const deserializePacketFromBinary = serializedString => {
   if (invalidFatalInput(serializedString)) {
