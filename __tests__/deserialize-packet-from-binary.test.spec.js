@@ -59,6 +59,14 @@ describe('deserializePacketFromBinary', () => {
   describe('when the input has a prefix field, but does not define a prefix', () => {
     it('should throw an Error', () => {
       expect(() => deserializePacketFromBinary('aP')).toThrowError(
+        'Error: Invalid compression serialisation stream field.'
+      );
+    });
+  });
+
+  describe('when the input has a prefix field, but defines non-integer values', () => {
+    it('should throw an Error', () => {
+      expect(() => deserializePacketFromBinary('aPx,x')).toThrowError(
         'Invalid compression serialization stream prefix value'
       );
     });
