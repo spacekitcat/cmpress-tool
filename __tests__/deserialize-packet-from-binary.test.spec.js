@@ -41,4 +41,18 @@ describe('deserializePacketFromBinary', () => {
       expect(result).toMatchObject({ t: 'a' });
     });
   });
+
+  describe('when the input has a prefix field', () => {
+    beforeAll(() => {
+      argument = 'aP0,9.';
+    });
+
+    beforeEach(() => {
+      result = deserializePacketFromBinary(argument);
+    });
+
+    it('should return a blank string', () => {
+      expect(result).toMatchObject({ t: 'a', p: [0, 9] });
+    });
+  });
 });
