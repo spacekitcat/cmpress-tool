@@ -1,28 +1,28 @@
-const missingTokenField = input =>
-  typeof input === 'object' && input.t === undefined;
+const validTokenField = input =>
+  typeof input.t === 'string' &&
+  input.t !== undefined &&
+  input.t !== null &&
+  input.t !== '';
 
-const invalidTokenField = input =>
-  input.t === null || input.t === '' || typeof input.t !== 'string';
+const prefixFieldExists = input => input.p !== undefined;
+const validPrefixField = input => input.p !== null && input.p.length === 2;
 
-const invalidPrefixField = input => input.p === null || input.p.length !== 2;
-
-const invalidFatalInput = input =>
+const invalidInput = input =>
   input === null ||
   typeof input !== 'object' ||
-  (input.t !== undefined && invalidTokenField(input)) ||
-  (input.p !== undefined && invalidPrefixField(input));
+  !validTokenField(input) ||
+  (prefixFieldExists(input) && !validPrefixField(input));
 
 const serializePacketToBinary = compressionPackets => {
-  if (invalidFatalInput(compressionPackets)) {
+  if (invalidInput(compressionPackets)) {
     throw new Error('Error: Invalid compression packet format.');
   }
 
-  if (missingTokenField(compressionPackets)) {
-    return '';
-  }
-
   let output = `${compressionPackets.t}`;
-  if (compressionPackets.p && !invalidPrefixField(compressionPackets)) {
+  if (
+    prefixFieldExists(compressionPackets) &&
+    validPrefixField(compressionPackets)
+  ) {
     output += `P${compressionPackets.p[0]},${compressionPackets.p[1]}`;
   }
 

@@ -28,16 +28,10 @@ describe('serializePacketToBinary', () => {
   });
 
   describe('when the input is an empty object', () => {
-    beforeAll(() => {
-      argument = {};
-    });
-
-    beforeEach(() => {
-      result = serializePacketToBinary(argument);
-    });
-
-    it('should return a blank string', () => {
-      expect(result).toBe('');
+    it('should throw an Error', () => {
+      expect(() => serializePacketToBinary({})).toThrowError(
+        'Error: Invalid compression packet format.'
+      );
     });
   });
 
