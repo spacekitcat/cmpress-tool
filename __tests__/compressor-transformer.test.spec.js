@@ -69,28 +69,16 @@ describe('CompressorTransformer', () => {
     });
   });
 
-  const buildExpectedCompressionPacket = (t, from, to) => {
-    let encoded = {};
-    encoded = { t: t };
-    if (from && to) {
-      encoded = { p: [from, to], t: t };
-    }
-
-    return serializePacket(encoded);
-  };
-
   it('compresses a to a', () => {
-    let compressorTransformer = new CompressorTransformer({
-      objectMode: true
-    });
+    let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = [];
+    let outputAccumulator = '';
     compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator.push(compressedPacket);
+      outputAccumulator += compressedPacket;
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual([buildExpectedCompressionPacket('a')]);
+      expect(outputAccumulator).toEqual('1a');
     });
 
     compressorTransformer.write('a');
@@ -98,22 +86,15 @@ describe('CompressorTransformer', () => {
   });
 
   it('compresses aaba', () => {
-    let compressorTransformer = new CompressorTransformer({
-      objectMode: true
-    });
+    let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = [];
+    let outputAccumulator = '';
     compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator.push(compressedPacket);
+      outputAccumulator += compressedPacket;
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual([
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('b'),
-        buildExpectedCompressionPacket('a')
-      ]);
+      expect(outputAccumulator).toEqual('1a1a1b1a');
     });
 
     compressorTransformer.write('aaba');
@@ -125,18 +106,13 @@ describe('CompressorTransformer', () => {
       objectMode: true
     });
 
-    let outputAccumulator = [];
+    let outputAccumulator = '';
     compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator.push(compressedPacket);
+      outputAccumulator += compressedPacket;
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual([
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a')
-      ]);
+      expect(outputAccumulator).toEqual('1a1a1a1a');
     });
 
     compressorTransformer.write('aaaa');
@@ -144,23 +120,15 @@ describe('CompressorTransformer', () => {
   });
 
   it('compresses aaaaaaaab', () => {
-    let compressorTransformer = new CompressorTransformer({
-      objectMode: true
-    });
+    let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = [];
+    let outputAccumulator = '';
     compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator.push(compressedPacket);
+      outputAccumulator += compressedPacket;
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual([
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('b', 1, 4)
-      ]);
+      expect(outputAccumulator).toEqual('1a1a1a1a5bP1,4');
     });
 
     compressorTransformer.write('aaaaaaaab');
@@ -168,24 +136,15 @@ describe('CompressorTransformer', () => {
   });
 
   it('compresses aaabbc', () => {
-    let compressorTransformer = new CompressorTransformer({
-      objectMode: true
-    });
+    let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = [];
+    let outputAccumulator = '';
     compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator.push(compressedPacket);
+      outputAccumulator += compressedPacket;
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual([
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('a'),
-        buildExpectedCompressionPacket('b'),
-        buildExpectedCompressionPacket('b'),
-        buildExpectedCompressionPacket('c')
-      ]);
+      expect(outputAccumulator).toEqual('1a1a1a1b1b1c');
     });
 
     compressorTransformer.write('aaabbc');
@@ -199,19 +158,13 @@ describe('CompressorTransformer', () => {
         objectMode: true
       });
 
-      let outputAccumulator = [];
+      let outputAccumulator = '';
       compressorTransformer.on('data', compressedPacket => {
-        outputAccumulator.push(compressedPacket);
+        outputAccumulator += compressedPacket;
       });
 
       compressorTransformer.on('finish', () => {
-        expect(outputAccumulator).toEqual([
-          buildExpectedCompressionPacket('a'),
-          buildExpectedCompressionPacket('a'),
-          buildExpectedCompressionPacket('a'),
-          buildExpectedCompressionPacket('a'),
-          buildExpectedCompressionPacket('a')
-        ]);
+        expect(outputAccumulator).toEqual('1a1a1a1a1a');
       });
 
       compressorTransformer.write('aaaaa');

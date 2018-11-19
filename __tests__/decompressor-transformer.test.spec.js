@@ -24,9 +24,7 @@ describe('DecompressorTransformer', () => {
       expect(outputAccumulator.toString('utf8')).toEqual('aaba');
     });
 
-    decompressorTransformer.write(encodeCompressionPacket('a'));
-    decompressorTransformer.write(encodeCompressionPacket('b', 1, 1));
-    decompressorTransformer.write(encodeCompressionPacket('a'));
+    decompressorTransformer.write('1a1a5bP1,1a');
     decompressorTransformer.end();
   });
 
