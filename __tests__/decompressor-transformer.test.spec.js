@@ -1,5 +1,4 @@
 import { DecompressorTransformer } from '../src/decompressor-transformer';
-import serializePacket from '../src/serialize-packet.js';
 
 describe('DecompressorTransformer', () => {
   it('inflates aaba', () => {

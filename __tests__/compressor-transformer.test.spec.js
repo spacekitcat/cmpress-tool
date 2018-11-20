@@ -1,6 +1,5 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
-import serializePacket from '../src/serialize-packet.js';
 
 describe('CompressorTransformer', () => {
   const defaultHistoryBufferSize = 256;
