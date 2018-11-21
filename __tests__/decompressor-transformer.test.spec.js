@@ -1,15 +1,4 @@
 import { DecompressorTransformer } from '../src/decompressor-transformer';
-import serializePacket from '../src/serialize-packet.js';
-
-const encodeCompressionPacket = (t, from, to) => {
-  let encoded = {};
-  encoded = { t: t };
-  if (from && to) {
-    encoded = { p: [from, to], t: t };
-  }
-
-  return serializePacket(encoded);
-};
 
 describe('DecompressorTransformer', () => {
   it('inflates aaba', () => {
@@ -24,9 +13,7 @@ describe('DecompressorTransformer', () => {
       expect(outputAccumulator.toString('utf8')).toEqual('aaba');
     });
 
-    decompressorTransformer.write(encodeCompressionPacket('a'));
-    decompressorTransformer.write(encodeCompressionPacket('b', 1, 1));
-    decompressorTransformer.write(encodeCompressionPacket('a'));
+    decompressorTransformer.write('1a5bP1,11a');
     decompressorTransformer.end();
   });
 
@@ -39,14 +26,10 @@ describe('DecompressorTransformer', () => {
     });
 
     decompressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toEqual('hellohello');
+      expect(outputAccumulator.toString('utf8')).toEqual('hellohello');
     });
 
-    decompressorTransformer.write(encodeCompressionPacket('h'));
-    decompressorTransformer.write(encodeCompressionPacket('e'));
-    decompressorTransformer.write(encodeCompressionPacket('l'));
-    decompressorTransformer.write(encodeCompressionPacket('o', 1, 1));
-    decompressorTransformer.write(encodeCompressionPacket('o', 2, 4));
+    decompressorTransformer.write('1h1e1l5oP1,15oP2,4');
     decompressorTransformer.end();
   });
 });

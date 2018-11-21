@@ -89,14 +89,13 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 ### runcompress.js
 
 ```bash
-libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
-📥         input : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
-💤    compressed : 琂Ȁ椀琂Ȁ氀琂Ȁ漀琂Ȁ瘀琂Ȁ攀琂Ȁ洀琂Ȁ愀琂Ȁ琀琂Ȁ琀琂Ȁ栀琂Ȁ攀琂Ȁ眀琂Ȁ爀琂Ȁ漀琂Ȁ洀琂Ȁ愀琂Ȁ渀琂Ȁ漀$瀄ጀက0ㄐሀ琂Ȁ椀$瀄ጀက0ㄐ␀琂Ȁ氀$瀄ጀက0ㄐ䠀琂Ȁ漀$瀄ጀက0ㄐ退琂Ȁ瘀$瀄ጀက0ㄐ謀琂Ȁ漀
-🙌         ratio : 50%
+/libz7 ‹binarycommandserializationformat*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew📥         input : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
+💤    compressed : 1i1l1o1v1e1m1a1t1t1h1e1w1r1o1m1a1n1o6iP1,186lP1,367wP10,27
+🙌         ratio : 56.86274509803921%
 
-📥         input : 琂Ȁ椀琂Ȁ氀琂Ȁ漀琂Ȁ瘀琂Ȁ攀琂Ȁ洀琂Ȁ愀琂Ȁ琀琂Ȁ琀琂Ȁ栀琂Ȁ攀琂Ȁ眀琂Ȁ爀琂Ȁ漀琂Ȁ洀琂Ȁ愀琂Ȁ渀琂Ȁ漀$瀄ጀက0ㄐሀ琂Ȁ椀$瀄ጀက0ㄐ␀琂Ȁ氀$瀄ጀက0ㄐ䠀琂Ȁ漀$瀄ጀက0ㄐ退琂Ȁ瘀$瀄ጀက0ㄐ謀琂Ȁ漀
-💤  decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromano
-🙌         ratio : 200%
+📥         input : 1i1l1o1v1e1m1a1t1t1h1e1w1r1o1m1a1n1o6iP1,186lP1,367wP10,27
+💤  decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
+🙌         ratio : 175.86206896551724%
 ```
 
 ## Observations

@@ -1,7 +1,7 @@
 import { Transform } from 'stream';
 import { SlidingWindow } from './sliding-window.js';
 import locateToken from './locate-token.js';
-import serializePacket from './serialize-packet';
+import serializePacketToBinary from './serialize-packet-to-binary';
 
 class CompressorTransformer extends Transform {
   constructor(options) {
@@ -30,9 +30,11 @@ class CompressorTransformer extends Transform {
     this.slidingWindow.setInput(chunk);
 
     while (this.slidingWindow.lookAhead().length > 0) {
-      let nextBytes = serializePacket(this.slidingWindow.slide(locateToken));
+      let nextBytes = this.slidingWindow.slide(locateToken);
       if (nextBytes) {
-        this.push(nextBytes);
+        let serialized = serializePacketToBinary(nextBytes);
+        let output = `${serialized.length}${serialized}`;
+        this.push(output);
       }
     }
 
