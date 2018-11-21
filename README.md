@@ -14,20 +14,17 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Seperate the slide logic from the SlidingWindow (pass an external function)
 - [x] Seperate the compression frame storage from the SlidingWindow
 - [x] Make this work with nodejs streams
-- [ ] Integration tests to verify the integrity of compress to decompress relationship (combined with the unit tests seems appropriate for the size of the project)
 - [x] Custom iterator for the dictionary to abstract some of the dictionary lookup operations.
 - [x] Proper, unit tested sliding window system
 - [ ] Release system
 - [x] The compression streams resets after every read chunk. This shouldn't have too big an impact for most cases, but it's still rubbish.
 - [x] Make everything use arrays instead of strings. This will improve data intergrity because it will use explicit unicode charcodes. It should also make it faster by eliminating string conversions.
-- [ ] A sample program that can compress and save a file. the sample `filecompresssimulate` keeps it in memory because I'd need to define an actual file format for serialising the compressed stream. The file format needs to strip each packet down to the essentials to reduce size overhead and its header needs to define all of the settings used to ensure decompression will know what to do.
-- [ ] A sample program that can decompress the above
+- [X] A sample program that can compress and save a file.
+- [X] A sample program that can decompress the above
 - [ ] Allow an explicit character encoing and for this to be consistent everywhere
 - [ ] User configuratble window size and history buffer size
 - [ ] Consistent domain language. The 'dictionary' (from the original paper, it's a different world) should be call the history_buffer everywhere and the window should be called the window or frame.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
-- [x] ~~The compressor should output encoded bytes (UTF-8/ASCII codeset) rather than utf8 values~~
-- [x] The compressor should output UCS2 encoded BISON encoded JSON.
 
 # Building
 
