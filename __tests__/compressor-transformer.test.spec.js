@@ -68,6 +68,22 @@ describe('CompressorTransformer', () => {
     });
   });
 
+  it('compresses `` to ``', () => {
+    let compressorTransformer = new CompressorTransformer();
+
+    let outputAccumulator = '';
+    compressorTransformer.on('data', compressedPacket => {
+      outputAccumulator += compressedPacket;
+    });
+
+    compressorTransformer.on('finish', () => {
+      expect(outputAccumulator).toEqual('');
+    });
+
+    compressorTransformer.write('');
+    compressorTransformer.end();
+  });
+
   it('compresses a to a', () => {
     let compressorTransformer = new CompressorTransformer();
 

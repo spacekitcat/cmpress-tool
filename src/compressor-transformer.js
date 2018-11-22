@@ -31,11 +31,9 @@ class CompressorTransformer extends Transform {
 
     while (this.slidingWindow.lookAhead().length > 0) {
       let nextBytes = this.slidingWindow.slide(locateToken);
-      if (nextBytes) {
-        let serialized = serializePacketToBinary(nextBytes);
-        let output = `${serialized.length}${serialized}`;
-        this.push(output);
-      }
+      let serialized = serializePacketToBinary(nextBytes);
+      let output = `${serialized.length}${serialized}`;
+      this.push(output);
     }
 
     callback();

@@ -13,5 +13,5 @@ if (!filePath) {
 let fileReadStream = fs.createReadStream(filePath, 'utf8');
 
 let compressorTransformer = new CompressorTransformer();
-let fileWriteStream = fs.createWriteStream(filePath + 'bzz', 'utf8');
+let fileWriteStream = fs.createWriteStream(filePath + '.bzz', 'utf8');
 fileReadStream.pipe(compressorTransformer).pipe(fileWriteStream);
