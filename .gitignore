@@ -3,3 +3,5 @@ node_modules/
 samplestarget
 dist/
 coverage/
+isolate-0x*.log
+*.bzz

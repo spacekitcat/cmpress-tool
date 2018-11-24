@@ -1,11 +1,24 @@
-const startsWith = (searcharray, subarray) => {
-  for (let i = 0; i < subarray.length; ++i) {
-    if (searcharray[i] !== subarray[i]) {
+const positionContains = (searchBuffer, atIndicePosition, containsSubArray) => {
+  for (let i = 0; i < containsSubArray.length; ++i) {
+    let flippedIndice = atIndicePosition - (containsSubArray.length - 1) + i;
+    if (searchBuffer[flippedIndice] !== containsSubArray[i]) {
       return false;
     }
   }
 
   return true;
+};
+
+const findLastPosition = (searcharray, subarray) => {
+  let searchStartLocation = searcharray.length - 1;
+  let searchMinimumBufferPosition = subarray.length - 1;
+  for (let i = searchStartLocation; i >= searchMinimumBufferPosition; --i) {
+    if (positionContains(searcharray, i, subarray)) {
+      return i;
+    }
+  }
+
+  return -1;
 };
 
 const findIndexOfSubarray = (searcharray, subarray) => {
@@ -15,18 +28,12 @@ const findIndexOfSubarray = (searcharray, subarray) => {
     return match;
   }
 
-  searcharray = searcharray.slice().reverse();
-  subarray = subarray.slice().reverse();
-
-  let loopRange = searcharray.length - subarray.length;
-  for (let i = 0; i <= loopRange; ++i) {
-    if (startsWith(searcharray.slice(i), subarray)) {
-      match = i;
-      break;
-    }
+  let result = findLastPosition(searcharray, subarray);
+  if (result > -1) {
+    return searcharray.length - 1 - findLastPosition(searcharray, subarray);
+  } else {
+    return result;
   }
-
-  return match;
 };
 
 export default findIndexOfSubarray;

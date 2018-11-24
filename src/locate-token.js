@@ -5,10 +5,10 @@ const getPossibleTokens = buffer => {
   let tokenList = [];
 
   for (let i = 4; i < buffer.length; ++i) {
-    tokenList.push(buffer.slice(0, i));
+    tokenList.unshift(buffer.slice(0, i));
   }
 
-  return tokenList.reverse();
+  return tokenList;
 };
 
 const computeMatch = (dictionary, token) => {
@@ -47,7 +47,7 @@ const locateToken = (dictionary, buffer) => {
 
   if (nextLargestToken === undefined) {
     nextLargestToken = {
-      t:buffer[0]
+      t: buffer[0]
     };
   } else {
     nextLargestToken.t = buffer[nextLargestToken.p[1]];
