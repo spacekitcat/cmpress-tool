@@ -19,16 +19,17 @@ class DecompressorTransformer extends Transform {
     while (currentChunkPointer < chunk.length) {
       if (this.expectingNewToken) {
         this.missingPackets = parseInt(
-          chunk.toString('utf-8').charAt(currentChunkPointer)
+          chunk.toString('ascii').charAt(currentChunkPointer)
         );
+
         this.expectingNewToken = false;
         currentChunkPointer += 1;
       }
-      if (this.missingPackets > 0) {
-        this.buffer += chunk.toString('utf-8').charAt(currentChunkPointer);
-        this.missingPackets -= 1;
-        currentChunkPointer += 1;
-      }
+
+      this.buffer += chunk.toString('ascii').charAt(currentChunkPointer);
+      this.missingPackets -= 1;
+      currentChunkPointer += 1;
+
       if (this.missingPackets === 0) {
         let packet = deserializePacketFromBinary(this.buffer);
         packets.push(packet);
@@ -38,7 +39,6 @@ class DecompressorTransformer extends Transform {
     }
 
     packets.forEach(packet => {
-      //this.push('[' + this.history_buffer.buffer + ']');
       if (packet.p) {
         let result = extractToken(
           this.history_buffer.buffer,
@@ -46,19 +46,15 @@ class DecompressorTransformer extends Transform {
           packet.p[0] - 1,
           packet.p[1]
         );
-        if (result) {
-          this.history_buffer = consumeInput(
-            this.history_buffer.buffer,
-            this.historyBufferSize,
-            result
-          );
-          result.forEach(token => {
-            if (token) {
-              this.push(token);
-            }
-          });
-          this.push(packet.t);
-        }
+        this.history_buffer = consumeInput(
+          this.history_buffer.buffer,
+          this.historyBufferSize,
+          result
+        );
+        result.forEach(token => {
+          this.push(token);
+        });
+        this.push(packet.t);
       } else {
         this.push(packet.t);
       }

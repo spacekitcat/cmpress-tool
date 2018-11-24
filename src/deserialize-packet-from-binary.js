@@ -8,7 +8,9 @@ const readPrefixValue = field => {
   let prefixValue2 = parseInt(prefixValues[1]);
 
   if (isNaN(prefixValue1) || isNaN(prefixValue2)) {
-    throw new Error('Invalid compression serialization stream prefix value');
+    throw new Error(
+      `Invalid compression serialisation prefix field, '${field}'`
+    );
   }
 
   return [prefixValue1, prefixValue2];
@@ -16,7 +18,9 @@ const readPrefixValue = field => {
 
 const deserializePacketFromBinary = serializedString => {
   if (invalidFatalInput(serializedString)) {
-    throw new Error('Error: Invalid compression serialisation stream format.');
+    throw new Error(
+      `Invalid compression serialisation stream format for input '${serializedString}'`
+    );
   }
 
   let output = { t: serializedString[0] };
@@ -25,7 +29,9 @@ const deserializePacketFromBinary = serializedString => {
     let fieldValue = serializedString.substr(2, serializedString.length - 1);
     output.p = readPrefixValue(fieldValue);
   } else if (serializedString.length >= 2) {
-    throw new Error('Error: Invalid compression serialisation stream field.');
+    throw new Error(
+      `Invalid compression serialisation stream command for input '${serializedString}'`
+    );
   }
 
   return output;
