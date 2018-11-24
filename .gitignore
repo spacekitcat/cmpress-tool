@@ -5,3 +5,4 @@ dist/
 coverage/
 isolate-0x*.log
 *.bzz
+*.swp
