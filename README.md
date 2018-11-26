@@ -1,4 +1,6 @@
-Project in progress. It's a first pass at this stage. The samples do lots of work in memory, so don't do anything stupid, such as feeding it a 16GB string.
+# libz77 implementation of LZ77
+
+This is a project in progress; . The `samplestarget` folder (created during the trasnspile stage of the build) provides some file I/O examples and some string compression examples.
 
 ## synopsis
 

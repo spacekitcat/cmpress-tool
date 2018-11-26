@@ -139,6 +139,7 @@ describe('CompressorTransformer', () => {
 
     let outputAccumulator = '';
     compressorTransformer.on('data', compressedPacket => {
+      console.log('nextBytes', `|${outputAccumulator}|`);
       outputAccumulator += compressedPacket;
     });
 

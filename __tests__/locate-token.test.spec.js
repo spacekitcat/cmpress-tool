@@ -29,7 +29,7 @@ describe('locatet()', () => {
 
     describe('The input buffer is an empty string', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue, [])).toEqual({
+        expect(locateToken(dictionaryValue, new Buffer(''))).toEqual({
           t: undefined
         });
       });
@@ -37,8 +37,8 @@ describe('locatet()', () => {
 
     describe('The input buffer is a string of length three', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [78, 79, 80])).toEqual({
-          t: 78
+        expect(locateToken(dictionaryValue, new Buffer('xxy'))).toEqual({
+          t: 120
         });
       });
     });
@@ -56,7 +56,7 @@ describe('locatet()', () => {
 
     describe('The input buffer is an empty string', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue, [])).toEqual({
+        expect(locateToken(dictionaryValue, new Buffer(''))).toEqual({
           t: undefined
         });
       });
@@ -64,8 +64,8 @@ describe('locatet()', () => {
 
     describe('The input buffer is a string of length three', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [78, 79, 80])).toEqual({
-          t: 78
+        expect(locateToken(dictionaryValue, new Buffer('xyz'))).toEqual({
+          t: 120
         });
       });
     });
@@ -83,7 +83,7 @@ describe('locatet()', () => {
 
     describe('The input buffer is an empty array', () => {
       it('returns undefined', () => {
-        expect(locateToken(dictionaryValue, [])).toEqual({
+        expect(locateToken(dictionaryValue, new Buffer(''))).toEqual({
           t: undefined
         });
       });
@@ -91,7 +91,7 @@ describe('locatet()', () => {
 
     describe('The input buffer contains characters which are not in the history buffer', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [97, 98, 99])).toEqual({
+        expect(locateToken(dictionaryValue, new Buffer('abc'))).toEqual({
           t: 97
         });
       });
@@ -99,7 +99,7 @@ describe('locatet()', () => {
 
     describe('The input buffer contains characters which are in the histroy buffer', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [79, 80, 97])).toEqual({
+        expect(locateToken(dictionaryValue, new Buffer('OPO'))).toEqual({
           t: 79
         });
       });
@@ -111,7 +111,7 @@ describe('locatet()', () => {
 
     describe('The input buffer contains characters which are not in the history buffer', () => {
       it('returns the next character from the input buffer', () => {
-        expect(locateToken(dictionaryValue, [97, 98, 99])).toEqual({
+        expect(locateToken(dictionaryValue, new Buffer('abc'))).toEqual({
           t: 97
         });
       });
@@ -120,7 +120,7 @@ describe('locatet()', () => {
     describe('The input buffer contains characters which are in the histroy buffer', () => {
       describe('and the match is on the threshold (4)', () => {
         it('returns the match as a p', () => {
-          expect(locateToken(dictionaryValue, [81, 82, 83, 84, 100])).toEqual({
+          expect(locateToken(dictionaryValue, new Buffer('QRSTd'))).toEqual({
             p: [4, 4],
             t: 100
           });
@@ -129,7 +129,7 @@ describe('locatet()', () => {
 
       describe('and the match is below the threshold (4)', () => {
         it('returns no p', () => {
-          expect(locateToken(dictionaryValue, [78, 79, 80, 100])).toEqual({
+          expect(locateToken(dictionaryValue, new Buffer('NOPd'))).toEqual({
             t: 78
           });
         });
@@ -137,9 +137,7 @@ describe('locatet()', () => {
 
       describe('and the match is above the threshold (4)', () => {
         it('returns the match as a p', () => {
-          expect(
-            locateToken(dictionaryValue, [81, 82, 83, 84, 85, 100])
-          ).toEqual({
+          expect(locateToken(dictionaryValue, new Buffer('QRSTUd'))).toEqual({
             p: [3, 5],
             t: 100
           });

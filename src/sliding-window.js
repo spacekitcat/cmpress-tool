@@ -6,9 +6,9 @@ class SlidingWindow {
   }
 
   setInput(inputStream) {
-    this.inputStream = Buffer.from(inputStream).toString('utf8').split('')
-      //.toString('hex')
-      //.match(/.{1,2}/g);
+    this.inputStream = Buffer.from(inputStream); //.toString('utf8').split('')
+    //.toString('hex')
+    //.match(/.{1,2}/g);
   }
 
   lookAhead() {
@@ -16,13 +16,13 @@ class SlidingWindow {
       this.cursor,
       this.cursor + this.lookAheadLength
     );
-    return forwardBuffer;
+    return forwardBuffer.toString('UTF-8').split('');
   }
 
   lookBack() {
     let from = Math.max(this.cursor - this.lookBackLength, 0);
     const backwardBuffer = this.inputStream.slice(from, this.cursor);
-    return backwardBuffer;
+    return backwardBuffer.toString('UTF-8').split('');
   }
 
   slideBy(amount) {
