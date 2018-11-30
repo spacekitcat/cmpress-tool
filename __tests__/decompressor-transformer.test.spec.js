@@ -10,7 +10,7 @@ describe('DecompressorTransformer', () => {
     });
 
     decompressorTransformer.on('finish', () => {
-      expect(outputAccumulator.toString('utf8')).toEqual('aaba');
+      expect(outputAccumulator).toEqual('aaba');
     });
 
     decompressorTransformer.write('1a5bP1,11a');

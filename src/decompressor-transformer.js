@@ -19,7 +19,7 @@ class DecompressorTransformer extends Transform {
     while (currentChunkPointer < chunk.length) {
       if (this.expectingNewToken) {
         this.missingPackets = parseInt(
-          chunk.toString('ascii').charAt(currentChunkPointer)
+          chunk.toString('UTF-8').charAt(currentChunkPointer)
         );
 
         this.expectingNewToken = false;

@@ -40,17 +40,19 @@ const locateToken = (dictionary, buffer) => {
     };
   }
   if (dictionary === null) {
-    dictionary = [];
+    dictionary = Buffer.from([]);
   }
 
   let nextLargestToken = findNextLargestToken(dictionary, buffer);
 
   if (nextLargestToken === undefined) {
     nextLargestToken = {
-      t: buffer[0]
+      t: buffer.toString('binary', 0, 1)
     };
   } else {
-    nextLargestToken.t = buffer[nextLargestToken.p[1]];
+    nextLargestToken.t = buffer
+      .slice(nextLargestToken.p[1])
+      .toString('binary', 0, 1);
   }
 
   return nextLargestToken;

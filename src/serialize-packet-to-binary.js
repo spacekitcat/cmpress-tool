@@ -1,4 +1,4 @@
-const validTokenField = input => typeof input.t === 'string' && input.t;
+const validTokenField = input => typeof input.t !== String && input.t;
 
 const prefixFieldExists = input => input.p !== undefined;
 const validPrefixField = input => input.p && input.p.length === 2;
@@ -11,7 +11,9 @@ const invalidInput = input =>
 
 const serializePacketToBinary = compressionPackets => {
   if (invalidInput(compressionPackets)) {
-    throw new Error('Error: Invalid compression packet format.');
+    throw new Error(
+      `Error: Invalid compression packet format: ${compressionPackets}`
+    );
   }
 
   let output = `${compressionPackets.t}`;

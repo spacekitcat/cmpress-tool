@@ -16,13 +16,13 @@ class SlidingWindow {
       this.cursor,
       this.cursor + this.lookAheadLength
     );
-    return forwardBuffer.toString('UTF-8').split('');
+    return forwardBuffer;
   }
 
   lookBack() {
     let from = Math.max(this.cursor - this.lookBackLength, 0);
     const backwardBuffer = this.inputStream.slice(from, this.cursor);
-    return backwardBuffer.toString('UTF-8').split('');
+    return backwardBuffer;
   }
 
   slideBy(amount) {

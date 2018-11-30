@@ -91,7 +91,9 @@ describe('deserializePacketFromBinary', () => {
   describe('when the input has a unrecognized field', () => {
     const input = 'aK';
     it('should throw an Error', () => {
-      expect(() => deserializePacketFromBinary(input)).toThrowError(
+      expect(() =>
+        deserializePacketFromBinary(Buffer.from(input))
+      ).toThrowError(
         `Invalid compression serialisation stream command for input '${input}'`
       );
     });

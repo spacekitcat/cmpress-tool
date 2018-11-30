@@ -1,4 +1,4 @@
-const invalidFatalInput = input => typeof input !== 'string' || !input;
+const invalidFatalInput = input => !input;
 
 const hasPrefixField = input => input.length >= 5 && input[1] === 'P';
 

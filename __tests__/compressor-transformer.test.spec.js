@@ -2,7 +2,7 @@ import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
 
 describe('CompressorTransformer', () => {
-  const defaultHistoryBufferSize = 256;
+  const defaultHistoryBufferSize = 1024;
   const defaultCurrentBufferSize = 256;
 
   let testTarget;
@@ -139,7 +139,6 @@ describe('CompressorTransformer', () => {
 
     let outputAccumulator = '';
     compressorTransformer.on('data', compressedPacket => {
-      console.log('nextBytes', `|${outputAccumulator}|`);
       outputAccumulator += compressedPacket;
     });
 
