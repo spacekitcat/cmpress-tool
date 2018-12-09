@@ -1,6 +1,6 @@
 # libz77 implementation of LZ77
 
-This is a project in progress; . The `samplestarget` folder (created during the trasnspile stage of the build) provides some file I/O examples and some string compression examples.
+This is a project in progress. The `samplestarget` folder (created during the trasnspile stage of the build) provides some file I/O examples and some string compression examples.
 
 ## synopsis
 
@@ -50,15 +50,14 @@ Successfully compiled 1 file with Babel.
 /libz7
 > jest --coverage
 
- PASS  __tests__/decompressor-transformer.test.spec.js
  PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
  PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/deserialize-packet-from-binary.test.spec.js
- PASS  __tests__/serialize-packet-to-binary.test.spec.js
- PASS  __tests__/extract-token.spec.js
+ PASS  __tests__/decompressor-transformer.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/serialize-packet-to-binary.test.spec.js
+ PASS  __tests__/deserialize-packet-from-binary.test.spec.js
 -----------------------------------|----------|----------|----------|----------|-------------------|
 File                               |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------------|----------|----------|----------|----------|-------------------|
@@ -67,17 +66,16 @@ All files                          |      100 |      100 |      100 |      100 |
  consume-input.js                  |      100 |      100 |      100 |      100 |                   |
  decompressor-transformer.js       |      100 |      100 |      100 |      100 |                   |
  deserialize-packet-from-binary.js |      100 |      100 |      100 |      100 |                   |
- extract-token.js                  |      100 |      100 |      100 |      100 |                   |
  find-index-of-subarray.js         |      100 |      100 |      100 |      100 |                   |
  locate-token.js                   |      100 |      100 |      100 |      100 |                   |
  serialize-packet-to-binary.js     |      100 |      100 |      100 |      100 |                   |
  sliding-window.js                 |      100 |      100 |      100 |      100 |                   |
 -----------------------------------|----------|----------|----------|----------|-------------------|
 
-Test Suites: 9 passed, 9 total
-Tests:       94 passed, 94 total
+Test Suites: 8 passed, 8 total
+Tests:       96 passed, 96 total
 Snapshots:   0 total
-Time:        1.292s
+Time:        1.43s
 Ran all test suites.
 ```
 
@@ -90,13 +88,36 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 ```bash
 libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew                                           1 ↵
 
+<Buffer 01 69>
+<Buffer 01 6c>
+<Buffer 01 6f>
+<Buffer 01 76>
+<Buffer 01 65>
+<Buffer 01 6d>
+<Buffer 01 61>
+<Buffer 01 74>
+<Buffer 01 74>
+<Buffer 01 68>
+<Buffer 01 65>
+<Buffer 01 77>
+<Buffer 01 72>
+<Buffer 01 6f>
+<Buffer 01 6d>
+<Buffer 01 61>
+<Buffer 01 6e>
+<Buffer 01 6f>
+<Buffer 05 69 50 01 2c 12>
+<Buffer 05 6c 50 01 2c 24>
+<Buffer 05 77 50 0a 2c 1b>
 📥         input : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
-💤    compressed : 1i1l1o1v1e1m1a1t1t1h1e1w1r1o1m1a1n1o6iP1,186lP1,367wP10,27
-🙌         ratio : 56.86274509803921%
+💤    compressed : ilovematthewromanoiP,lP,$wP
+,
+         ratio : 52.94117647058824%
 
-📥         input : 1i1l1o1v1e1m1a1t1t1h1e1w1r1o1m1a1n1o6iP1,186lP1,367wP10,27
-💤  decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
-🙌         ratio : 175.86206896551724%
+📥         input : ilovematthewromanoiP,lP,$wP
+,
+  decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
+🙌         ratio : 188.88888888888889%
 ```
 
 ## Observations
