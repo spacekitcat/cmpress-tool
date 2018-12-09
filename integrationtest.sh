@@ -3,7 +3,7 @@
 RESOURCE_DIR='./resources';
 SCRIPT_DIR='./samplestarget';
 
-declare -a VERIFICATION_TARGETS=($RESOURCE_DIR/testinput01.txt $RESOURCE_DIR/testinput02.txt)
+declare -a VERIFICATION_TARGETS=($RESOURCE_DIR/testinput01.txt $RESOURCE_DIR/testinput02.txt $RESOURCE_DIR/blue.jpg)
 
 function verifyFileCompressDecompress() {
   $SCRIPT_DIR/filecompress.js $1

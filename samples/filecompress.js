@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { CompressorTransformer } from '../lib/compressor-transformer';
-import deserializePacketFromBinary from '../lib/deserialize-packet-from-binary';
+import { DecompressorTransformer } from '../lib/decompressor-transformer';
 
 import fs from 'fs';
 
@@ -11,13 +11,18 @@ if (!filePath) {
   process.exit(-1);
 }
 
-let fileReadStream = fs.createReadStream(filePath, 'UTF-8');
+let fileReadStream = fs.createReadStream(filePath);
+let fileWriteStream = fs.createWriteStream(`${filePath}.bzz`);
 
 let compressorTransformer = new CompressorTransformer();
 
-compressorTransformer.on('data', (data) => {
-  console.log(`${deserializePacketFromBinary(data)}`);
+let accumulator = Buffer.from([]);
+compressorTransformer.on('data', chunk => {
+  accumulator = Buffer.concat([accumulator, chunk]);
 });
 
-let fileWriteStream = fs.createWriteStream(filePath + '.bzz', 'UTF-8');
+compressorTransformer.on('finish', () => {
+  console.log(`I compressed the heck outta ${filePath}`);
+});
+
 fileReadStream.pipe(compressorTransformer).pipe(fileWriteStream);

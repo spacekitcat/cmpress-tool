@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { CompressorTransformer } from '../lib/compressor-transformer';
 import { DecompressorTransformer } from '../lib/decompressor-transformer';
 
 import fs from 'fs';
@@ -10,8 +11,18 @@ if (!filePath) {
   process.exit(-1);
 }
 
-let fileReadStream = fs.createReadStream(filePath, 'UTF-8');
+let fileReadStream = fs.createReadStream(filePath);
+let fileWriteStream = fs.createWriteStream(`${filePath}.inflate`);
 
-let compressorTransformer = new DecompressorTransformer();
-let fileWriteStream = fs.createWriteStream(filePath + '.inflate', 'UTF-8');
-fileReadStream.pipe(compressorTransformer).pipe(fileWriteStream);
+let decompressorTransformer = new DecompressorTransformer();
+
+let accumulator = Buffer.from([]);
+decompressorTransformer.on('data', chunk => {
+  accumulator = Buffer.concat([accumulator, chunk]);
+});
+
+decompressorTransformer.on('finish', () => {
+  console.log(`I inflated the heck outta ${filePath}`);
+});
+
+fileReadStream.pipe(decompressorTransformer).pipe(fileWriteStream);

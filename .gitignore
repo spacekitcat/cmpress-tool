@@ -6,6 +6,5 @@ coverage/
 isolate-0x*.log
 *.bzz
 *.swp
-*.jpg
 *.inflate
 *.pdf

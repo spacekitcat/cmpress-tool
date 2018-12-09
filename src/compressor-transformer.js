@@ -7,8 +7,8 @@ class CompressorTransformer extends Transform {
   constructor(options) {
     super(options);
 
-    this.historyBufferSize = 256;
-    this.currentBufferSize = 256;
+    this.historyBufferSize = 4096;
+    this.currentBufferSize = 4096;
 
     if (options) {
       if (options.historyBufferSize) {
