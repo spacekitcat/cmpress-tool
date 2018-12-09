@@ -15,12 +15,12 @@ describe('findIndexOfSubarray', () => {
 
   describe('and a empty searchArray arg is provided', () => {
     it('returns -1', () => {
-      expect(findIndexOfSubarray(new Buffer([]))).toEqual(-1);
+      expect(findIndexOfSubarray(Buffer.from([]))).toEqual(-1);
     });
   });
 
   describe('and a length=1 searchArray arg is provided', () => {
-    const searchArray = new Buffer([6]);
+    const searchArray = Buffer.from([6]);
     describe('and no subarray arg is provided', () => {
       it('returns -1', () => {
         expect(findIndexOfSubarray(searchArray)).toEqual(-1);
@@ -47,23 +47,23 @@ describe('findIndexOfSubarray', () => {
 
     describe('and a length=1, matching subarray arg is provided', () => {
       it('returns index', () => {
-        expect(findIndexOfSubarray(searchArray, new Buffer([6]))).toEqual(0);
+        expect(findIndexOfSubarray(searchArray, Buffer.from([6]))).toEqual(0);
       });
     });
   });
 
   describe('and a length=4 searchArray arg is provided', () => {
-    const searchArray = new Buffer([6, 'b', 9, '$']);
+    const searchArray = Buffer.from([6, 'b', 9, '$']);
 
     describe('and a length=1, matching subarray arg is provided', () => {
       it('returns index', () => {
-        expect(findIndexOfSubarray(searchArray, new Buffer([9]))).toEqual(1);
+        expect(findIndexOfSubarray(searchArray, Buffer.from([9]))).toEqual(1);
       });
     });
 
     describe('and a length=2, matching subarray arg is provided', () => {
       it('returns index', () => {
-        expect(findIndexOfSubarray(searchArray, new Buffer(['b', 9]))).toEqual(
+        expect(findIndexOfSubarray(searchArray, Buffer.from(['b', 9]))).toEqual(
           1
         );
       });
@@ -71,19 +71,19 @@ describe('findIndexOfSubarray', () => {
 
     describe('and a length=1, partially matching subarray arg is provided', () => {
       it('returns -1', () => {
-        expect(findIndexOfSubarray(searchArray, new Buffer(['b', 12]))).toEqual(
-          -1
-        );
+        expect(
+          findIndexOfSubarray(searchArray, Buffer.from(['b', 12]))
+        ).toEqual(-1);
       });
     });
   });
 
   describe('and a length=7 searchArray arg with duplicate matches is provided', () => {
-    const searchArray = new Buffer([6, 'b', 9, '$', 'b', 9, '$']);
+    const searchArray = Buffer.from([6, 'b', 9, '$', 'b', 9, '$']);
 
     describe('and a length=2, matching subarray arg is provided', () => {
       it('returns index', () => {
-        expect(findIndexOfSubarray(searchArray, new Buffer([9, '$']))).toEqual(
+        expect(findIndexOfSubarray(searchArray, Buffer.from([9, '$']))).toEqual(
           0
         );
       });

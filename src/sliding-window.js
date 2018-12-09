@@ -6,9 +6,8 @@ class SlidingWindow {
   }
 
   setInput(inputStream) {
-    this.inputStream = Buffer.from(inputStream); //.toString('utf8').split('')
-    //.toString('hex')
-    //.match(/.{1,2}/g);
+    this.inputStream = Buffer.from(inputStream);
+    this.cursor = 0;
   }
 
   lookAhead() {

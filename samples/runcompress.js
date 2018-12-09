@@ -11,9 +11,10 @@ if (!rawInput) {
 let compressorTransformer = new CompressorTransformer();
 let decompressorTransformer = new DecompressorTransformer();
 
-let accumulator = '';
+let accumulator = Buffer.from([]);
 compressorTransformer.on('data', chunk => {
-  accumulator += chunk;
+  console.log(chunk);
+  accumulator = Buffer.concat([accumulator, chunk]);
 });
 
 compressorTransformer.on('finish', () => {
@@ -23,9 +24,9 @@ compressorTransformer.on('finish', () => {
   console.log(`🙌         ratio : ${ratio}%`);
 });
 
-let deaccumulator = '';
+let deaccumulator = Buffer.from([]);
 decompressorTransformer.on('data', chunk => {
-  deaccumulator += chunk;
+  deaccumulator = Buffer.concat([deaccumulator, chunk]);
 });
 
 decompressorTransformer.on('finish', () => {

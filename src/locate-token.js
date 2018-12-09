@@ -47,12 +47,13 @@ const locateToken = (dictionary, buffer) => {
 
   if (nextLargestToken === undefined) {
     nextLargestToken = {
-      t: buffer.toString('binary', 0, 1)
+      t: buffer.slice(0, 1)
     };
   } else {
-    nextLargestToken.t = buffer
-      .slice(nextLargestToken.p[1])
-      .toString('binary', 0, 1);
+    nextLargestToken.t = buffer.slice(
+      nextLargestToken.p[1],
+      nextLargestToken.p[1] + 1
+    );
   }
 
   return nextLargestToken;

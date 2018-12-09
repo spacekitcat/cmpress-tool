@@ -11,11 +11,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toMatchObject(new Buffer('aaba'));
+      expect(slidingWindow.lookAhead()).toMatchObject(Buffer.from('aaba'));
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual(new Buffer(''));
+      expect(slidingWindow.lookBack()).toEqual(Buffer.from(''));
     });
   });
 
@@ -27,11 +27,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual(new Buffer('ba'));
+      expect(slidingWindow.lookAhead()).toEqual(Buffer.from('ba'));
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual(new Buffer('aa'));
+      expect(slidingWindow.lookBack()).toEqual(Buffer.from('aa'));
     });
   });
 
@@ -45,11 +45,11 @@ describe('SlidingWindow', () => {
     });
 
     it('has the correct lookAhead contents', () => {
-      expect(slidingWindow.lookAhead()).toEqual(new Buffer('aba'));
+      expect(slidingWindow.lookAhead()).toEqual(Buffer.from('aba'));
     });
 
     it('has the correct lookBack contents', () => {
-      expect(slidingWindow.lookBack()).toEqual(new Buffer('a'));
+      expect(slidingWindow.lookBack()).toEqual(Buffer.from('a'));
     });
   });
 });

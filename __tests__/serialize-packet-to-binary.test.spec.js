@@ -53,7 +53,7 @@ describe('serializePacketToBinary', () => {
 
   describe('when the input has a valid token value, `t`', () => {
     beforeAll(() => {
-      argument = { t: 103 };
+      argument = { t: Buffer.from('p') };
     });
 
     beforeEach(() => {
@@ -61,7 +61,7 @@ describe('serializePacketToBinary', () => {
     });
 
     it('should return a binary representation of the packet', () => {
-      expect(result).toBe('103');
+      expect(result).toMatchObject(Buffer.from('p'));
     });
   });
 
@@ -75,7 +75,7 @@ describe('serializePacketToBinary', () => {
 
   describe('when the input has a valid prefix value, `p`', () => {
     beforeAll(() => {
-      argument = { t: 101, p: [1, 3] };
+      argument = { t: Buffer.from('p'), p: [1, 3] };
     });
 
     beforeEach(() => {
@@ -83,15 +83,15 @@ describe('serializePacketToBinary', () => {
     });
 
     it('should return a binary representation of the packet', () => {
-      expect(result).toBe('101P1,3');
+      expect(result).toMatchObject(Buffer.from([112, 80, 1, 44, 3]));
     });
   });
 
   describe('when the input only has 1 position for the prefix value, `p`', () => {
     it('should throw an Error', () => {
-      expect(() => serializePacketToBinary({ t: 98, p: [4] })).toThrowError(
-        /Error: Invalid compression packet format./
-      );
+      expect(() =>
+        serializePacketToBinary({ t: Buffer.from('p'), p: [4] })
+      ).toThrowError(/Error: Invalid compression packet format./);
     });
   });
 });

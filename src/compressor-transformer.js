@@ -7,7 +7,7 @@ class CompressorTransformer extends Transform {
   constructor(options) {
     super(options);
 
-    this.historyBufferSize = 1024;
+    this.historyBufferSize = 256;
     this.currentBufferSize = 256;
 
     if (options) {
@@ -32,8 +32,7 @@ class CompressorTransformer extends Transform {
     while (this.slidingWindow.lookAhead().length > 0) {
       let nextBytes = this.slidingWindow.slide(locateToken);
       let serialized = serializePacketToBinary(nextBytes);
-      let output = `${serialized.length}${serialized}`;
-      this.push(output);
+      this.push(Buffer.concat([Buffer.from([serialized.length]), serialized]));
     }
 
     callback();

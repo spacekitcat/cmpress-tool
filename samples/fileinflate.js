@@ -10,8 +10,8 @@ if (!filePath) {
   process.exit(-1);
 }
 
-let fileReadStream = fs.createReadStream(filePath);
+let fileReadStream = fs.createReadStream(filePath, 'UTF-8');
 
 let compressorTransformer = new DecompressorTransformer();
-let fileWriteStream = fs.createWriteStream(filePath + '.inflate');
+let fileWriteStream = fs.createWriteStream(filePath + '.inflate', 'UTF-8');
 fileReadStream.pipe(compressorTransformer).pipe(fileWriteStream);

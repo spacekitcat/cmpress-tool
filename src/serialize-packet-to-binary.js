@@ -16,12 +16,15 @@ const serializePacketToBinary = compressionPackets => {
     );
   }
 
-  let output = `${compressionPackets.t}`;
+  let output = Buffer.from(compressionPackets.t);
   if (
     prefixFieldExists(compressionPackets) &&
     validPrefixField(compressionPackets)
   ) {
-    output += `P${compressionPackets.p[0]},${compressionPackets.p[1]}`;
+    let prefix = Buffer.from(
+      [80, compressionPackets.p[0], 44, compressionPackets.p[1]]
+    );
+    output = Buffer.concat([output, prefix]);
   }
 
   return output;

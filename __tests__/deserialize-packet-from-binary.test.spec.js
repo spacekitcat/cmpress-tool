@@ -34,56 +34,41 @@ describe('deserializePacketFromBinary', () => {
     });
 
     beforeEach(() => {
-      result = deserializePacketFromBinary(argument);
+      result = deserializePacketFromBinary(Buffer.from(argument));
     });
 
     it('should deserialize with the expected token', () => {
-      expect(result).toMatchObject({ t: 'a' });
+      expect(result).toMatchObject({ t: Buffer.from('a') });
     });
   });
 
   describe('when the input has a prefix field', () => {
-    beforeAll(() => {
-      argument = 'aP0,9';
-    });
-
     beforeEach(() => {
-      result = deserializePacketFromBinary(argument);
+      result = deserializePacketFromBinary(Buffer.from([97, 80, 0, 44, 9]));
     });
 
     it('should deserialize with the expected prefix', () => {
-      expect(result).toMatchObject({ t: 'a', p: [0, 9] });
+      expect(result).toMatchObject({ t: Buffer.from('a'), p: [0, 9] });
     });
   });
 
   describe('when the input has prefix values above 10', () => {
-    beforeAll(() => {
-      argument = 'aP10,123';
-    });
-
     beforeEach(() => {
-      result = deserializePacketFromBinary(argument);
+      result = deserializePacketFromBinary(Buffer.from([97, 80, 10, 44, 123]));
     });
 
     it('should deserialize with the expected prefix', () => {
-      expect(result).toMatchObject({ t: 'a', p: [10, 123] });
+      expect(result).toMatchObject({ t: Buffer.from('a'), p: [10, 123] });
     });
   });
 
   describe('when the input has a prefix field, but does not define a prefix', () => {
     const input = 'aP';
     it('should throw an Error', () => {
-      expect(() => deserializePacketFromBinary(input)).toThrowError(
+      expect(() =>
+        deserializePacketFromBinary(Buffer.from(input))
+      ).toThrowError(
         `Invalid compression serialisation stream command for input '${input}'`
-      );
-    });
-  });
-
-  describe('when the input has a prefix field, but defines non-integer values', () => {
-    const input = 'aPx,x';
-    it('should throw an Error', () => {
-      expect(() => deserializePacketFromBinary(input)).toThrowError(
-        "Invalid compression serialisation prefix field, 'x,x'"
       );
     });
   });
