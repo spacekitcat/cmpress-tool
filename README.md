@@ -22,7 +22,7 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Make everything use arrays instead of strings. This will improve data intergrity because it will use explicit unicode charcodes. It should also make it faster by eliminating string conversions.
 - [x] A sample program that can compress and save a file.
 - [x] A sample program that can decompress the above
-- [x] Substring code is O(nm), but something like `Knuth–Morris–Pratt algorithm` would give O(n). This is essential for going past a dictionary of length 255.
+- [ ] Substring code is O(nm), but something like `Knuth–Morris–Pratt algorithm` would give O(n). This is essential for going past a dictionary of length 255.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
 - [ ] Release system
 
