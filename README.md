@@ -83,6 +83,64 @@ Ran all test suites.
 
 The **./sampletarget** folder contains small demonstration scripts which demonstrate interaction with the compress and inflate methods.
 
+### Integration test (./integrationtest.sh)
+
+```bash
+/libz7 ‹master*› % ./integrationtest.sh
+
+--
+
+I compressed the heck outta ./resources/testinput01.txt
+0.11
+I inflated the heck outta ./resources/testinput01.txt.bzz
+0.10
+
+afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt
+afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflate
+
+--
+
+I compressed the heck outta ./resources/testinput02.txt
+0.11
+I inflated the heck outta ./resources/testinput02.txt.bzz
+0.20
+
+014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
+014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
+
+--
+
+I compressed the heck outta ./resources/blue.jpg
+8.51
+I inflated the heck outta ./resources/blue.jpg.bzz
+1.77
+
+15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
+15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
+
+--
+
+I compressed the heck outta ./resources/sample-ppp.pptx
+4.81
+I inflated the heck outta ./resources/sample-ppp.pptx.bzz
+1.14
+
+955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
+955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
+
+--
+
+I compressed the heck outta ./resources/sails.bmp
+86.08
+I inflated the heck outta ./resources/sails.bmp.bzz
+39.12
+
+65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
+65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
+
+--
+```
+
 ### runcompress.js
 
 ```bash
