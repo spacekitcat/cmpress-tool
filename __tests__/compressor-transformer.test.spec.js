@@ -5,8 +5,8 @@ const PREFIX_COMMAND_CHAR_CODE = 0x50;
 const COMMA_CHAR_CODE = 0x2c;
 
 describe('CompressorTransformer', () => {
-  const defaultHistoryBufferSize = 4096;
-  const defaultCurrentBufferSize = 4096;
+  const defaultHistoryBufferSize = 255;
+  const defaultCurrentBufferSize = 255;
 
   let testTarget;
   beforeAll(() => {
