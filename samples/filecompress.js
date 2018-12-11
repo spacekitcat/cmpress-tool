@@ -22,7 +22,7 @@ compressorTransformer.on('data', chunk => {
 });
 
 compressorTransformer.on('finish', () => {
-  console.log(`I compressed the heck outta ${filePath}`);
+  console.log(`I compressed the devil outta ${filePath}`);
 });
 
 fileReadStream.pipe(compressorTransformer).pipe(fileWriteStream);

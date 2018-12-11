@@ -22,7 +22,7 @@ decompressorTransformer.on('data', chunk => {
 });
 
 decompressorTransformer.on('finish', () => {
-  console.log(`I inflated the heck outta ${filePath}`);
+  console.log(`I inflated the devil outta ${filePath}`);
 });
 
 fileReadStream.pipe(decompressorTransformer).pipe(fileWriteStream);

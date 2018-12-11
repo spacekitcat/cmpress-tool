@@ -7,22 +7,17 @@ class CompressorTransformer extends Transform {
   constructor(options) {
     super(options);
 
-    this.historyBufferSize = 255;
-    this.currentBufferSize = 255;
+    this.dictionarySize = 255;
 
     if (options) {
-      if (options.historyBufferSize) {
-        this.historyBufferSize = options.historyBufferSize;
-      }
-
-      if (options.currentBufferSize) {
-        this.currentBufferSize = options.currentBufferSize;
+      if (options.dictionarySize) {
+        this.dictionarySize = options.dictionarySize;
       }
     }
 
     this.slidingWindow = new SlidingWindow(
-      this.historyBufferSize,
-      this.currentBufferSize
+      this.dictionarySize,
+      this.dictionarySize
     );
   }
 

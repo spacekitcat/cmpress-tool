@@ -1,7 +1,6 @@
 class SlidingWindow {
-  constructor(lookBackLength, lookAheadLength) {
-    this.lookBackLength = lookBackLength;
-    this.lookAheadLength = lookAheadLength;
+  constructor(dictionarySize) {
+    this.dictionarySize = dictionarySize;
     this.cursor = 0;
   }
 
@@ -13,13 +12,13 @@ class SlidingWindow {
   lookAhead() {
     const forwardBuffer = this.inputStream.slice(
       this.cursor,
-      this.cursor + this.lookAheadLength
+      this.cursor + this.dictionarySize
     );
     return forwardBuffer;
   }
 
   lookBack() {
-    let from = Math.max(this.cursor - this.lookBackLength, 0);
+    let from = Math.max(this.cursor - this.dictionarySize, 0);
     const backwardBuffer = this.inputStream.slice(from, this.cursor);
     return backwardBuffer;
   }

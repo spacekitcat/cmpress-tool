@@ -5,68 +5,50 @@ const PREFIX_COMMAND_CHAR_CODE = 0x50;
 const COMMA_CHAR_CODE = 0x2c;
 
 describe('CompressorTransformer', () => {
-  const defaultHistoryBufferSize = 255;
-  const defaultCurrentBufferSize = 255;
+  const defaultDictionarySize = 255;
 
   let testTarget;
   beforeAll(() => {
     testTarget = new CompressorTransformer({
-      historyBufferSize: defaultHistoryBufferSize,
-      currentBufferSize: defaultCurrentBufferSize
+      historyBufferSize: defaultDictionarySize,
+      currentBufferSize: defaultDictionarySize
     });
   });
 
   it('uses the expected default historyBufferSize', () => {
     expect(new CompressorTransformer()).toHaveProperty(
-      'historyBufferSize',
-      defaultHistoryBufferSize
+      'dictionarySize',
+      defaultDictionarySize
     );
   });
 
   it('uses the expected default currentBufferSize', () => {
     expect(new CompressorTransformer()).toHaveProperty(
-      'currentBufferSize',
-      defaultCurrentBufferSize
+      'dictionarySize',
+      defaultDictionarySize
     );
   });
 
   it('constructs the SlidingWindow with the expected parameters', () => {
     expect(new CompressorTransformer()).toHaveProperty(
       'slidingWindow',
-      new SlidingWindow(defaultHistoryBufferSize, defaultCurrentBufferSize)
+      new SlidingWindow(defaultDictionarySize, defaultDictionarySize)
     );
   });
 
-  describe('and a custom historyBufferSize is provided', () => {
+  describe('and a custom dictionarySize is provided', () => {
     beforeAll(() => {
-      testTarget = new CompressorTransformer({ historyBufferSize: 512 });
+      testTarget = new CompressorTransformer({ dictionarySize: 512 });
     });
 
     it('uses the expected value', () => {
-      expect(testTarget).toHaveProperty('historyBufferSize', 512);
+      expect(testTarget).toHaveProperty('dictionarySize', 512);
     });
 
     it('constructs the SlidingWindow with the expected parameters', () => {
       expect(testTarget).toHaveProperty(
         'slidingWindow',
-        new SlidingWindow(512, defaultCurrentBufferSize)
-      );
-    });
-  });
-
-  describe('and a custom currentBufferSize is provided', () => {
-    beforeAll(() => {
-      testTarget = new CompressorTransformer({ currentBufferSize: 512 });
-    });
-
-    it('uses the expected value', () => {
-      expect(testTarget).toHaveProperty('currentBufferSize', 512);
-    });
-
-    it('constructs the SlidingWindow with the expected parameters', () => {
-      expect(testTarget).toHaveProperty(
-        'slidingWindow',
-        new SlidingWindow(defaultHistoryBufferSize, 512)
+        new SlidingWindow(512, 512)
       );
     });
   });

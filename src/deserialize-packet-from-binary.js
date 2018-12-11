@@ -16,8 +16,8 @@ const readPrefixValue = field => {
     delimPosition = field.indexOf(COMMA_CHAR_CODE);
   }
 
-  let prefixValue1 = field.readUInt8(delimPosition - 1);
-  let prefixValue2 = field.readUInt8(delimPosition + 1);
+  let prefixValue1 = field.readUIntLE(0, delimPosition);
+  let prefixValue2 = field.readUIntLE(delimPosition + 1, field.length - delimPosition - 1);
   return [prefixValue1, prefixValue2];
 };
 

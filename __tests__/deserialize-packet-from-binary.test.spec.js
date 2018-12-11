@@ -44,7 +44,7 @@ describe('deserializePacketFromBinary', () => {
 
   describe('when the input has a prefix field', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from([97, 80, 0, 44, 9]));
+      result = deserializePacketFromBinary(Buffer.from([97, 80, 0x00, 44, 0x09, 0x00]));
     });
 
     it('should deserialize with the expected prefix', () => {
@@ -59,6 +59,17 @@ describe('deserializePacketFromBinary', () => {
 
     it('should deserialize with the expected prefix', () => {
       expect(result).toMatchObject({ t: Buffer.from('a'), p: [10, 123] });
+    });
+  });
+
+
+  describe('when the input has prefix values above 255', () => {
+    beforeEach(() => {
+      result = deserializePacketFromBinary(Buffer.from([97, 80, 0x01, 0x02, 44, 0x00, 0x04]));
+    });
+
+    it('should deserialize with the expected prefix', () => {
+      expect(result).toMatchObject({ t: Buffer.from('a'), p: [513, 1024] });
     });
   });
 
