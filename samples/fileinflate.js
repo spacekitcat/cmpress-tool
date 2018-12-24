@@ -21,6 +21,10 @@ decompressorTransformer.on('data', chunk => {
   accumulator = Buffer.concat([accumulator, chunk]);
 });
 
+decompressorTransformer.on('data', chunk => {
+  //console.log(chunk);
+});
+
 decompressorTransformer.on('finish', () => {
   console.log(`I inflated the devil outta ${filePath}`);
 });

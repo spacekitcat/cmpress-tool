@@ -11,7 +11,7 @@ if (!filePath) {
   process.exit(-1);
 }
 
-let fileReadStream = fs.createReadStream(filePath);
+let fileReadStream = fs.createReadStream(filePath, { highWaterMark: 8 });
 let fileWriteStream = fs.createWriteStream(`${filePath}.bzz`);
 
 let compressorTransformer = new CompressorTransformer();

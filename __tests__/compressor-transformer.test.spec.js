@@ -2,7 +2,6 @@ import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
 
 const PREFIX_COMMAND_CHAR_CODE = 0x50;
-const COMMA_CHAR_CODE = 0x2c;
 
 describe('CompressorTransformer', () => {
   const defaultDictionarySize = 255;
@@ -13,27 +12,6 @@ describe('CompressorTransformer', () => {
       historyBufferSize: defaultDictionarySize,
       currentBufferSize: defaultDictionarySize
     });
-  });
-
-  it('uses the expected default historyBufferSize', () => {
-    expect(new CompressorTransformer()).toHaveProperty(
-      'dictionarySize',
-      defaultDictionarySize
-    );
-  });
-
-  it('uses the expected default currentBufferSize', () => {
-    expect(new CompressorTransformer()).toHaveProperty(
-      'dictionarySize',
-      defaultDictionarySize
-    );
-  });
-
-  it('constructs the SlidingWindow with the expected parameters', () => {
-    expect(new CompressorTransformer()).toHaveProperty(
-      'slidingWindow',
-      new SlidingWindow(defaultDictionarySize, defaultDictionarySize)
-    );
   });
 
   describe('and a custom dictionarySize is provided', () => {
@@ -78,7 +56,7 @@ describe('CompressorTransformer', () => {
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(Buffer.from([0x01, 97]));
+      expect(outputAccumulator).toMatchObject(Buffer.from([0x01, 0x00, 97]));
     });
 
     compressorTransformer.write(Buffer.from([97]));
@@ -96,10 +74,9 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 97,  // [a]
-          0x01, 97,  // [a,a]
-          0x01, 98,  // [a,a,b]
-          0x01, 97]) // [a,a,b,a]
+          0x01, 0x00, 97,  // [a]
+          0x06, 0x00, 98, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00,  // [a,b]
+          0x01, 0x00, 97]) // [a]
       );
     });
 
@@ -107,7 +84,7 @@ describe('CompressorTransformer', () => {
     compressorTransformer.end();
   });
 
-  it('compresses aaaa', () => {
+  it.only('compresses aaaa', () => {
     let compressorTransformer = new CompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -118,10 +95,9 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 97,  // [a]
-          0x01, 97,  // [a,a]
-          0x01, 97,  // [a,a,a]
-          0x01, 97]) // [a,a,a,a]
+          0x01, 0x00, 97,  // [a]
+          0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00,  // [a,a]
+          0x01, 0x00, 97]) // [a]
       );
     });
 
@@ -140,11 +116,10 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 97,  // [a]
-          0x01, 97,  // [a,a]
-          0x01, 97,  // [a,a,a]
-          0x01, 97,  // [a,a,a,a]
-          0x05, 98, PREFIX_COMMAND_CHAR_CODE, 0x01, 44, 0x04]) // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
+          0x01, 0x00, 97,  // [a]
+          0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00, // [a,a]
+          0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x03, 0x00, // [a,a,a,a]
+          0x06, 0x00, 98, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00]) // [a, b]
       );
     });
 
@@ -166,18 +141,16 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          1, 97,  // [a]
-          1, 97,  // [a,a]
-          1, 97,  // [a,a,a]
-          1, 97,  // [a,a,a,a]
-          5, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x04,  // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
-          5, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x05]  // [5a,4a,3a,2a, [ 4, 3, 2, 1 ]+1a, [ 5, 4, 3, 2, 1 ]+0a
+          0x01, 0x00, 97,  // [a]
+          0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00,  // [a,a]
+          0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x03, 0x00,  // [a, a, a, a]
+          0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x07, 0x00]  // [a, a, a, a, a, a, a, a]
         )
       );
     });
 
     compressorTransformer.write(
-      Buffer.from([97,97,97,97,97,97,97,97,97,97,97,97,97,97,97])
+      Buffer.from([97,97,97,97,97,97,97, 97,97,97,97,97,97,97,97])
     );
     compressorTransformer.end();
   });
@@ -194,14 +167,13 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          1, 0x6c,    // [l]
-          1, 0x69,    // [l,i]
-          1, 0x73,    // [l,i,s]
-          1, 0x61,    // [l,i,s,a]
-          5, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x04,  // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
-          1, 0x69,    // [5l,4i,3s,2a, [ 5l, 4i, 3s, 2a ]+1l, 0i
-          1, 0x73,    // [6l,5i,4s,3a, [ 6l, 5i, 4s, 3a ]+2l, 1i, 0s
-          1, 0x61]    // [7l,6i,5s,4a, [ 7l, 6i, 5s, 4a ]+3l, 2i, 1s, 0a
+          0x01, 0x00, 0x6c,    // [l]
+          0x01, 0x00, 0x69,    // [i]
+          0x01, 0x00, 0x73,    // [s]
+          0x01, 0x00, 0x61,    // [a]
+          0x06, 0x00, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,  // [l, i, s, a, l]
+          0x06, 0x00, 0x61, PREFIX_COMMAND_CHAR_CODE, 0x03, 0x00, 0x02, 0x00,  // [i, s, a]
+          ]
         )
       );
     });
@@ -224,12 +196,12 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          1, 0x6c,    // [l]
-          1, 0x69,    // [l,i]
-          1, 0x73,    // [l,i,s]
-          1, 0x61,    // [l,i,s,a]
-          5, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x04,   // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
-          5, 0x61, PREFIX_COMMAND_CHAR_CODE, 0x03, COMMA_CHAR_CODE, 0x06]   // [9l,8i,7s,6a,5l,4i,3s,2a,1l], [8i, 7s, 6a, 5l, 4i, 3s]+0a
+          0x01, 0x00, 0x6c,    // [l]
+          0x01, 0x00, 0x69,    // [i]
+          0x01, 0x00, 0x73,    // [s]
+          0x01, 0x00, 0x61,    // [a]
+          0x06, 0x00, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,   // [l, i, s, a, l]
+          0x06, 0x00, 0x61, PREFIX_COMMAND_CHAR_CODE, 0x03, 0x00, 0x06, 0x00]   // [i, s, a, l, i, s, a]
         )
       );
     });
@@ -250,7 +222,11 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
-        Buffer.from([1, 97, 1, 97, 1, 97, 1, 98, 1, 98, 1, 99])
+        Buffer.from([
+          0x01, 0x00, 97, // [a]
+          0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00, // [a, a]
+          0x01, 0x00, 98, // [b]
+          0x06, 0x00, 99, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00])  //  [b, c]
       );
     });
 
@@ -267,7 +243,7 @@ describe('CompressorTransformer', () => {
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(Buffer.from([1, 194, 1, 163]));
+      expect(outputAccumulator).toMatchObject(Buffer.from([0x01, 0x00, 194, 0x01, 0x00, 163]));
     });
 
     compressorTransformer.write('£');
@@ -275,7 +251,7 @@ describe('CompressorTransformer', () => {
   });
 
   describe('where the stream transform involves multiple calls', () => {
-    /** The sliding window need to maintain state between 'chunks' (the argument passed to the transformer) */
+    /** The sliding window needs to maintain state between 'chunks' (the argument passed to the transformer) */
     it('does not reset the sliding window', () => {
       let compressorTransformer = new CompressorTransformer();
 
@@ -289,12 +265,18 @@ describe('CompressorTransformer', () => {
 
       compressorTransformer.on('finish', () => {
         expect(outputAccumulator).toMatchObject(
-          Buffer.from([1, 97, 1, 97, 1, 97, 1, 97, 1, 97, 1, 97, 1, 97])
+          Buffer.from([
+            0x01, 0x00, 97, //  [a]
+            0x06, 0x00, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x01, 0x00, // [a, a]
+            0x01, 0x00, 97  //  [a]
+          ])
         );
       });
 
-      compressorTransformer.write(Buffer.from([97, 97, 97, 97, 97]));
-      compressorTransformer.write(Buffer.from([97, 97]));
+      compressorTransformer.write(Buffer.from([97, 97, 97, 97]));
+      compressorTransformer.write(Buffer.from([97]));
+      compressorTransformer.write(Buffer.from([97]));
+      compressorTransformer.write(Buffer.from([97]));
 
       compressorTransformer.end();
     });

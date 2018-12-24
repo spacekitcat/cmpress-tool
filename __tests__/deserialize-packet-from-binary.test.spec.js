@@ -1,5 +1,8 @@
 import deserializePacketFromBinary from '../src/deserialize-packet-from-binary';
 
+const COMMA_CHAR_CODE = 0x2c;
+const PREFIX_COMMAND_CHAR_CODE = 0x50;
+
 describe('deserializePacketFromBinary', () => {
   let result;
   let argument;
@@ -44,7 +47,7 @@ describe('deserializePacketFromBinary', () => {
 
   describe('when the input has a prefix field', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from([97, 80, 0x00, 44, 0x09, 0x00]));
+      result = deserializePacketFromBinary(Buffer.from([97, 80, 0x00, 0x00, 0x09, 0x00]));
     });
 
     it('should deserialize with the expected prefix', () => {
@@ -52,9 +55,19 @@ describe('deserializePacketFromBinary', () => {
     });
   });
 
+  describe('when the input has a prefix field and starts with a comma', () => {
+    beforeEach(() => {
+      result = deserializePacketFromBinary(Buffer.from([COMMA_CHAR_CODE, 80, 0x00, 0x00, 0x09, 0x00]));
+    });
+
+    it('should deserialize with the expected prefix', () => {
+      expect(result).toMatchObject({ t: Buffer.from(','), p: [0, 9] });
+    });
+  });
+
   describe('when the input has prefix values above 10', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from([97, 80, 10, 44, 123]));
+      result = deserializePacketFromBinary(Buffer.from([97, 80, 0x0A, 0x00, 123, 0x00]));
     });
 
     it('should deserialize with the expected prefix', () => {
@@ -65,7 +78,7 @@ describe('deserializePacketFromBinary', () => {
 
   describe('when the input has prefix values above 255', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from([97, 80, 0x01, 0x02, 44, 0x00, 0x04]));
+      result = deserializePacketFromBinary(Buffer.from([97, 80, 0x01, 0x02, 0x00, 0x04]));
     });
 
     it('should deserialize with the expected prefix', () => {
@@ -74,23 +87,23 @@ describe('deserializePacketFromBinary', () => {
   });
 
   describe('when the input has a prefix field, but does not define a prefix', () => {
-    const input = 'aP';
+    const input = Buffer.from('aP');
     it('should throw an Error', () => {
       expect(() =>
         deserializePacketFromBinary(Buffer.from(input))
       ).toThrowError(
-        `Invalid compression serialisation stream command for input '${input}'`
+        `Invalid compression serialisation stream command for input '${input.toString('hex')}'`
       );
     });
   });
 
   describe('when the input has a unrecognized field', () => {
-    const input = 'aK';
+    const input = Buffer.from('aK');
     it('should throw an Error', () => {
       expect(() =>
         deserializePacketFromBinary(Buffer.from(input))
       ).toThrowError(
-        `Invalid compression serialisation stream command for input '${input}'`
+        `Invalid compression serialisation stream command for input '${input.toString('hex')}'`
       );
     });
   });

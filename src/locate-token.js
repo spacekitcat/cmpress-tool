@@ -4,7 +4,7 @@ import findIndexOfSubarray from './find-index-of-subarray';
 const getPossibleTokens = buffer => {
   let tokenList = [];
 
-  for (let i = 4; i < buffer.length; ++i) {
+  for (let i = 0; i < buffer.length; ++i) {
     tokenList.unshift(buffer.slice(0, i));
   }
 
