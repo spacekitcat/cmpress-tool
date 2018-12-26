@@ -1,6 +1,5 @@
 #!/usr/bin/env time node --prof
-import locateToken from '../lib/locate-token.js';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+import findIndexOfSubarray from '../lib/find-index-of-subarray.js';
 
 let history = [];
 let buffer = [];
@@ -13,4 +12,4 @@ for (let i = 0; i < 1280; ++i) {
   buffer.push(String.fromCharCode(Math.random() * 254));
 }
 
-locateToken(history, buffer);
+findIndexOfSubarray(history, buffer);

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env time node --prof
 import { CompressorTransformer } from '../lib/compressor-transformer';
 import { DecompressorTransformer } from '../lib/decompressor-transformer';
 
