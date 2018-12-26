@@ -74,7 +74,7 @@ describe('deserializePacketFromBinary', () => {
   });
 
   describe('when the input has a prefix field, but does not define a prefix', () => {
-    const input = 'aP';
+    const input = Buffer.from('aP');
     it('should throw an Error', () => {
       expect(() =>
         deserializePacketFromBinary(Buffer.from(input))
@@ -85,7 +85,7 @@ describe('deserializePacketFromBinary', () => {
   });
 
   describe('when the input has a unrecognized field', () => {
-    const input = 'aK';
+    const input = Buffer.from('aK');
     it('should throw an Error', () => {
       expect(() =>
         deserializePacketFromBinary(Buffer.from(input))

@@ -1,6 +1,5 @@
 const invalidFatalInput = input => !input;
 
-const COMMA_CHAR_CODE = 0x2c;
 const PREFIX_COMMAND_CHAR_CODE = 0x50;
 
 const hasPrefixField = input => {
@@ -29,7 +28,7 @@ const deserializePacketFromBinary = serialisedBuffer => {
     throw new Error(
       `Invalid compression serialisation stream command for input '${serialisedBuffer}'`
     );
-  }
+  }      
 
   return output;
 };

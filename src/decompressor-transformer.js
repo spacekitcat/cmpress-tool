@@ -10,6 +10,7 @@ class DecompressorTransformer extends Transform {
     this.expectingNewToken = true;
     this.missingPackets = 0;
     this.buffer = Buffer.from([]);
+    this.last_chunk = null;
   }
 
   _transform(chunk, encoding, callback) {
@@ -17,18 +18,19 @@ class DecompressorTransformer extends Transform {
     let currentChunkPointer = 0;
     while (currentChunkPointer < chunk.length) {
       if (this.expectingNewToken) {
-        this.missingPackets = parseInt(chunk[currentChunkPointer]);
-
+        this.missingPackets = chunk.readUInt8(currentChunkPointer);
         this.expectingNewToken = false;
         currentChunkPointer += 1;
       }
 
-      this.buffer = Buffer.concat([
-        this.buffer,
-        chunk.slice(currentChunkPointer, currentChunkPointer + 1)
-      ]);
-      this.missingPackets -= 1;
-      currentChunkPointer += 1;
+      if (currentChunkPointer < chunk.length) {
+        this.buffer = Buffer.concat([
+          this.buffer,
+          chunk.slice(currentChunkPointer, currentChunkPointer + 1)
+        ]);
+        this.missingPackets -= 1;
+        currentChunkPointer += 1;
+      }
 
       if (this.missingPackets === 0) {
         let packet = deserializePacketFromBinary(this.buffer);
@@ -66,6 +68,7 @@ class DecompressorTransformer extends Transform {
       );
     });
 
+    this.last_chunk = chunk;
     callback();
   }
 }
