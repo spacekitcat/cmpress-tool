@@ -47,16 +47,21 @@ Successfully compiled 1 file with Babel.
 
 ```
 /libz7
+> npm run test
+
+
+> libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
 > jest --coverage
 
+ PASS  __tests__/deserialize-packet-from-binary.test.spec.js
  PASS  __tests__/compressor-transformer.test.spec.js
- PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
  PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
  PASS  __tests__/serialize-packet-to-binary.test.spec.js
- PASS  __tests__/deserialize-packet-from-binary.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
+ PASS  __tests__/unpack-integer-to-byte.test.spec.js
 -----------------------------------|----------|----------|----------|----------|-------------------|
 File                               |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -----------------------------------|----------|----------|----------|----------|-------------------|
@@ -69,12 +74,13 @@ All files                          |      100 |      100 |      100 |      100 |
  locate-token.js                   |      100 |      100 |      100 |      100 |                   |
  serialize-packet-to-binary.js     |      100 |      100 |      100 |      100 |                   |
  sliding-window.js                 |      100 |      100 |      100 |      100 |                   |
+ unpack-integer-to-byte.js         |      100 |      100 |      100 |      100 |                   |
 -----------------------------------|----------|----------|----------|----------|-------------------|
 
-Test Suites: 8 passed, 8 total
-Tests:       96 passed, 96 total
+Test Suites: 9 passed, 9 total
+Tests:       103 passed, 103 total
 Snapshots:   0 total
-Time:        1.43s
+Time:        2.197s
 Ran all test suites.
 ```
 
