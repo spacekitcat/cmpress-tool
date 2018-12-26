@@ -5,7 +5,7 @@ import deserializePacketFromBinary from './deserialize-packet-from-binary';
 class DecompressorTransformer extends Transform {
   constructor(options) {
     super(options);
-    this.historyBufferSize = 255;
+    this.historyBufferSize = 256;
     this.history_buffer = consumeInput([], this.historyBufferSize, []);
     this.expectingNewToken = true;
     this.missingPackets = 0;

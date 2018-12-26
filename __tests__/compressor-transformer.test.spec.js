@@ -5,7 +5,7 @@ const PREFIX_COMMAND_CHAR_CODE = 0x50;
 const COMMA_CHAR_CODE = 0x2c;
 
 describe('CompressorTransformer', () => {
-  const defaultDictionarySize = 255;
+  const defaultDictionarySize = 256;
 
   let testTarget;
   beforeAll(() => {
