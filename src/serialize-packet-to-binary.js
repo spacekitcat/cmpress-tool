@@ -1,3 +1,5 @@
+import unpackIntegerByte from './unpack-integer-to-byte';
+
 const validTokenField = input => typeof input.t !== String && input.t;
 
 const prefixFieldExists = input => input.p !== undefined;
@@ -21,10 +23,8 @@ const serializePacketToBinary = compressionPackets => {
     prefixFieldExists(compressionPackets) &&
     validPrefixField(compressionPackets)
   ) {
-    let prefix = Buffer.from(
-      [80, compressionPackets.p[0], 44, compressionPackets.p[1]]
-    );
-    output = Buffer.concat([output, prefix]);
+
+    output = Buffer.concat([output, Buffer.from([80]), unpackIntegerByte(compressionPackets.p[0], 2), unpackIntegerByte(compressionPackets.p[1], 2)]);
   }
 
   return output;

@@ -5,7 +5,7 @@ const PREFIX_COMMAND_CHAR_CODE = 0x50;
 
 describe('DecompressorTransformer', () => {
   
-  it('inflates a to a', () => {
+  it('inflates `a`', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -21,7 +21,24 @@ describe('DecompressorTransformer', () => {
     decompressorTransformer.end();
   });
 
-  it('inflates aaba', () => {
+  it('inflates `aaa` where the packet goes across to chunks', () => {
+    let decompressorTransformer = new DecompressorTransformer();
+
+    let outputAccumulator = Buffer.from([]);
+    decompressorTransformer.on('data', decompressedPacket => {
+      outputAccumulator = Buffer.concat([outputAccumulator, decompressedPacket]);
+    });
+
+    decompressorTransformer.on('finish', () => {
+      expect(outputAccumulator).toMatchObject(Buffer.from([0x80, 0x80, 0x80]));
+    });
+
+    decompressorTransformer.write(Buffer.from([0x01, 0x80, 0x06]));
+    decompressorTransformer.write(Buffer.from([0x80, 0x50, 0x01, 0x00, 0x01, 0x00]));
+    decompressorTransformer.end();
+  });
+
+  it('inflates `aaba`', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -42,7 +59,7 @@ describe('DecompressorTransformer', () => {
     decompressorTransformer.end();
   });
 
-  it('inflates aaaa', () => {
+  it('inflates `aaaa`', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -64,7 +81,7 @@ describe('DecompressorTransformer', () => {
     decompressorTransformer.end();
   });
 
-  it('inflates aaaaaaaab', () => {
+  it('inflates `aaaaaaaab`', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -90,7 +107,7 @@ describe('DecompressorTransformer', () => {
     });
   });
 
-  it('inflates aaaaaaaaaaaaaaaa', () => {
+  it('inflates `aaaaaaaaaaaaaaaa`', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -106,18 +123,18 @@ describe('DecompressorTransformer', () => {
 
     decompressorTransformer.write(
       Buffer.from([
-        1, 97,  // [a]
-        1, 97,  // [a,a]
-        1, 97,  // [a,a,a]
-        1, 97,  // [a,a,a,a]
-        5, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x04,  // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
-        5, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x05]  // [5a,4a,3a,2a, [ 4, 3, 2, 1 ]+1a, [ 5a, 4a, 3a, 2a, 1a ]+0a
+        0x01, 97,  // [a]
+        0x01, 97,  // [a,a]
+        0x01, 97,  // [a,a,a]
+        0x01, 97,  // [a,a,a,a]
+        0x06, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,  // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
+        0x06, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x05, 0x00]  // [5a,4a,3a,2a, [ 4, 3, 2, 1 ]+1a, [ 5a, 4a, 3a, 2a, 1a ]+0a
       )
     );
     decompressorTransformer.end();
   });
 
-  it('inflates lisalisalisa', () => {
+  it('inflates `lisalisalisa`', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -133,20 +150,20 @@ describe('DecompressorTransformer', () => {
 
     decompressorTransformer.write(
       Buffer.from([
-        1, 0x6c,    // [l]
-        1, 0x69,    // [l,i]
-        1, 0x73,    // [l,i,s]
-        1, 0x61,    // [l,i,s,a]
-        5, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x04,  // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
-        1, 0x69,    // [5l,4i,3s,2a, [ 5l, 4i, 3s, 2a ]+1l, 0i
-        1, 0x73,    // [6l,5i,4s,3a, [ 6l, 5i, 4s, 3a ]+2l, 1i, 0s
-        1, 0x61]    // [7l,6i,5s,4a, [ 7l, 6i, 5s, 4a ]+3l, 2i, 1s, 0a
+        0x01, 0x6c,    // [l]
+        0x01, 0x69,    // [l,i]
+        0x01, 0x73,    // [l,i,s]
+        0x01, 0x61,    // [l,i,s,a]
+        0x06, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,  // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
+        0x01, 0x69,    // [5l,4i,3s,2a, [ 5l, 4i, 3s, 2a ]+1l, 0i
+        0x01, 0x73,    // [6l,5i,4s,3a, [ 6l, 5i, 4s, 3a ]+2l, 1i, 0s
+        0x01, 0x61]    // [7l,6i,5s,4a, [ 7l, 6i, 5s, 4a ]+3l, 2i, 1s, 0a
       )
     );
     decompressorTransformer.end();
   });
 
-  it('inflates lisalisalisalisa', () => {
+  it('inflates `lisalisalisalisa`', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -166,8 +183,8 @@ describe('DecompressorTransformer', () => {
           1, 0x69,    // [l,i]
           1, 0x73,    // [l,i,s]
           1, 0x61,    // [l,i,s,a]
-          5, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, COMMA_CHAR_CODE, 0x04,   // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
-          5, 0x61, PREFIX_COMMAND_CHAR_CODE, 0x03, COMMA_CHAR_CODE, 0x06]   // [9l,8i,7s,6a,5l,4i,3s,2a,1l], [8i, 7s, 6a, 5l, 4i, 3s]+0a
+          0x06, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,   // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
+          0x06, 0x61, PREFIX_COMMAND_CHAR_CODE, 0x03, 0x00, 0x06, 0x00]   // [9l,8i,7s,6a,5l,4i,3s,2a,1l], [8i, 7s, 6a, 5l, 4i, 3s]+0a
     ));
     decompressorTransformer.end();
   });
@@ -188,7 +205,7 @@ describe('DecompressorTransformer', () => {
     });
 
     decompressorTransformer.write(
-      Buffer.from([1, 97, 1, 97, 1, 97, 1, 97, 1, 98, 1, 99])
+      Buffer.from([0x01, 97, 0x01, 97, 0x01, 97, 0x01, 97, 0x01, 98, 0x01, 99])
     );
     decompressorTransformer.end();
   });

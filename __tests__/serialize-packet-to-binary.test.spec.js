@@ -83,7 +83,7 @@ describe('serializePacketToBinary', () => {
     });
 
     it('should return a binary representation of the packet', () => {
-      expect(result).toMatchObject(Buffer.from([112, 80, 1, 44, 3]));
+      expect(result).toMatchObject(Buffer.from([112, 80, 0x01, 0x00, 0x03, 0x00]));
     });
   });
 
