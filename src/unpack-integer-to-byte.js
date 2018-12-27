@@ -2,7 +2,7 @@ const unpackIntegerByte = (integer, fixedWidth) => {
     let bytes = [];
 
     do {
-        bytes.unshift(0x000000FF & integer);
+        bytes.push(0x000000FF & integer);
         integer = integer >> 8;
         if (bytes.length >= fixedWidth) {
             break;

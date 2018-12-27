@@ -95,55 +95,58 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 
 --
 
-I compressed the devil out of ./resources/testinput01.txt
-0.10
-I inflated the devil out of ./resources/testinput01.txt.bzz
-0.10
+I compressed the devil outta ./resources/testinput01.txt
+        0.15 real         0.13 user         0.03 sys
+0.14
+I inflated the devil outta ./resources/testinput01.txt.bzz
+0.11
 
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflate
 
 --
 
-I compressed the devil out of ./resources/testinput02.txt
-0.11
-I inflated the devil out of ./resources/testinput02.txt.bzz
-0.19
+I compressed the devil outta ./resources/testinput02.txt
+        0.16 real         0.13 user         0.03 sys
+0.14
+I inflated the devil outta ./resources/testinput02.txt.bzz
+0.22
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
 
 --
 
-I compressed the devil out of ./resources/blue.jpg
-8.43
-I inflated the devil out of ./resources/blue.jpg.bzz
-1.76
+I compressed the devil outta ./resources/blue.jpg
+       22.98 real        23.40 user         1.64 sys
+23.40
+I inflated the devil outta ./resources/blue.jpg.bzz
+1.79
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
 
 --
 
-I compressed the devil out of ./resources/sample-ppp.pptx
-4.78
-I inflated the devil out of ./resources/sample-ppp.pptx.bzz
-1.08
+I compressed the devil outta ./resources/sample-ppp.pptx
+       12.98 real        13.21 user         0.71 sys
+13.22
+I inflated the devil outta ./resources/sample-ppp.pptx.bzz
+1.19
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
 
 --
 
-I compressed the devil out of ./resources/sails.bmp
-85.50
-I inflated the devil out of ./resources/sails.bmp.bzz
-39.73
+I compressed the devil outta ./resources/sails.bmp
+      153.07 real       155.98 user        27.47 sys
+155.99
+I inflated the devil outta ./resources/sails.bmp.bzz
+39.04
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
-
---
 ```
 
 ### runcompress.js
