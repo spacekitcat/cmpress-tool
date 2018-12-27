@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import findIndexOfSubarray from './find-index-of-subarray';
 
 const getPossibleTokens = buffer => {

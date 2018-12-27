@@ -1,11 +1,8 @@
 import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
 
-const PREFIX_COMMAND_CHAR_CODE = 0x50;
-const COMMA_CHAR_CODE = 0x2c;
-
 describe('CompressorTransformer', () => {
-  const defaultDictionarySize = 1024;
+  const defaultDictionarySize = 2048;
 
   let testTarget;
   beforeAll(() => {
@@ -24,17 +21,17 @@ describe('CompressorTransformer', () => {
 
   describe('and a custom dictionarySize is provided', () => {
     beforeAll(() => {
-      testTarget = new CompressorTransformer({ dictionarySize: 1024 });
+      testTarget = new CompressorTransformer({ dictionarySize: 2048 });
     });
 
     it('uses the expected value', () => {
-      expect(testTarget).toHaveProperty('dictionarySize', 1024);
+      expect(testTarget).toHaveProperty('dictionarySize', 2048);
     });
 
     it('constructs the SlidingWindow with the expected parameters', () => {
       expect(testTarget).toHaveProperty(
         'slidingWindow',
-        new SlidingWindow(1024, 1024)
+        new SlidingWindow(2048, 2048)
       );
     });
   });

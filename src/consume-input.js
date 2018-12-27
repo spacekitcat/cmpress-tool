@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 const consumeInput = (buffer, bufferSize, input) => {
   let discard = [];
   if (!buffer) {
