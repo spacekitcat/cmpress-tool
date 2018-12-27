@@ -174,8 +174,8 @@ I inflated the devil outta ./resources/sails.bmp.bzz
 ### runcompress.js
 
 ```bash
-libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew                                           1 ↵
-
+/libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewroma
+noilovematthew
 <Buffer 01 69>
 <Buffer 01 6c>
 <Buffer 01 6f>
@@ -194,16 +194,16 @@ libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthe
 <Buffer 01 61>
 <Buffer 01 6e>
 <Buffer 01 6f>
-<Buffer 05 69 50 01 2c 12>
-<Buffer 05 6c 50 01 2c 24>
-<Buffer 05 77 50 0a 2c 1b>
+<Buffer 05 69 01 00 12 00>
+<Buffer 05 6c 01 00 24 00>
+<Buffer 05 77 0a 00 1b 00>
 📥         input : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
-💤    compressed : ilovematthewromanoiP,lP,$wP
-,
+💤    compressed : ilovematthewromanoil$w
+
          ratio : 52.94117647058824%
 
-📥         input : ilovematthewromanoiP,lP,$wP
-,
+📥         input : ilovematthewromanoil$w
+
   decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
 🙌         ratio : 188.88888888888889%
 ```
