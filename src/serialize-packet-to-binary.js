@@ -24,7 +24,7 @@ const serializePacketToBinary = compressionPackets => {
     validPrefixField(compressionPackets)
   ) {
 
-    output = Buffer.concat([output, Buffer.from([80]), unpackIntegerByte(compressionPackets.p[0], 2), unpackIntegerByte(compressionPackets.p[1], 2)]);
+    output = Buffer.concat([output, unpackIntegerByte(compressionPackets.p[0], 2), unpackIntegerByte(compressionPackets.p[1], 2)]);
   }
 
   return output;

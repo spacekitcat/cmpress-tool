@@ -85,6 +85,27 @@ Time:        2.197s
 Ran all test suites.
 ```
 
+# Serialisation format
+
+Field 1 **[8_ bits]**  
+Field 2 **[8_ bits]**  
+Field 3 **[16 bits]**  
+Field 4 **[16 bits]**  
+
+**Field 1**  
+An 8-bit value representing the packet size. A packet size of 1 signals a token with no prefix; A packet size of 5 signals a token with a prefix.  
+
+**Field 2**  
+An 8-bit value representing the token  
+
+**Field 3**  
+*(Only required for a packet size >1)*  
+Indicates the start index of a prefix value in the history window.  
+
+**Field 4**  
+*(Only required for a packet size >1)*  
+Indicates the length of the prefix value in the history window.
+
 # Examples
 
 The **./sampletarget** folder contains small demonstration scripts which demonstrate interaction with the compress and inflate methods.

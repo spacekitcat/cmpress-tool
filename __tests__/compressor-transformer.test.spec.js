@@ -130,7 +130,7 @@ describe('CompressorTransformer', () => {
           0x01, 97,  // [a,a]
           0x01, 97,  // [a,a,a]
           0x01, 97,  // [a,a,a,a]
-          0x06, 98, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00]) // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
+          0x05, 98, 0x01, 0x00, 0x04, 0x00]) // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
       );
     });
 
@@ -156,8 +156,8 @@ describe('CompressorTransformer', () => {
           0x01, 97,  // [a,a]
           0x01, 97,  // [a,a,a]
           0x01, 97,  // [a,a,a,a]
-          0x06, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,  // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
-          0x06, 97, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x05, 0x00]  // [5a,4a,3a,2a, [ 4, 3, 2, 1 ]+1a, [ 5, 4, 3, 2, 1 ]+0a
+          0x05, 97, 0x01, 0x00, 0x04, 0x00,  // [4a,3a,2a,1a, [ 4, 3, 2, 1 ]+0a
+          0x05, 97, 0x01, 0x00, 0x05, 0x00]  // [5a,4a,3a,2a, [ 4, 3, 2, 1 ]+1a, [ 5, 4, 3, 2, 1 ]+0a
         )
       );
     });
@@ -184,7 +184,7 @@ describe('CompressorTransformer', () => {
           0x01, 0x69,    // [l,i]
           0x01, 0x73,    // [l,i,s]
           0x01, 0x61,    // [l,i,s,a]
-          0x06, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,  // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
+          0x05, 0x6c, 0x01, 0x00, 0x04, 0x00,  // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
           0x01, 0x69,    // [5l,4i,3s,2a, [ 5l, 4i, 3s, 2a ]+1l, 0i
           0x01, 0x73,    // [6l,5i,4s,3a, [ 6l, 5i, 4s, 3a ]+2l, 1i, 0s
           0x01, 0x61]    // [7l,6i,5s,4a, [ 7l, 6i, 5s, 4a ]+3l, 2i, 1s, 0a
@@ -214,8 +214,8 @@ describe('CompressorTransformer', () => {
           0x01, 0x69,    // [l,i]
           0x01, 0x73,    // [l,i,s]
           0x01, 0x61,    // [l,i,s,a]
-          0x06, 0x6c, PREFIX_COMMAND_CHAR_CODE, 0x01, 0x00, 0x04, 0x00,   // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
-          0x06, 0x61, PREFIX_COMMAND_CHAR_CODE, 0x03, 0x00, 0x06, 0x00]   // [9l,8i,7s,6a,5l,4i,3s,2a,1l], [8i, 7s, 6a, 5l, 4i, 3s]+0a
+          0x05, 0x6c, 0x01, 0x00, 0x04, 0x00,   // [4l,3i,2s,1a, [ 4l, 3i, 2s, 1a ]+0l
+          0x05, 0x61, 0x03, 0x00, 0x06, 0x00]   // [9l,8i,7s,6a,5l,4i,3s,2a,1l], [8i, 7s, 6a, 5l, 4i, 3s]+0a
         )
       );
     });

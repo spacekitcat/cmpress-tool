@@ -1,9 +1,7 @@
 const invalidFatalInput = input => !input;
 
-const PREFIX_COMMAND_CHAR_CODE = 0x50;
-
 const hasPrefixField = input => {
-  return input.length >= 5 && input[1] === PREFIX_COMMAND_CHAR_CODE;
+  return input.length === 5
 }
 const readPrefixValue = field => {
   let prefixValue1 = field.readUInt16LE(0);
@@ -22,7 +20,7 @@ const deserializePacketFromBinary = serialisedBuffer => {
   let output = { t: serialisedBuffer.slice(0, 1) };
 
   if (hasPrefixField(serialisedBuffer)) {
-    let fieldValue = serialisedBuffer.slice(2, serialisedBuffer.length);
+    let fieldValue = serialisedBuffer.slice(1, serialisedBuffer.length);
     output.p = readPrefixValue(fieldValue);
   } else if (serialisedBuffer.length >= 2) {
     throw new Error(
