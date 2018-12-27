@@ -5,7 +5,7 @@ const PREFIX_COMMAND_CHAR_CODE = 0x50;
 const COMMA_CHAR_CODE = 0x2c;
 
 describe('CompressorTransformer', () => {
-  const defaultDictionarySize = 512;
+  const defaultDictionarySize = 1024;
 
   let testTarget;
   beforeAll(() => {
@@ -24,17 +24,17 @@ describe('CompressorTransformer', () => {
 
   describe('and a custom dictionarySize is provided', () => {
     beforeAll(() => {
-      testTarget = new CompressorTransformer({ dictionarySize: 512 });
+      testTarget = new CompressorTransformer({ dictionarySize: 1024 });
     });
 
     it('uses the expected value', () => {
-      expect(testTarget).toHaveProperty('dictionarySize', 512);
+      expect(testTarget).toHaveProperty('dictionarySize', 1024);
     });
 
     it('constructs the SlidingWindow with the expected parameters', () => {
       expect(testTarget).toHaveProperty(
         'slidingWindow',
-        new SlidingWindow(512, 512)
+        new SlidingWindow(1024, 1024)
       );
     });
   });

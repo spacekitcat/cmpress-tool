@@ -23,8 +23,9 @@ The compression process produces a series of compressed frames, each one describ
 - [x] A sample program that can compress and save a file.
 - [x] A sample program that can decompress the above
 - [ ] Substring code is O(nm), but something like `Knuth–Morris–Pratt algorithm` would give O(n). This is essential for going past a dictionary of length 258 (i.e. window size is `16384`, it needs to generate 16384 strings from the read buffer and it then has search the window at 16384 positions for each of the 16384 strings). It would have to do 268435456 operations for every single packet (currently).
+- [X] 16-bit integer support (n.b. 2^16 = 65536)
+- [ ] The packet can only ever be 1 or 6, so the packet structure can be modified to eliminate the P marker and recieve the instruction instead from the packet header size. This brings the 
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
-- [ ] 32 bit integer support (n.b. 2^32 = 4294967296)
 - [ ] Release system
 
 # Building
