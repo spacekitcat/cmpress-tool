@@ -24,13 +24,15 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Make everything use arrays instead of strings. This will improve data intergrity because it will use explicit unicode charcodes. It should also make it faster by eliminating string conversions.
 - [x] A sample program that can compress and save a file.
 - [x] A sample program that can decompress the above
-  
 - [X] 16-bit integer support (n.b. 2^16 = 65536)
 - [X] The packet can only ever be 1 or 6, so the packet structure can be modified to eliminate the P marker and recieve the instruction instead from the packet header size. This brings the overall output size down.
 - [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
 - [ ] Substring code is O(nm), but a suffix tree would be O(m + n). The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree. See above.
+- [ ] If we have four prefixless packets with 8-bit tokens, it would technically be possible to store them as a single packet with a 32-bit token, saving 3 bytes of overhead.
+- [ ] Refactor the decompression stream, it can be reduced to one step which should also make it slightly faster. I don't care much about this right now, the decompression process is approximately 90 times faster than compression.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
 - [ ] Release system
+
 
 # Building
 
@@ -94,7 +96,7 @@ Ran all test suites.
 Field 1 **[8_ bits]**  
 Field 2 **[8_ bits]**  
 Field 3 **[16 bits]**  
-Field 4 **[16 bits]**  
+Field 4 **[16 bits]**
 
 **Field 1**  
 An 8-bit value representing the packet size. A packet size of 1 signals a token with no prefix; A packet size of 5 signals a token with a prefix.  
@@ -125,7 +127,7 @@ I compressed the devil outta ./resources/testinput01.txt
         0.15 real         0.13 user         0.03 sys
 0.14
 I inflated the devil outta ./resources/testinput01.txt.bzz
-0.11
+0.10
 
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflate
@@ -133,10 +135,10 @@ afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflat
 --
 
 I compressed the devil outta ./resources/testinput02.txt
-        0.16 real         0.13 user         0.03 sys
-0.14
+        0.17 real         0.15 user         0.03 sys
+0.16
 I inflated the devil outta ./resources/testinput02.txt.bzz
-0.22
+0.33
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
@@ -144,10 +146,10 @@ I inflated the devil outta ./resources/testinput02.txt.bzz
 --
 
 I compressed the devil outta ./resources/blue.jpg
-       22.98 real        23.40 user         1.64 sys
-23.40
+      277.50 real       278.36 user         7.29 sys
+278.37
 I inflated the devil outta ./resources/blue.jpg.bzz
-1.79
+2.78
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -155,10 +157,10 @@ I inflated the devil outta ./resources/blue.jpg.bzz
 --
 
 I compressed the devil outta ./resources/sample-ppp.pptx
-       12.98 real        13.21 user         0.71 sys
-13.22
+      159.53 real       160.46 user         4.02 sys
+160.47
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.19
+1.81
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -166,13 +168,15 @@ I inflated the devil outta ./resources/sample-ppp.pptx.bzz
 --
 
 I compressed the devil outta ./resources/sails.bmp
-      153.07 real       155.98 user        27.47 sys
-155.99
+     1122.76 real      1130.52 user        40.22 sys
+1130.53
 I inflated the devil outta ./resources/sails.bmp.bzz
-39.04
+45.63
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
+
+--
 ```
 
 ### runcompress.js
