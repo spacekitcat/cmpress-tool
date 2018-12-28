@@ -24,10 +24,11 @@ The compression process produces a series of compressed frames, each one describ
 - [x] Make everything use arrays instead of strings. This will improve data intergrity because it will use explicit unicode charcodes. It should also make it faster by eliminating string conversions.
 - [x] A sample program that can compress and save a file.
 - [x] A sample program that can decompress the above
-- [ ] Substring code is O(nm), but something like `Knuth–Morris–Pratt algorithm` would give O(n). This is essential for going past a dictionary of length 258 (i.e. window size is `16384`, it needs to generate 16384 strings from the read buffer and it then has search the window at 16384 positions for each of the 16384 strings). It would have to do 268435456 operations for every single packet (currently).
+  
 - [X] 16-bit integer support (n.b. 2^16 = 65536)
 - [X] The packet can only ever be 1 or 6, so the packet structure can be modified to eliminate the P marker and recieve the instruction instead from the packet header size. This brings the overall output size down.
-- [ ] The token locate code needs to be several times faster. The code needs to run faster to deal with a window size of 65000, which would make this implementation compress more efficiently.
+- [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
+- [ ] Substring code is O(nm), but a suffix tree would be O(m + n). The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree. See above.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
 - [ ] Release system
 
