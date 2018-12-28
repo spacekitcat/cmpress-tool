@@ -21,9 +21,10 @@ const findNextLargestToken = (dictionary, buffer) => {
 
   let tokens = getPossibleTokens(buffer);
   for (let i = 0; i < tokens.length; ++i) {
-    if (computeMatch(dictionary, tokens[i]) !== undefined) {
+    const currentComparison = computeMatch(dictionary, tokens[i])
+    if (currentComparison !== undefined) {
       match = {
-        p: [computeMatch(dictionary, tokens[i]) + 1, tokens[i].length]
+        p: [currentComparison + 1, tokens[i].length]
       };
       break;
     }
