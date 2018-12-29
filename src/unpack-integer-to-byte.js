@@ -1,18 +1,15 @@
 const unpackIntegerByte = (integer, fixedWidth) => {
     let bytes = [];
 
+    const requiresAnotherPaddingByte = () => fixedWidth && bytes.length < fixedWidth;
     do {
         bytes.push(0x000000FF & integer);
         integer = integer >> 8;
         if (bytes.length >= fixedWidth) {
             break;
         }
-    } while (integer > 0);
+    } while (integer > 0 || requiresAnotherPaddingByte());
   
-    while (bytes.length < fixedWidth) {
-        bytes.push(0x00);
-    }
-
     return Buffer.from(bytes);
 }
 
