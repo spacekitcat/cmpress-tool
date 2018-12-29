@@ -218,7 +218,18 @@ noilovematthew
 
 ### filecompress.js
 
+```bash
+/libz7 ‹master*› % samplestarget/filecompress.js resources/testinput01.txt
+I compressed the devil outta resources/testinput01.txt
+        0.18 real         0.13 user         0.05 sys
+```
+
 ### fileinflate.js
+
+```bash
+samplestarget/fileinflate.js resources/testinput01.txt.bzz
+I inflated the devil outta resources/testinput01.txt.bzz
+```
 
 ## Observations
 
