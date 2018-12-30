@@ -53,7 +53,7 @@ describe('serializePacketToBinary', () => {
 
   describe('when the input has a valid token value, `t`', () => {
     beforeAll(() => {
-      argument = { t: Buffer.from('p') };
+      argument = { t: Buffer.from([0x70]) };
     });
 
     beforeEach(() => {
@@ -61,7 +61,7 @@ describe('serializePacketToBinary', () => {
     });
 
     it('should return a binary representation of the packet', () => {
-      expect(result).toMatchObject(Buffer.from('p'));
+      expect(result).toMatchObject(Buffer.from([0x70]));
     });
   });
 
@@ -73,9 +73,9 @@ describe('serializePacketToBinary', () => {
     });
   });
 
-  describe('when the input has a valid prefix value, `p`', () => {
+  describe('when the input has a valid, 4 byte token value, `t`', () => {
     beforeAll(() => {
-      argument = { t: Buffer.from('p'), p: [1, 3] };
+      argument = { t: Buffer.from([0x61, 0x62, 0x63, 0x64]) };
     });
 
     beforeEach(() => {
@@ -83,14 +83,28 @@ describe('serializePacketToBinary', () => {
     });
 
     it('should return a binary representation of the packet', () => {
-      expect(result).toMatchObject(Buffer.from([112, 0x01, 0x00, 0x03, 0x00]));
+      expect(result).toMatchObject(Buffer.from([0x61, 0x62, 0x63, 0x64]));
+    });
+  });
+
+  describe('when the input has a valid prefix value, `p`', () => {
+    beforeAll(() => {
+      argument = { t: Buffer.from([0x70]), p: [1, 3] };
+    });
+
+    beforeEach(() => {
+      result = serializePacketToBinary(argument);
+    });
+
+    it('should return a binary representation of the packet', () => {
+      expect(result).toMatchObject(Buffer.from([0x70, 0x01, 0x00, 0x03, 0x00]));
     });
   });
 
   describe('when the input only has 1 position for the prefix value, `p`', () => {
     it('should throw an Error', () => {
       expect(() =>
-        serializePacketToBinary({ t: Buffer.from('p'), p: [4] })
+        serializePacketToBinary({ t: Buffer.from([0x70]), p: [4] })
       ).toThrowError(/Error: Invalid compression packet format./);
     });
   });
