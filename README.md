@@ -122,10 +122,10 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
  ./libz7 ‹master› % ./integrationtest.sh
 
 I compressed the devil outta ./resources/testinput01.txt
-        0.14 real         0.10 user         0.03 sys
-0.11
+        0.16 real         0.13 user         0.03 sys
+0.14
 I inflated the devil outta ./resources/testinput01.txt.bzz
-0.09
+0.10
 
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflate
@@ -133,10 +133,10 @@ afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflat
 --
 
 I compressed the devil outta ./resources/testinput02.txt
-        0.14 real         0.11 user         0.03 sys
-0.12
+        0.40 real         0.39 user         0.04 sys
+0.40
 I inflated the devil outta ./resources/testinput02.txt.bzz
-0.22
+0.24
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
@@ -144,10 +144,10 @@ I inflated the devil outta ./resources/testinput02.txt.bzz
 --
 
 I compressed the devil outta ./resources/blue.jpg
-       10.35 real        10.65 user         1.52 sys
-10.65
+        9.63 real         9.78 user         1.61 sys
+9.78
 I inflated the devil outta ./resources/blue.jpg.bzz
-1.89
+2.19
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -155,10 +155,10 @@ I inflated the devil outta ./resources/blue.jpg.bzz
 --
 
 I compressed the devil outta ./resources/sample-ppp.pptx
-        6.00 real         6.04 user         0.73 sys
-6.05
+        5.15 real         5.27 user         0.76 sys
+5.28
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.34
+1.33
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -166,10 +166,10 @@ I inflated the devil outta ./resources/sample-ppp.pptx.bzz
 --
 
 I compressed the devil outta ./resources/sails.bmp
-       84.71 real        86.41 user        24.63 sys
-86.42
+       79.82 real        79.84 user        24.18 sys
+79.84
 I inflated the devil outta ./resources/sails.bmp.bzz
-43.05
+41.54
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate

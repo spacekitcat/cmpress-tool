@@ -2,18 +2,23 @@ import findIndexOfSubarray from './find-index-of-subarray';
 
 const tokenBinaryReducer = (tokens, dictionary) => {
   let result = tokens;
-  const iterations = tokens.length / 10;
-  for (let i = 0; i < iterations; ++i) {
-    if (result.length > 1) {
-      let middleIndice = result.length / 2;
-      if (computeMatch(dictionary, result[middleIndice]) === undefined) {
-        result = result.slice(middleIndice - 1, result.length);
-      }
+  if (
+    result.length === 0 ||
+    computeMatch(dictionary, result[result.length - 1]) === undefined
+  ) {
+    return Buffer.from([]);
+  }
+
+  let middleIndice = result.length / 2;
+  while (middleIndice > 2) {
+    if (computeMatch(dictionary, result[middleIndice]) === undefined) {
+      result = result.slice(middleIndice - 1, result.length);
+      middleIndice = result.length / 2;
     } else {
-      break;
+      middleIndice = middleIndice += result.length / 2;
     }
   }
-  
+
   return result;
 };
 
@@ -37,17 +42,6 @@ const findNextLargestToken = (dictionary, buffer) => {
   let match = undefined;
 
   let tokens = tokenBinaryReducer(getPossibleTokens(buffer), dictionary);
-  // for (let i = 0; i < 10; ++i) {
-  //   if (tokens.length > 1) {
-  //     let middleIndice = tokens.length / 2;
-  //     if (computeMatch(dictionary, tokens[middleIndice]) === undefined) {
-  //       tokens = tokens.slice(middleIndice - 1, tokens.length);
-  //     }
-  //   } else {
-  //     break;
-  //   }
-  // }
-
   for (let i = 0; i < tokens.length; ++i) {
     const currentComparison = computeMatch(dictionary, tokens[i]);
     if (currentComparison !== undefined) {
