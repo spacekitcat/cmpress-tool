@@ -41,7 +41,7 @@ describe('findIndexOfSubarray', () => {
 
     describe('and a length=1, non-matching subarray arg is provided', () => {
       it('returns -1', () => {
-        expect(findIndexOfSubarray(searchArray, [1])).toEqual(-1);
+        expect(findIndexOfSubarray(searchArray, Buffer.from([1]))).toEqual(-1);
       });
     });
 
