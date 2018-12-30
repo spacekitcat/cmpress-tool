@@ -30,7 +30,7 @@ const findIndexOfSubarray = (searcharray, subarray) => {
 
   let result = findLastPosition(searcharray, subarray);
   if (result > -1) {
-    return searcharray.length - 1 - findLastPosition(searcharray, subarray);
+    return searcharray.length - 1 - result;
   } else {
     return result;
   }

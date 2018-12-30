@@ -69,6 +69,22 @@ describe('findIndexOfSubarray', () => {
       });
     });
 
+    describe('and a length=3, matching subarray arg is provided', () => {
+      it('returns index', () => {
+        expect(findIndexOfSubarray(searchArray, Buffer.from([6, 'b']))).toEqual(
+          2
+        );
+      });
+    });
+
+    describe('and a length=4, matching subarray arg is provided', () => {
+      it('returns index', () => {
+        expect(findIndexOfSubarray(searchArray, Buffer.from([6, 'b', 9, '$']))).toEqual(
+          0
+        );
+      });
+    });
+
     describe('and a length=1, partially matching subarray arg is provided', () => {
       it('returns -1', () => {
         expect(
