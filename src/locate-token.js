@@ -1,25 +1,24 @@
 import findIndexOfSubarray from './find-index-of-subarray';
 
 const tokenBinaryReducer = (tokens, dictionary) => {
-  let result = tokens;
   if (
-    result.length === 0 ||
-    computeMatch(dictionary, result[result.length - 1]) === undefined
+    tokens.length === 0 ||
+    computeMatch(dictionary, tokens[tokens.length - 1]) === undefined
   ) {
     return Buffer.from([]);
   }
 
-  let middleIndice = result.length / 2;
+  let middleIndice = tokens.length / 2;
   while (middleIndice > 2) {
-    if (computeMatch(dictionary, result[middleIndice]) === undefined) {
-      result = result.slice(middleIndice - 1, result.length);
-      middleIndice = result.length / 2;
+    if (computeMatch(dictionary, tokens[middleIndice]) === undefined) {
+      tokens = tokens.slice(middleIndice - 1, tokens.length);
+      middleIndice = tokens.length / 2;
     } else {
-      middleIndice = middleIndice += result.length / 2;
+      middleIndice = middleIndice += tokens.length / 2;
     }
   }
 
-  return result;
+  return tokens;
 };
 
 const getPossibleTokens = buffer => {
