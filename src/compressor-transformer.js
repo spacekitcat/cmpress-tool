@@ -8,7 +8,7 @@ class CompressorTransformer extends Transform {
   constructor(options) {
     super(options);
 
-    this.dictionarySize = 2048;
+    this.dictionarySize = 756;
 
     if (options) {
       if (options.dictionarySize) {

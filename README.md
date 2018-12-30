@@ -116,17 +116,14 @@ Indicates the length of the prefix value in the history window.
 
 The **./sampletarget** folder contains small demonstration scripts which demonstrate interaction with the compress and inflate methods.
 
-### Integration test (./integrationtest.sh)
+### Integration test (integrationtest.sh)
 
 ```bash
  ./libz7 ‹master› % ./integrationtest.sh
 
-
---
-
 I compressed the devil outta ./resources/testinput01.txt
-        0.14 real         0.12 user         0.03 sys
-0.13
+        0.14 real         0.11 user         0.03 sys
+0.12
 I inflated the devil outta ./resources/testinput01.txt.bzz
 0.09
 
@@ -136,10 +133,10 @@ afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflat
 --
 
 I compressed the devil outta ./resources/testinput02.txt
-        0.18 real         0.16 user         0.03 sys
-0.17
+        0.14 real         0.12 user         0.02 sys
+0.13
 I inflated the devil outta ./resources/testinput02.txt.bzz
-0.32
+0.22
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
@@ -147,10 +144,10 @@ I inflated the devil outta ./resources/testinput02.txt.bzz
 --
 
 I compressed the devil outta ./resources/blue.jpg
-      123.13 real       124.37 user         3.81 sys
-124.38
+       25.36 real        25.68 user         1.73 sys
+25.69
 I inflated the devil outta ./resources/blue.jpg.bzz
-2.72
+1.90
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -158,10 +155,10 @@ I inflated the devil outta ./resources/blue.jpg.bzz
 --
 
 I compressed the devil outta ./resources/sample-ppp.pptx
-       73.09 real        73.70 user         2.09 sys
-73.71
+       15.72 real        15.86 user         0.83 sys
+15.87
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.79
+1.18
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -169,15 +166,13 @@ I inflated the devil outta ./resources/sample-ppp.pptx.bzz
 --
 
 I compressed the devil outta ./resources/sails.bmp
-      671.81 real       675.93 user        30.20 sys
-675.94
+      187.17 real       186.98 user        27.11 sys
+186.99
 I inflated the devil outta ./resources/sails.bmp.bzz
-45.62
+44.02
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
-
---
 ```
 
 ### runcompress.js

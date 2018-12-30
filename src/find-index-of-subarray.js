@@ -1,14 +1,12 @@
+const invertIndicePosition = (indice, lengthFromIndice, totalListSize) =>
+  indice !== -1 ? totalListSize - (indice + lengthFromIndice) : indice;
+
 const findIndexOfSubarray = (searcharray, subarray) => {
   if (!searcharray || !subarray || subarray.length === 0) {
     return -1;
   }
 
-  let result = searcharray.lastIndexOf(subarray);
-  if (result !== -1) {
-    return searcharray.length - (result + subarray.length);
-  } else {
-    return result;
-  }
+  return invertIndicePosition(searcharray.lastIndexOf(subarray), subarray.length, searcharray.length);
 };
 
 export default findIndexOfSubarray;
