@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { CompressorTransformer } from '../lib/compressor-transformer';
 import { DecompressorTransformer } from '../lib/decompressor-transformer';
 
 import fs from 'fs';

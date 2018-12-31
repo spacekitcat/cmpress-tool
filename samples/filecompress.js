@@ -1,7 +1,5 @@
 #!/usr/bin/env time node --prof
 import { CompressorTransformer } from '../lib/compressor-transformer';
-import { DecompressorTransformer } from '../lib/decompressor-transformer';
-
 import fs from 'fs';
 
 let filePath = process.argv[2];
@@ -23,6 +21,13 @@ compressorTransformer.on('data', chunk => {
 
 compressorTransformer.on('finish', () => {
   console.log(`I compressed the devil outta ${filePath}`);
+  const statsBefore = fs.statSync(filePath);
+  const statsAfter = fs.statSync(`${filePath}.bzz`);
+  console.log();
+  console.log(`    Input size: ${statsBefore.size}`);
+  console.log(`    Ouput size: ${statsAfter.size}`);
+  console.log(`    IO   ratio: ${statsBefore.size / statsAfter.size}`)
+  console.log();
 });
 
 fileReadStream.pipe(compressorTransformer).pipe(fileWriteStream);
