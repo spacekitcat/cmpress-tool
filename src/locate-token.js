@@ -12,12 +12,13 @@ const tokenBinaryReducer = (tokens, dictionary) => {
   while (middleIndice > 2) {
     const currentComparison = computeMatch(dictionary, tokens[middleIndice]);
     if (currentComparison !== undefined) {
-      tokens = tokens.slice(0, middleIndice);
+      tokens = tokens.slice(0, middleIndice + 1);
       
       middleIndice = Math.round(tokens.length / 2);
     } else {
-      tokens = tokens.slice(middleIndice);
-      break;
+      tokens = tokens.slice(middleIndice, tokens.length);
+
+      middleIndice = Math.round(tokens.length / 2);
     }
   }
 

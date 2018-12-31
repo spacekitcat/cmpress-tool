@@ -119,7 +119,6 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 ### Integration test (integrationtest.sh)
 
 ```bash
-libz7 ‹master*› % ./integrationtest.sh
 
 I compressed the devil outta ./resources/testinput01.txt
 
@@ -127,8 +126,8 @@ I compressed the devil outta ./resources/testinput01.txt
     Ouput size: 114
     IO   ratio: 0.08096590909090909
 
-        0.13 real         0.10 user         0.03 sys
-0.11
+        0.15 real         0.12 user         0.03 sys
+0.13
 I inflated the devil outta ./resources/testinput01.txt.bzz
 0.10
 
@@ -143,8 +142,8 @@ I compressed the devil outta ./resources/testinput02.txt
     Ouput size: 258
     IO   ratio: 0.022671353251318103
 
-        0.15 real         0.12 user         0.03 sys
-0.13
+        0.14 real         0.11 user         0.03 sys
+0.12
 I inflated the devil outta ./resources/testinput02.txt.bzz
 0.27
 
@@ -159,10 +158,10 @@ I compressed the devil outta ./resources/blue.jpg
     Ouput size: 131074
     IO   ratio: 1.989617328739052
 
-       17.12 real        17.41 user         1.84 sys
-17.42
+       17.87 real        18.04 user         2.15 sys
+18.05
 I inflated the devil outta ./resources/blue.jpg.bzz
-2.77
+2.39
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -175,10 +174,10 @@ I compressed the devil outta ./resources/sample-ppp.pptx
     Ouput size: 65538
     IO   ratio: 1.3834754707422106
 
-        9.95 real         9.91 user         0.83 sys
-9.91
+        8.88 real         8.95 user         0.75 sys
+8.96
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.77
+1.46
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -191,10 +190,10 @@ I compressed the devil outta ./resources/sails.bmp
     Ouput size: 638998
     IO   ratio: 1.6206130450881828
 
-      117.00 real       115.83 user        23.53 sys
-115.84
+       99.83 real        98.56 user        23.81 sys
+98.57
 I inflated the devil outta ./resources/sails.bmp.bzz
-43.95
+43.54
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
