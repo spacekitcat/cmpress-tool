@@ -1,6 +1,6 @@
 # libz77 implementation of LZ77
 
-Theory vs practice rating: Research nuclear fusion reactor (as in, consumes more than it generates) .   
+Theory vs practice rating: Research nuclear fusion reactor (as in, consumes more than it generates, but the gap is closing) .   
 
 This is a project in progress. The `samplestarget` folder (created during the trasnspile stage of the build) provides some file I/O examples and some string compression examples.
 
@@ -127,8 +127,8 @@ I compressed the devil outta ./resources/testinput01.txt
     Ouput size: 114
     IO   ratio: 0.08096590909090909
 
-        0.14 real         0.11 user         0.03 sys
-0.12
+        0.13 real         0.10 user         0.03 sys
+0.11
 I inflated the devil outta ./resources/testinput01.txt.bzz
 0.10
 
@@ -140,13 +140,13 @@ afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflat
 I compressed the devil outta ./resources/testinput02.txt
 
     Input size: 11380
-    Ouput size: 294
-    IO   ratio: 0.025834797891036907
+    Ouput size: 258
+    IO   ratio: 0.022671353251318103
 
-        0.13 real         0.11 user         0.03 sys
-0.12
+        0.15 real         0.12 user         0.03 sys
+0.13
 I inflated the devil outta ./resources/testinput02.txt.bzz
-0.23
+0.27
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
@@ -159,10 +159,10 @@ I compressed the devil outta ./resources/blue.jpg
     Ouput size: 131074
     IO   ratio: 1.989617328739052
 
-       10.65 real        10.78 user         1.75 sys
-10.79
+       17.12 real        17.41 user         1.84 sys
+17.42
 I inflated the devil outta ./resources/blue.jpg.bzz
-2.53
+2.77
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -175,10 +175,10 @@ I compressed the devil outta ./resources/sample-ppp.pptx
     Ouput size: 65538
     IO   ratio: 1.3834754707422106
 
-        5.78 real         5.78 user         0.69 sys
-5.79
+        9.95 real         9.91 user         0.83 sys
+9.91
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.46
+1.77
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -188,17 +188,16 @@ I inflated the devil outta ./resources/sample-ppp.pptx.bzz
 I compressed the devil outta ./resources/sails.bmp
 
     Input size: 394294
-    Ouput size: 688140
-    IO   ratio: 1.7452459332376349
+    Ouput size: 638998
+    IO   ratio: 1.6206130450881828
 
-       92.59 real        92.05 user        26.11 sys
-92.06
+      117.00 real       115.83 user        23.53 sys
+115.84
 I inflated the devil outta ./resources/sails.bmp.bzz
-43.63
+43.95
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
-
 ```
 
 ### runcompress.js

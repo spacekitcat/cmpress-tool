@@ -2,7 +2,7 @@ import { CompressorTransformer } from '../src/compressor-transformer';
 import { SlidingWindow } from '../src/sliding-window.js';
 
 describe('CompressorTransformer', () => {
-  const defaultDictionarySize = 756;
+  const defaultDictionarySize = 1250;
 
   let testTarget;
   beforeAll(() => {
@@ -21,17 +21,17 @@ describe('CompressorTransformer', () => {
 
   describe('and a custom dictionarySize is provided', () => {
     beforeAll(() => {
-      testTarget = new CompressorTransformer({ dictionarySize: 756 });
+      testTarget = new CompressorTransformer({ dictionarySize: 1250 });
     });
 
     it('uses the expected value', () => {
-      expect(testTarget).toHaveProperty('dictionarySize', 756);
+      expect(testTarget).toHaveProperty('dictionarySize', 1250);
     });
 
     it('constructs the SlidingWindow with the expected parameters', () => {
       expect(testTarget).toHaveProperty(
         'slidingWindow',
-        new SlidingWindow(756, 756)
+        new SlidingWindow(1250, 1250)
       );
     });
   });

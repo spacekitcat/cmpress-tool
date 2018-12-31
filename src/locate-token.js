@@ -9,16 +9,15 @@ const tokenBinaryReducer = (tokens, dictionary) => {
   }
 
   let middleIndice = Math.round(tokens.length / 2);
-  if (middleIndice > 2) {
+  while (middleIndice > 2) {
     const currentComparison = computeMatch(dictionary, tokens[middleIndice]);
     if (currentComparison !== undefined) {
       tokens = tokens.slice(0, middleIndice);
       
-      //middleIndice = tokens.length / 2;
+      middleIndice = Math.round(tokens.length / 2);
     } else {
-      tokens = tokens.slice(middleIndice, tokens.length);
-
-      //middleIndice = middleIndice += tokens.length / 2;
+      tokens = tokens.slice(middleIndice);
+      break;
     }
   }
 
