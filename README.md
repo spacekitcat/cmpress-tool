@@ -127,10 +127,10 @@ I compressed the devil outta ./resources/testinput01.txt
     Ouput size: 114
     IO   ratio: 0.08096590909090909
 
-        0.16 real         0.13 user         0.03 sys
-0.14
+        0.14 real         0.11 user         0.03 sys
+0.12
 I inflated the devil outta ./resources/testinput01.txt.bzz
-0.09
+0.10
 
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflate
@@ -143,8 +143,8 @@ I compressed the devil outta ./resources/testinput02.txt
     Ouput size: 294
     IO   ratio: 0.025834797891036907
 
-        0.14 real         0.12 user         0.03 sys
-0.13
+        0.13 real         0.11 user         0.03 sys
+0.12
 I inflated the devil outta ./resources/testinput02.txt.bzz
 0.23
 
@@ -159,10 +159,10 @@ I compressed the devil outta ./resources/blue.jpg
     Ouput size: 131074
     IO   ratio: 1.989617328739052
 
-       26.89 real        27.19 user         2.00 sys
-27.20
+       10.65 real        10.78 user         1.75 sys
+10.79
 I inflated the devil outta ./resources/blue.jpg.bzz
-1.99
+2.53
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -175,10 +175,10 @@ I compressed the devil outta ./resources/sample-ppp.pptx
     Ouput size: 65538
     IO   ratio: 1.3834754707422106
 
-       15.17 real        15.37 user         0.80 sys
-15.38
+        5.78 real         5.78 user         0.69 sys
+5.79
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.31
+1.46
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -191,13 +191,14 @@ I compressed the devil outta ./resources/sails.bmp
     Ouput size: 688140
     IO   ratio: 1.7452459332376349
 
-      195.99 real       195.85 user        29.13 sys
-195.85
+       92.59 real        92.05 user        26.11 sys
+92.06
 I inflated the devil outta ./resources/sails.bmp.bzz
-43.59
+43.63
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
+
 ```
 
 ### runcompress.js

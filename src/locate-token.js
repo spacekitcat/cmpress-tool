@@ -8,13 +8,17 @@ const tokenBinaryReducer = (tokens, dictionary) => {
     return Buffer.from([]);
   }
 
-  let middleIndice = tokens.length / 2;
-  while (middleIndice > 2) {
-    if (computeMatch(dictionary, tokens[middleIndice]) === undefined) {
-      tokens = tokens.slice(middleIndice - 1, tokens.length);
-      middleIndice = tokens.length / 2;
+  let middleIndice = Math.round(tokens.length / 2);
+  if (middleIndice > 2) {
+    const currentComparison = computeMatch(dictionary, tokens[middleIndice]);
+    if (currentComparison !== undefined) {
+      tokens = tokens.slice(0, middleIndice);
+      
+      //middleIndice = tokens.length / 2;
     } else {
-      middleIndice = middleIndice += tokens.length / 2;
+      tokens = tokens.slice(middleIndice, tokens.length);
+
+      //middleIndice = middleIndice += tokens.length / 2;
     }
   }
 
@@ -40,8 +44,8 @@ const computeMatch = (dictionary, token) => {
 const findNextLargestToken = (dictionary, buffer) => {
   let match = undefined;
 
-  //let tokens = tokenBinaryReducer(getPossibleTokens(buffer), dictionary);
-  let tokens = getPossibleTokens(buffer);
+  let tokens = tokenBinaryReducer(getPossibleTokens(buffer), dictionary);
+  //let tokens = getPossibleTokens(buffer);
   for (let i = 0; i < tokens.length; ++i) {
     const currentComparison = computeMatch(dictionary, tokens[i]);
     if (currentComparison !== undefined) {
