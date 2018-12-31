@@ -16,7 +16,7 @@ const tokenBinaryReducer = (tokens, dictionary) => {
       
       middleIndice = Math.round(tokens.length / 2);
     } else {
-      tokens = tokens.slice(middleIndice, tokens.length);
+      tokens = tokens.slice(middleIndice - 1, tokens.length);
 
       middleIndice = Math.round(tokens.length / 2);
     }
@@ -45,7 +45,6 @@ const findNextLargestToken = (dictionary, buffer) => {
   let match = undefined;
 
   let tokens = tokenBinaryReducer(getPossibleTokens(buffer), dictionary);
-  //let tokens = getPossibleTokens(buffer);
   for (let i = 0; i < tokens.length; ++i) {
     const currentComparison = computeMatch(dictionary, tokens[i]);
     if (currentComparison !== undefined) {
