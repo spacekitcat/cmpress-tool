@@ -19,14 +19,14 @@ compressorTransformer.on('data', chunk => {
   accumulator = Buffer.concat([accumulator, chunk]);
 });
 
-compressorTransformer.on('finish', () => {
+compressorTransformer.on('end', () => {
   console.log(`I compressed the devil outta ${filePath}`);
   const statsBefore = fs.statSync(filePath);
   const statsAfter = fs.statSync(`${filePath}.bzz`);
   console.log();
   console.log(`    Input size: ${statsBefore.size}`);
   console.log(`    Ouput size: ${statsAfter.size}`);
-  console.log(`    IO   ratio: ${statsBefore.size / statsAfter.size}`)
+  console.log(`    IO   ratio: ${statsAfter.size / statsBefore.size}`)
   console.log();
 });
 

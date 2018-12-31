@@ -40,7 +40,8 @@ const computeMatch = (dictionary, token) => {
 const findNextLargestToken = (dictionary, buffer) => {
   let match = undefined;
 
-  let tokens = tokenBinaryReducer(getPossibleTokens(buffer), dictionary);
+  //let tokens = tokenBinaryReducer(getPossibleTokens(buffer), dictionary);
+  let tokens = getPossibleTokens(buffer);
   for (let i = 0; i < tokens.length; ++i) {
     const currentComparison = computeMatch(dictionary, tokens[i]);
     if (currentComparison !== undefined) {
