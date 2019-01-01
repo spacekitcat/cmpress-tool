@@ -26,10 +26,13 @@ The compression process produces a series of compressed frames, each one describ
 - [x] A sample program that can decompress the above
 - [X] 16-bit integer support (n.b. 2^16 = 65536)
 - [X] The packet can only ever be 1 or 6, so the packet structure can be modified to eliminate the P marker and recieve the instruction instead from the packet header size. This brings the overall output size down.
+
+- [X] Refactor the decompression stream, it can be reduced to one step which should also make it slightly faster. I don't care much about this right now, the decompression process is approximately 90 times faster than compression.
+- [ ] Remove the 4 byte threshold code. It overcomplicates everything for a neglegible impact on the storage requirements of real files, it also complicates testing.
+- [ ] The current packet header is just an 8-bit integer representing the packet length in bytes. The prefix detection is tied to a size of 5. The prefix value needs to be seperated from the packet size so that the program can deal with variable length packets with variable length tokens. The new header should be 5-byte, the first 4-bytes describing the size, the last byte describing operation mode modifier switches. **Justification:** If the program encounters 32000 new tokens in a row and isn't able to find a repetition in its dictionary, it will generate 32000 packets, each with an additional 8-bit overhead, which doubles the space requirements to 64000. If the program was using the new 48-bit serialisation header, it would enable the program to generate a single packet for the 32000 new tokens, which gives a new size of 36000. The 32 bit size indicator will allow it generate packets with sizes of up to 4096-megabytes.
 - [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
-- [ ] Substring code is O(nm), but a suffix tree would be O(m + n). The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree. See above.
 - [ ] If we have four prefixless packets with 8-bit tokens, it would technically be possible to store them as a single packet with a 32-bit token, saving 3 bytes of overhead.
-- [ ] Refactor the decompression stream, it can be reduced to one step which should also make it slightly faster. I don't care much about this right now, the decompression process is approximately 90 times faster than compression.
+- [ ] Substring code is O(NlogN) (was O(n^2)), but a suffix tree would be O(m + n). ~~The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree.~~ See above.
 - [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
 - [ ] Release system
 
