@@ -8,21 +8,24 @@ const tokenBinaryReducer = (tokens, dictionary) => {
     return Buffer.from([]);
   }
 
-  let middleIndice = Math.round(tokens.length / 2);
-  while (middleIndice > 2) {
+  let items = tokens.length;
+  let start = 0;
+  let middleIndice = Math.round(items / 2);
+  let end = tokens.length;
+  while (items > 2) {
     const currentComparison = computeMatch(dictionary, tokens[middleIndice]);
     if (currentComparison !== undefined) {
-      tokens = tokens.slice(0, middleIndice + 1);
-      
-      middleIndice = Math.round(tokens.length / 2);
+      end = middleIndice + 1;
+      items -= end;
+      middleIndice = Math.round(items / 2);
     } else {
-      tokens = tokens.slice(middleIndice - 1, tokens.length);
-
-      middleIndice = Math.round(tokens.length / 2);
+      start = middleIndice - 1;
+      items -= start;
+      middleIndice = Math.round(items / 2);
     }
   }
 
-  return tokens;
+  return tokens.slice(start, end);
 };
 
 const getPossibleTokens = buffer => {
