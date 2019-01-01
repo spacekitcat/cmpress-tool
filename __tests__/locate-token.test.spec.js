@@ -142,9 +142,9 @@ describe('locatet()', () => {
       describe('and the match is on the threshold (4)', () => {
         it('returns the match as a p', () => {
           expect(
-            locateToken(dictionaryValue, Buffer.from([81, 82, 83, 84, 100]))
+            locateToken(dictionaryValue, Buffer.from([80, 81, 82, 83, 84, 85, 100]))
           ).toEqual({
-            p: [4, 4],
+            p: [3, 6],
             t: Buffer.from([100])
           });
         });

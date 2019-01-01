@@ -1,6 +1,18 @@
 import findIndexOfSubarray from './find-index-of-subarray';
 
-const tokenBinaryReducer = (tokens, dictionary) => {
+const computeMatch = (dictionary, token) => {
+  let result = findIndexOfSubarray(dictionary, token);
+
+  return result > -1 ? result : undefined;
+};
+
+const findNextLargestToken = (dictionary, buffer) => {
+  let tokens = [];
+
+  for (let i = 4; i < buffer.length; ++i) {
+    tokens.unshift(buffer.slice(0, i));
+  }
+
   let middleIndice = Math.round(tokens.length / 2);
   while (middleIndice > 2) {
     const currentComparison = computeMatch(dictionary, tokens[middleIndice]);
@@ -28,25 +40,6 @@ const tokenBinaryReducer = (tokens, dictionary) => {
 
   return match;
 };
-
-const getPossibleTokens = buffer => {
-  let tokenList = [];
-
-  for (let i = 4; i < buffer.length; ++i) {
-    tokenList.unshift(buffer.slice(0, i));
-  }
-
-  return tokenList;
-};
-
-const computeMatch = (dictionary, token) => {
-  let result = findIndexOfSubarray(dictionary, token);
-
-  return result > -1 ? result : undefined;
-};
-
-const findNextLargestToken = (dictionary, buffer) =>
-  tokenBinaryReducer(getPossibleTokens(buffer), dictionary);
 
 const locateToken = (dictionary, buffer) => {
   if (buffer === null || buffer === undefined || buffer.length === 0) {
