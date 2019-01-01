@@ -1,8 +1,8 @@
 import { Transform } from 'stream';
 import { SlidingWindow } from './sliding-window.js';
 import locateToken from './locate-token.js';
-import serializePacketToBinary from './serialize-packet-to-binary';
-import unpackIntegerByte from './unpack-integer-to-byte';
+import serializePacketToBinary from './serialization/serialize-packet-to-binary';
+import unpackIntegerByte from './serialization/unpack-integer-to-byte';
 
 class CompressorTransformer extends Transform {
   constructor(options) {

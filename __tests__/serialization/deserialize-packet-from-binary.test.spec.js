@@ -1,4 +1,4 @@
-import deserializePacketFromBinary from '../src/deserialize-packet-from-binary';
+import deserializePacketFromBinary from '../../src/serialization/deserialize-packet-from-binary';
 
 describe('deserializePacketFromBinary', () => {
   let result;

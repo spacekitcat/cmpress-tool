@@ -1,6 +1,6 @@
 import { Transform } from 'stream';
 import consumeInput from './consume-input';
-import deserializePacketFromBinary from './deserialize-packet-from-binary';
+import deserializePacketFromBinary from './serialization/deserialize-packet-from-binary';
 
 class DecompressorTransformer extends Transform {
   constructor(options) {

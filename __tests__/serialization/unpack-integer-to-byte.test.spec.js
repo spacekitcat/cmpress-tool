@@ -1,6 +1,6 @@
-import unpackIntegerToByte from '../src/unpack-integer-to-byte';
+import unpackIntegerToByte from '../../src/serialization/unpack-integer-to-byte';
 
-describe('The unpackIntegerByte function', () => {
+describe('The unpackIntegerToByte function', () => {
     it('should convert 0 (1 byte) to little endian equivilent bytes', () => {
         expect(unpackIntegerToByte(0)).toMatchObject(Buffer.from([0x00]));
     });
