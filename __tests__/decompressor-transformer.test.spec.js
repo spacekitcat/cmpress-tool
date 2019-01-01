@@ -1,7 +1,6 @@
 import { DecompressorTransformer } from '../src/decompressor-transformer';
 
 const COMMA_CHAR_CODE = 0x2c;
-const PREFIX_COMMAND_CHAR_CODE = 0x50;
 
 describe('DecompressorTransformer', () => {
   
