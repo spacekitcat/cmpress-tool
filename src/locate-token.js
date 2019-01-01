@@ -9,7 +9,7 @@ const computeMatch = (dictionary, token) => {
 const findNextLargestToken = (dictionary, buffer) => {
   let tokens = [];
 
-  for (let i = 4; i < buffer.length; ++i) {
+  for (let i = 0; i < buffer.length; ++i) {
     tokens.unshift(buffer.slice(0, i));
   }
 

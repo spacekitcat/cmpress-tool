@@ -107,7 +107,8 @@ describe('locatet()', () => {
       it('returns the next character from the input buffer', () => {
         expect(locateToken(dictionaryValue, Buffer.from([79, 80, 79]))).toEqual(
           {
-            t: Buffer.from([79])
+            t: Buffer.from([79]),
+            p: [1, 2]
           }
         );
       });
@@ -139,35 +140,15 @@ describe('locatet()', () => {
     });
 
     describe('The input buffer contains characters which are in the histroy buffer', () => {
-      describe('and the match is on the threshold (4)', () => {
-        it('returns the match as a p', () => {
-          expect(
-            locateToken(dictionaryValue, Buffer.from([80, 81, 82, 83, 84, 85, 100]))
-          ).toEqual({
-            p: [3, 6],
-            t: Buffer.from([100])
-          });
-        });
-      });
-
-      describe('and the match is below the threshold (4)', () => {
-        it('returns no p', () => {
-          expect(
-            locateToken(dictionaryValue, Buffer.from([78, 79, 80, 100]))
-          ).toEqual({
-            t: Buffer.from([78])
-          });
-        });
-      });
-
-      describe('and the match is above the threshold (4)', () => {
-        it('returns the match as a p', () => {
-          expect(
-            locateToken(dictionaryValue, Buffer.from([81, 82, 83, 84, 85, 100]))
-          ).toEqual({
-            p: [3, 5],
-            t: Buffer.from([100])
-          });
+      it('returns the match as a p', () => {
+        expect(
+          locateToken(
+            dictionaryValue,
+            Buffer.from([80, 81, 82, 83, 84, 85, 100])
+          )
+        ).toEqual({
+          p: [3, 6],
+          t: Buffer.from([100])
         });
       });
     });

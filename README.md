@@ -122,19 +122,16 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 ### Integration test (integrationtest.sh)
 
 ```bash
-/libz7 ‹master*› % ./integrationtest.sh
-
-
 I compressed the devil outta ./resources/testinput01.txt
 
     Input size: 1408
-    Ouput size: 114
-    IO   ratio: 0.08096590909090909
+    Ouput size: 136
+    IO   ratio: 0.09659090909090909
 
-        0.16 real         0.12 user         0.03 sys
-0.13
+        0.14 real         0.11 user         0.03 sys
+0.12
 I inflated the devil outta ./resources/testinput01.txt.bzz
-0.10
+0.09
 
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflate
@@ -144,13 +141,13 @@ afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflat
 I compressed the devil outta ./resources/testinput02.txt
 
     Input size: 11380
-    Ouput size: 258
-    IO   ratio: 0.022671353251318103
+    Ouput size: 238
+    IO   ratio: 0.020913884007029877
 
-        0.14 real         0.11 user         0.03 sys
-0.12
+        0.19 real         0.17 user         0.03 sys
+0.18
 I inflated the devil outta ./resources/testinput02.txt.bzz
-0.27
+0.39
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
@@ -160,13 +157,13 @@ I inflated the devil outta ./resources/testinput02.txt.bzz
 I compressed the devil outta ./resources/blue.jpg
 
     Input size: 65879
-    Ouput size: 131074
-    IO   ratio: 1.989617328739052
+    Ouput size: 180248
+    IO   ratio: 2.7360463880751076
 
-       17.16 real        17.39 user         1.84 sys
-17.40
+       19.62 real        19.50 user         1.56 sys
+19.51
 I inflated the devil outta ./resources/blue.jpg.bzz
-2.77
+3.03
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -176,13 +173,13 @@ I inflated the devil outta ./resources/blue.jpg.bzz
 I compressed the devil outta ./resources/sample-ppp.pptx
 
     Input size: 47372
-    Ouput size: 65538
-    IO   ratio: 1.3834754707422106
+    Ouput size: 98322
+    IO   ratio: 2.0755298488558642
 
-        8.56 real         8.58 user         0.80 sys
-8.58
+       10.56 real        10.61 user         0.61 sys
+10.62
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.60
+1.99
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -192,13 +189,13 @@ I inflated the devil outta ./resources/sample-ppp.pptx.bzz
 I compressed the devil outta ./resources/sails.bmp
 
     Input size: 394294
-    Ouput size: 638998
-    IO   ratio: 1.6206130450881828
+    Ouput size: 655440
+    IO   ratio: 1.6623128934247033
 
-       99.09 real        97.87 user        23.51 sys
-97.88
+       77.54 real        75.32 user        10.77 sys
+75.33
 I inflated the devil outta ./resources/sails.bmp.bzz
-47.20
+43.48
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate
