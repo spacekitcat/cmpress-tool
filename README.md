@@ -29,7 +29,7 @@ The compression process produces a series of compressed frames, each one describ
 
 - [X] Refactor the decompression stream, it can be reduced to one step which should also make it slightly faster. I don't care much about this right now, the decompression process is approximately 90 times faster than compression.
 - [X] Remove the 4 byte threshold code. It overcomplicates everything for a neglegible impact on the storage requirements of real files, it also complicates testing.
-- [ ] The current packet header is just an 8-bit integer representing the packet length in bytes. The prefix detection is tied to a size of 5. The prefix value needs to be seperated from the packet size so that the program can deal with variable length packets with variable length tokens. The new header should be 5-byte, the first 4-bytes describing the size, the last byte describing operation mode modifier switches. **Justification:** If the program encounters 32000 new tokens in a row and isn't able to find a repetition in its dictionary, it will generate 32000 packets, each with an additional 8-bit overhead, which doubles the space requirements to 64000. If the program was using the new 48-bit serialisation header, it would enable the program to generate a single packet for the 32000 new tokens, which gives a new size of 36000. The 32 bit size indicator will allow it generate packets with sizes of up to 4096-megabytes.
+- [ ] The current packet header is just an 8-bit integer representing the packet length in bytes. The prefix detection is tied to a size of 5. The prefix value needs to be seperated from the packet size so that the program can deal with variable length packets with variable length tokens. The new header should be 5-byte, the first 4-bytes describing the size, the last byte describing operation mode modifier switches. **Justification:** If the program encounters 32000 new tokens in a row and isn't able to find a repetition in its dictionary, it will generate 32000 packets, each with an additional 8-bit overhead, which doubles the space requirements to 64000. If the program was using the new 48-bit serialisation header, it would enable the program to generate a single packet for the 32000 new tokens, which gives a new size of 32048. The 32 bit size indicator will allow it generate packets with sizes of up to 4096-megabytes.
 - [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
 - [ ] If we have four prefixless packets with 8-bit tokens, it would technically be possible to store them as a single packet with a 32-bit token, saving 3 bytes of overhead.
 - [ ] Substring code is O(NlogN) (was O(n^2)), but a suffix tree would be O(m + n). ~~The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree.~~ See above.
@@ -125,11 +125,11 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 I compressed the devil outta ./resources/testinput01.txt
 
     Input size: 1408
-    Ouput size: 136
-    IO   ratio: 0.09659090909090909
+    Ouput size: 172
+    IO   ratio: 0.12215909090909091
 
-        0.14 real         0.11 user         0.03 sys
-0.12
+        0.16 real         0.13 user         0.04 sys
+0.15
 I inflated the devil outta ./resources/testinput01.txt.bzz
 0.09
 
@@ -141,13 +141,13 @@ afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflat
 I compressed the devil outta ./resources/testinput02.txt
 
     Input size: 11380
-    Ouput size: 238
-    IO   ratio: 0.020913884007029877
+    Ouput size: 335
+    IO   ratio: 0.029437609841827767
 
         0.19 real         0.17 user         0.03 sys
 0.18
 I inflated the devil outta ./resources/testinput02.txt.bzz
-0.39
+0.44
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
@@ -157,13 +157,13 @@ I inflated the devil outta ./resources/testinput02.txt.bzz
 I compressed the devil outta ./resources/blue.jpg
 
     Input size: 65879
-    Ouput size: 180248
-    IO   ratio: 2.7360463880751076
+    Ouput size: 213044
+    IO   ratio: 3.233868152218461
 
-       19.62 real        19.50 user         1.56 sys
-19.51
+       20.79 real        20.52 user         1.90 sys
+20.53
 I inflated the devil outta ./resources/blue.jpg.bzz
-3.03
+3.16
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -173,13 +173,13 @@ I inflated the devil outta ./resources/blue.jpg.bzz
 I compressed the devil outta ./resources/sample-ppp.pptx
 
     Input size: 47372
-    Ouput size: 98322
-    IO   ratio: 2.0755298488558642
+    Ouput size: 114712
+    IO   ratio: 2.4215148188803512
 
-       10.56 real        10.61 user         0.61 sys
-10.62
+       11.23 real        11.20 user         0.78 sys
+11.21
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-1.99
+2.08
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -189,13 +189,13 @@ I inflated the devil outta ./resources/sample-ppp.pptx.bzz
 I compressed the devil outta ./resources/sails.bmp
 
     Input size: 394294
-    Ouput size: 655440
-    IO   ratio: 1.6623128934247033
+    Ouput size: 770172
+    IO   ratio: 1.953293735131653
 
-       77.54 real        75.32 user        10.77 sys
-75.33
+       83.19 real        79.58 user        13.32 sys
+79.59
 I inflated the devil outta ./resources/sails.bmp.bzz
-43.48
+41.83
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate

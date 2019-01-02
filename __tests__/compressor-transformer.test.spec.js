@@ -61,7 +61,9 @@ describe('CompressorTransformer', () => {
     });
 
     compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(Buffer.from([0x01, 97]));
+      expect(outputAccumulator).toMatchObject(
+        Buffer.from([0x00, 0x01, 97])
+      );
     });
 
     compressorTransformer.write(Buffer.from([97]));
@@ -78,10 +80,26 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
-        Buffer.from([
-          0x01, 97,
-          0x05, 98, 0x01, 0x00, 0x01, 0x00,
-          0x01, 97])
+        Buffer.from([      
+          0x00,
+          0x01,
+          ////
+          0x61,
+
+          0x01,
+          0x05,
+          ////
+          0x62,
+          0x01,
+          0x00,
+          0x01,
+          0x00,
+          
+          0x00,
+          0x01,
+          ////
+          0x61
+        ])
       );
     });
 
@@ -99,10 +117,26 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
-        Buffer.from([
-          0x01, 0x61,
-          0x05, 0x61, 0x01, 0x00, 0x01, 0x00,
-          0x01, 0x61])
+        Buffer.from([ 
+          0x00,
+          0x01,
+          ////
+          0x61,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x01,
+          0x00,
+          0x01,
+          0x00,
+
+          0x00,
+          0x01,
+          ////
+          0x61,
+        ])
       );
     });
 
@@ -121,16 +155,43 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 0x61,
-          0x05, 0x61, 0x01, 0x00, 0x01, 0x00,
-          0x05, 0x61, 0x01, 0x00, 0x03, 0x00,
-          0x05, 0x62, 0x01, 0x00, 0x01, 0x00
-        ]));
+          0x00,
+          0x01,
+          ////
+          0x61,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x01,
+          0x00,
+          0x01,
+          0x00,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x01,
+          0x00,
+          0x03,
+          0x00,
+
+          0x01,
+          0x05,
+          ////
+          0x62,
+          0x01,
+          0x00,
+          0x01,
+          0x00,
+        ])
+      );
     });
 
     compressorTransformer.write(
-      Buffer.from([
-        97, 97, 97, 97, 97, 97, 97, 97, 98])
+      Buffer.from([0x61, 97, 97, 97, 97, 97, 97, 97, 98])
     );
     compressorTransformer.end();
   });
@@ -146,20 +207,46 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 0x61,
-          0x05, 0x61, 0x01, 0x00, 0x01, 0x00,
-          0x05, 0x61, 0x01, 0x00, 0x03, 0x00,
-          0x05, 0x61, 0x01, 0x00, 0x07, 0x00,
+          0x00,
+          0x01,
+          ////
+          0x61,
+    
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x01,
+          0x00,
+          0x01,
+          0x00,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x01,
+          0x00,
+          0x03,
+          0x00,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x01,
+          0x00,
+          0x07,
+          0x00,
         ])
       );
     });
 
     compressorTransformer.write(
-      Buffer.from([97,97,97,97,97,97,97,97,97,97,97,97,97,97,97])
+      Buffer.from([97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97])
     );
     compressorTransformer.end();
   });
-
 
   it('compresses lisalisalisa', () => {
     let compressorTransformer = new CompressorTransformer();
@@ -172,23 +259,65 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 0x6c,
-          0x01, 0x69,
-          0x01, 0x73,
-          0x01, 0x61,
-          0x05, 0x6c, 0x01, 0x00, 0x04, 0x00,
-          0x05, 0x61, 0x03, 0x00, 0x02, 0x00,
-          ]
-        )
+          0x00,
+          0x01,
+          ////
+          0x6C,
+
+          0x00,
+          0x01,
+          ////
+          0x69,
+
+          0x00,
+          0x01,
+          ////
+          0x73,
+
+          0x00,
+          0x01,
+          ////
+          0x61,
+
+          0x01,
+          0x05,
+          ////
+          0x6C,
+          0x01,
+          0x00,
+          0x04,
+          0x00,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x03,
+          0x00,
+          0x02,
+          0x00,
+        ])
       );
     });
 
     compressorTransformer.write(
-      Buffer.from([0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61])
+      Buffer.from([
+        0x6c,
+        0x69,
+        0x73,
+        0x61,
+        0x6c,
+        0x69,
+        0x73,
+        0x61,
+        0x6c,
+        0x69,
+        0x73,
+        0x61
+      ])
     );
     compressorTransformer.end();
   });
-
 
   it('compresses lisalisalisalisa', () => {
     let compressorTransformer = new CompressorTransformer();
@@ -201,19 +330,66 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 0x6c,
-          0x01, 0x69,
-          0x01, 0x73,
-          0x01, 0x61,
-          0x05, 0x6c, 0x01, 0x00, 0x04, 0x00,
-          0x05, 0x61, 0x03, 0x00, 0x06, 0x00,
-          ]
-        )
+          0x00,
+          0x01,
+          ////
+          0x6C,
+
+          0x00,
+          0x01,
+          ////
+          0x69,
+
+          0x00,
+          0x01,
+          ////
+          0x73,
+          
+          0x00,
+          0x01,
+          ////
+          0x61,
+
+          0x01,
+          0x05,
+          ////
+          0x6C,
+          0x01,
+          0x00,
+          0x04,
+          0x00,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x03,
+          0x00,
+          0x06,
+          0x00,
+        ])
       );
     });
 
     compressorTransformer.write(
-      Buffer.from([0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61])
+      Buffer.from([
+        0x6c,
+        0x69,
+        0x73,
+        0x61,
+        0x6c,
+        0x69,
+        0x73,
+        0x61,
+        0x6c,
+        0x69,
+        0x73,
+        0x61,
+        0x6c,
+        0x69,
+        0x73,
+        0x61
+      ])
     );
     compressorTransformer.end();
   });
@@ -229,10 +405,35 @@ describe('CompressorTransformer', () => {
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
-          0x01, 97,
-          0x05, 0x61, 0x01, 0x00, 0x01, 0x00,
-          0x01, 0x62,
-          0x05, 0x63, 0x01, 0x00, 0x01, 0x00])
+          0x00,
+          0x01,
+          ////
+          0x61,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x01,
+          0x00,
+          0x01,
+          0x00,
+
+          0x00,
+          0x01,
+          ////
+          0x62,
+
+          0x01,
+          0x05,
+          ////
+          0x63,
+          0x01,
+          0x00,
+          0x01,
+          0x00,
+
+        ])
       );
     });
 
@@ -249,10 +450,9 @@ describe('CompressorTransformer', () => {
     });
 
     compressorTransformer.on('finish', () => {
-      
-      expect(outputAccumulator).toMatchObject(Buffer.from([
-        0x01, 194,
-        0x01, 163]));
+      expect(outputAccumulator).toMatchObject(
+        Buffer.from([0x00, 0x01, 194, 0x00, 0x01, 163])
+      );
     });
 
     compressorTransformer.write('£');
@@ -275,11 +475,39 @@ describe('CompressorTransformer', () => {
       compressorTransformer.on('finish', () => {
         expect(outputAccumulator).toMatchObject(
           Buffer.from([
-            0x01, 97,
-            0x05, 97, 0x01, 0x00, 0x01, 0x00,
-            0x05, 97, 0x01, 0x00, 0x01, 0x00,
-            0x01, 97,
-            0x01, 97])
+            0x00,
+            0x01,
+            ////
+            0x61,
+
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x01,
+            0x00,
+            0x01,
+            0x00,
+
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x01,
+            0x00,
+            0x01,
+            0x00,
+
+            0x00,
+            0x01,
+            ////
+            0x61,
+            
+            0x00,
+            0x01,
+            ////
+            0x61,
+          ])
         );
       });
 

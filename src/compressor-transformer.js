@@ -2,7 +2,7 @@ import { Transform } from 'stream';
 import { SlidingWindow } from './sliding-window.js';
 import locateToken from './locate-token.js';
 import serializePacketToBinary from './serialization/serialize-packet-to-binary';
-import unpackIntegerByte from './serialization/unpack-integer-to-byte';
+import packetHeaderToBinary from './serialization/packet-header-to-binary';
 
 class CompressorTransformer extends Transform {
   constructor(options) {
@@ -28,7 +28,7 @@ class CompressorTransformer extends Transform {
     while (this.slidingWindow.lookAhead().length > 0) {
       let nextBytes = this.slidingWindow.slide(locateToken);
       let serialized = serializePacketToBinary(nextBytes);
-      this.push(Buffer.concat([unpackIntegerByte(serialized.length, 1), serialized]));
+      this.push(Buffer.concat([packetHeaderToBinary({size: serialized.length, hasPrefix: nextBytes.p !== undefined}), serialized]));
     }
 
     callback();

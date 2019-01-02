@@ -1,6 +1,7 @@
 import { Transform } from 'stream';
 import consumeInput from './consume-input';
 import deserializePacketFromBinary from './serialization/deserialize-packet-from-binary';
+import { packetHeaderFromBinary, packetHeaderSizeFieldWidth } from './serialization/packet-header-from-binary';
 
 class DecompressorTransformer extends Transform {
   constructor(options) {
@@ -10,6 +11,7 @@ class DecompressorTransformer extends Transform {
     this.expectingNewToken = true;
     this.missingPackets = 0;
     this.buffer = Buffer.from([]);
+    this.headerBuffer = Buffer.from([]);
   }
 
   expandPacket(packet) {
@@ -44,9 +46,25 @@ class DecompressorTransformer extends Transform {
     let currentChunkPointer = 0;
     while (currentChunkPointer < chunk.length) {
       if (this.expectingNewToken) {
-        this.missingPackets = chunk.readUInt8(currentChunkPointer);
+        this.missingHeaderBytes = packetHeaderSizeFieldWidth(currentChunkPointer) + 1;
         this.expectingNewToken = false;
+      }
+      
+      if (this.missingHeaderBytes > 0) {
+        this.headerBuffer = Buffer.concat([
+          this.headerBuffer,
+          chunk.slice(currentChunkPointer, currentChunkPointer + 1)
+        ]);
         currentChunkPointer += 1;
+        this.missingHeaderBytes -= 1;
+      
+        if (this.missingHeaderBytes === 0) {
+          this.header = packetHeaderFromBinary(this.headerBuffer);
+          this.headerBuffer = Buffer.from([]);
+          this.missingPackets = this.header.size;
+        } else {
+          continue;
+        }
       }
 
       if (currentChunkPointer < chunk.length) {

@@ -10,8 +10,9 @@ const packetHeaderToBinary = header => {
     }
 
     return Buffer.concat([
-        unpackIntegerByte(header.size, 4),
-        Buffer.from([flags])], 5)
+        Buffer.from([flags]),
+        unpackIntegerByte(header.size, 1)
+        ], 2)
 }
 
 export default packetHeaderToBinary;
