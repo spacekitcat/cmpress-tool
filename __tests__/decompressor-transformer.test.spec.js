@@ -209,4 +209,24 @@ describe('DecompressorTransformer', () => {
     );
     decompressorTransformer.end();
   });
+
+  it('inflates `aaaa` where the tokens are packed into one packet', () => {
+    let decompressorTransformer = new DecompressorTransformer();
+
+    let outputAccumulator = Buffer.from([]);
+    decompressorTransformer.on('data', decompressedPacket => {
+      outputAccumulator = Buffer.concat([outputAccumulator, decompressedPacket]);
+    });
+
+    decompressorTransformer.on('finish', () => {
+      expect(outputAccumulator).toMatchObject(
+        Buffer.from([0x61, 0x61, 0x61, 0x61]));
+    });
+
+    decompressorTransformer.write(Buffer.from([
+      0x00, 0x04, 0x61, 0x61, 0x61, 0x61
+      ])
+    );
+    decompressorTransformer.end();
+  });
 });

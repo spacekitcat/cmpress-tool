@@ -77,7 +77,7 @@ class DecompressorTransformer extends Transform {
       }
 
       if (this.missingPackets === 0) {
-        let packet = deserializePacketFromBinary(this.buffer);
+        let packet = deserializePacketFromBinary(this.buffer, this.header);
         this.expandPacket(packet);
         this.expectingNewToken = true;
         this.buffer = Buffer.from([]);

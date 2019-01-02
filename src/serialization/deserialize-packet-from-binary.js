@@ -9,7 +9,7 @@ const readPrefixValue = field => {
   return [prefixValue1, prefixValue2];
 };
 
-const deserializePacketFromBinary = serialisedBuffer => {
+const deserializePacketFromBinary = (serialisedBuffer, packetHeader) => {
 
   if (invalidFatalInput(serialisedBuffer)) {
     throw new Error(
@@ -17,16 +17,15 @@ const deserializePacketFromBinary = serialisedBuffer => {
     );
   }
 
-  let output = { t: serialisedBuffer.slice(0, 1) };
-
-  if (hasPrefixField(serialisedBuffer)) {
-    let fieldValue = serialisedBuffer.slice(1, serialisedBuffer.length);
+  
+  let output = {};
+  if (packetHeader.hasPrefix) {
+    let fieldValue = serialisedBuffer.slice(serialisedBuffer.length - 4, serialisedBuffer.length);
     output.p = readPrefixValue(fieldValue);
-  } else if (serialisedBuffer.length >= 2) {
-    throw new Error(
-      `Invalid compression serialisation stream command for input '${serialisedBuffer}'`
-    );
-  }      
+    output.t = serialisedBuffer.slice(0, serialisedBuffer.length - 4);
+  } else {
+    output.t = serialisedBuffer.slice(0, serialisedBuffer.length);
+  }
 
   return output;
 };

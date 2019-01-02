@@ -34,7 +34,10 @@ describe('deserializePacketFromBinary', () => {
     });
 
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from(argument));
+      result = deserializePacketFromBinary(Buffer.from(argument), {
+        size: 1,
+        hasPrefix: false
+      });
     });
 
     it('should deserialize with the expected token', () => {
@@ -44,17 +47,45 @@ describe('deserializePacketFromBinary', () => {
 
   describe('when the input has a prefix field', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from([97, 0x00, 0x00, 0x09, 0x00]));
+      result = deserializePacketFromBinary(
+        Buffer.from([97, 0x00, 0x00, 0x09, 0x00]),
+        {
+          size: 5,
+          hasPrefix: true
+        }
+      );
     });
 
     it('should deserialize with the expected prefix', () => {
       expect(result).toMatchObject({ t: Buffer.from('a'), p: [0, 9] });
     });
+
+    describe('and the packet is packed with multiple tokens', () => {
+      beforeEach(() => {
+        result = deserializePacketFromBinary(
+          Buffer.from([97, 97, 97, 97, 0x00, 0x00, 0x09, 0x00]),
+          {
+            size: 8,
+            hasPrefix: true
+          }
+        );
+      });
+
+      it('should deserialize with the expected prefix', () => {
+        expect(result).toMatchObject({ t: Buffer.from('aaaa'), p: [0, 9] });
+      });
+    });
   });
 
   describe('when the input has prefix values above 10', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from([97, 0x0A, 0x00, 0x7B, 0x00]));
+      result = deserializePacketFromBinary(
+        Buffer.from([97, 0x0a, 0x00, 0x7b, 0x00]),
+        {
+          size: 5,
+          hasPrefix: true
+        }
+      );
     });
 
     it('should deserialize with the expected prefix', () => {
@@ -62,36 +93,19 @@ describe('deserializePacketFromBinary', () => {
     });
   });
 
-
   describe('when the input has prefix values above 255', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(Buffer.from([97, 0x01, 0x02, 0x00, 0x04]));
+      result = deserializePacketFromBinary(
+        Buffer.from([97, 0x01, 0x02, 0x00, 0x04]),
+        {
+          size: 5,
+          hasPrefix: true
+        }
+      );
     });
 
     it('should deserialize with the expected prefix', () => {
       expect(result).toMatchObject({ t: Buffer.from('a'), p: [513, 1024] });
-    });
-  });
-
-  describe('when the input has a prefix field, but does not define a prefix', () => {
-    const input = Buffer.from('aP');
-    it('should throw an Error', () => {
-      expect(() =>
-        deserializePacketFromBinary(Buffer.from(input))
-      ).toThrowError(
-        `Invalid compression serialisation stream command for input '${input}'`
-      );
-    });
-  });
-
-  describe('when the input has a unrecognized field', () => {
-    const input = Buffer.from('aK');
-    it('should throw an Error', () => {
-      expect(() =>
-        deserializePacketFromBinary(Buffer.from(input))
-      ).toThrowError(
-        `Invalid compression serialisation stream command for input '${input}'`
-      );
     });
   });
 });
