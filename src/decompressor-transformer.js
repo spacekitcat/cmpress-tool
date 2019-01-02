@@ -30,16 +30,23 @@ class DecompressorTransformer extends Transform {
         );
         this.push(result[i]);          
       }
-      this.push(packet.t);
+      packet.t.forEach(item => {
+        this.push(Buffer.from([item]));
+      });
     } else {
-      this.push(packet.t);
+      packet.t.forEach(item => {
+        this.push(Buffer.from([item]));
+      });
     }
 
-    this.history_buffer = consumeInput(
-      this.history_buffer.buffer,
-      this.historyBufferSize,
-      packet.t
-    );
+    packet.t.forEach(item => {
+
+      this.history_buffer = consumeInput(
+        this.history_buffer.buffer,
+        this.historyBufferSize,
+        Buffer.from([item])
+      );
+    });
   }
 
   _transform(chunk, encoding, callback) {

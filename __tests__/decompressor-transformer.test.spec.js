@@ -173,18 +173,43 @@ describe('DecompressorTransformer', () => {
 
     decompressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
-        Buffer.from([0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61, 0x6c, 0x69, 0x73, 0x61])
+        Buffer.from(
+          [
+            0x6c, 0x69, 0x73, 0x61,
+            0x6c, 0x69, 0x73, 0x61,
+            0x6c, 0x69, 0x73, 0x61,
+            0x6c, 0x69, 0x73, 0x61
+          ])
       );
     });
 
     decompressorTransformer.write(
         Buffer.from([
-          0x00, 0x01, 0x6c,
-          0x00, 0x01, 0x69,
-          0x00, 0x01, 0x73,
-          0x00, 0x01, 0x61,
-          0x01, 0x05, 0x6c, 0x01, 0x00, 0x04, 0x00,
-          0x01, 0x05, 0x61, 0x03, 0x00, 0x06, 0x00]
+          0x00,
+          0x04,
+          ////
+          0x6C,
+          0x69,
+          0x73,
+          0x61,
+
+          0x01,
+          0x05,
+          ////
+          0x6C,
+          0x01,
+          0x00,
+          0x04,
+          0x00,
+
+          0x01,
+          0x05,
+          ////
+          0x61,
+          0x03,
+          0x00,
+          0x06,
+          0x00]
     ));
     decompressorTransformer.end();
   });
@@ -210,7 +235,7 @@ describe('DecompressorTransformer', () => {
     decompressorTransformer.end();
   });
 
-  it('inflates `aaaa` where the tokens are packed into one packet', () => {
+  it('inflates `abcd` where the tokens are packed into one packet', () => {
     let decompressorTransformer = new DecompressorTransformer();
 
     let outputAccumulator = Buffer.from([]);
@@ -220,11 +245,11 @@ describe('DecompressorTransformer', () => {
 
     decompressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
-        Buffer.from([0x61, 0x61, 0x61, 0x61]));
+        Buffer.from([0x61, 0x62, 0x63, 0x64]));
     });
 
     decompressorTransformer.write(Buffer.from([
-      0x00, 0x04, 0x61, 0x61, 0x61, 0x61
+      0x00, 0x04, 0x61, 0x62, 0x63, 0x64
       ])
     );
     decompressorTransformer.end();

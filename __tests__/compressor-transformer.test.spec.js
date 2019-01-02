@@ -260,23 +260,11 @@ describe('CompressorTransformer', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
           0x00,
-          0x01,
+          0x04,
           ////
           0x6C,
-
-          0x00,
-          0x01,
-          ////
           0x69,
-
-          0x00,
-          0x01,
-          ////
           0x73,
-
-          0x00,
-          0x01,
-          ////
           0x61,
 
           0x01,
@@ -295,7 +283,7 @@ describe('CompressorTransformer', () => {
           0x03,
           0x00,
           0x02,
-          0x00,
+          0x00
         ])
       );
     });
@@ -331,23 +319,11 @@ describe('CompressorTransformer', () => {
       expect(outputAccumulator).toMatchObject(
         Buffer.from([
           0x00,
-          0x01,
+          0x04,
           ////
           0x6C,
-
-          0x00,
-          0x01,
-          ////
           0x69,
-
-          0x00,
-          0x01,
-          ////
           0x73,
-          
-          0x00,
-          0x01,
-          ////
           0x61,
 
           0x01,
@@ -366,7 +342,7 @@ describe('CompressorTransformer', () => {
           0x03,
           0x00,
           0x06,
-          0x00,
+          0x00
         ])
       );
     });
@@ -451,7 +427,13 @@ describe('CompressorTransformer', () => {
 
     compressorTransformer.on('finish', () => {
       expect(outputAccumulator).toMatchObject(
-        Buffer.from([0x00, 0x01, 194, 0x00, 0x01, 163])
+        Buffer.from([
+          0x00,
+          0x02,
+          ////
+          194,
+          163
+        ])
       );
     });
 
@@ -499,14 +481,10 @@ describe('CompressorTransformer', () => {
             0x00,
 
             0x00,
-            0x01,
+            0x02,
             ////
             0x61,
-            
-            0x00,
-            0x01,
-            ////
-            0x61,
+            0x61
           ])
         );
       });

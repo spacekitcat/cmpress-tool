@@ -25,10 +25,37 @@ class CompressorTransformer extends Transform {
   _transform(chunk, encoding, callback) {
     this.slidingWindow.setInput(chunk);
 
+    let packetBuffer = [];
     while (this.slidingWindow.lookAhead().length > 0) {
-      let nextBytes = this.slidingWindow.slide(locateToken);
-      let serialized = serializePacketToBinary(nextBytes);
-      this.push(Buffer.concat([packetHeaderToBinary({size: serialized.length, hasPrefix: nextBytes.p !== undefined}), serialized]));
+      let nextPacket = this.slidingWindow.slide(locateToken);
+      
+      if ((nextPacket.p && nextPacket.p.length > 0) ||packetBuffer.length >= 255) {
+        let mergedPacketToken = Buffer.from([]);
+        packetBuffer.forEach(packet => {
+          mergedPacketToken = Buffer.concat([mergedPacketToken, packet.t], mergedPacketToken.length + packet.t.length)
+        });
+        
+        if (mergedPacketToken.length > 0) {
+          let serializedPacket = serializePacketToBinary({ t: mergedPacketToken });
+          this.push(Buffer.concat([packetHeaderToBinary({ size: serializedPacket.length, hasPrefix: false }), serializedPacket]));
+        }
+        packetBuffer = [];
+
+        let serialized = serializePacketToBinary(nextPacket);
+        this.push(Buffer.concat([packetHeaderToBinary({ size: serialized.length, hasPrefix: nextPacket.p !== undefined }), serialized]));
+      } else {
+        packetBuffer.push(nextPacket);
+      }
+    }
+
+    let mergedPacketToken = Buffer.from([]);
+    packetBuffer.forEach(packet => {
+      mergedPacketToken = Buffer.concat([mergedPacketToken, packet.t], mergedPacketToken.length + packet.t.length)
+    });
+    
+    if (mergedPacketToken.length > 0) {
+      let serializedPacket = serializePacketToBinary({ t: mergedPacketToken });
+      this.push(Buffer.concat([packetHeaderToBinary({ size: serializedPacket.length, hasPrefix: false }), serializedPacket]));
     }
 
     callback();

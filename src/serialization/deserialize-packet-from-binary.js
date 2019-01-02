@@ -1,8 +1,5 @@
 const invalidFatalInput = input => !input;
 
-const hasPrefixField = input => {
-  return input.length === 5
-}
 const readPrefixValue = field => {
   let prefixValue1 = field.readUInt16LE(0);
   let prefixValue2 = field.readUInt16LE(2);
