@@ -36,385 +36,223 @@ describe('CompressorTransformer', () => {
     });
   });
 
-  it('compresses `` to ``', () => {
-    let compressorTransformer = new CompressorTransformer();
+  describe('A blank input string', () => {
+    it('compresses `` to ``', () => {
+      let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
+      let outputAccumulator = Buffer.from([]);
+      compressorTransformer.on('data', compressedPacket => {
+        outputAccumulator = Buffer.concat([
+          outputAccumulator,
+          compressedPacket
+        ]);
+      });
+
+      compressorTransformer.on('finish', () => {
+        expect(outputAccumulator).toMatchObject(Buffer.from([]));
+      });
+
+      compressorTransformer.write(Buffer.from([]));
+      compressorTransformer.end();
     });
-
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(Buffer.from([]));
-    });
-
-    compressorTransformer.write(Buffer.from([]));
-    compressorTransformer.end();
   });
 
-  it('compresses a to a', () => {
-    let compressorTransformer = new CompressorTransformer();
+  describe('The input is a run of repeat characters finished by a new character', () => {
+    it('compresses aaaaaaaab', () => {
+      let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
+      let outputAccumulator = Buffer.from([]);
+      compressorTransformer.on('data', compressedPacket => {
+        outputAccumulator = Buffer.concat([
+          outputAccumulator,
+          compressedPacket
+        ]);
+      });
 
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
-        Buffer.from([0x00, 0x01, 97])
+      compressorTransformer.on('finish', () => {
+        expect(outputAccumulator).toMatchObject(
+          Buffer.from([
+            0x00,
+            0x01,
+            ////
+            0x61,
+
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x01,
+            0x00,
+            0x01,
+            0x00,
+
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x01,
+            0x00,
+            0x03,
+            0x00,
+
+            0x01,
+            0x05,
+            ////
+            0x62,
+            0x01,
+            0x00,
+            0x01,
+            0x00
+          ])
+        );
+      });
+
+      compressorTransformer.write(
+        Buffer.from([0x61, 0x61, 0x61, 0x61, 0x61, 0x61, 0x61, 0x61, 0x62])
       );
+      compressorTransformer.end();
     });
-
-    compressorTransformer.write(Buffer.from([97]));
-    compressorTransformer.end();
   });
 
-  it('compresses aaba', () => {
-    let compressorTransformer = new CompressorTransformer();
+  describe('The input is a run of repeat characters', () => {
+    it('compresses aaaaaaaaaaaaaaaa', () => {
+      let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
+      let outputAccumulator = Buffer.from([]);
+      compressorTransformer.on('data', compressedPacket => {
+        outputAccumulator = Buffer.concat([
+          outputAccumulator,
+          compressedPacket
+        ]);
+      });
 
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
-        Buffer.from([      
-          0x00,
-          0x01,
-          ////
+      compressorTransformer.on('finish', () => {
+        expect(outputAccumulator).toMatchObject(
+          Buffer.from([
+            0x00,
+            0x01,
+            ////
+            0x61,
+
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x01,
+            0x00,
+            0x01,
+            0x00,
+
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x01,
+            0x00,
+            0x03,
+            0x00,
+
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x01,
+            0x00,
+            0x07,
+            0x00
+          ])
+        );
+      });
+
+      compressorTransformer.write(
+        Buffer.from([
           0x61,
-
-          0x01,
-          0x05,
-          ////
-          0x62,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-          
-          0x00,
-          0x01,
-          ////
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
+          0x61,
           0x61
         ])
       );
+      compressorTransformer.end();
     });
-
-    compressorTransformer.write(Buffer.from([97, 97, 98, 97]));
-    compressorTransformer.end();
   });
 
-  it('compresses aaaa', () => {
-    let compressorTransformer = new CompressorTransformer();
+  describe('The input is a run of repeated words', () => {
+    it('compresses lisalisalisalisa', () => {
+      let compressorTransformer = new CompressorTransformer();
 
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
+      let outputAccumulator = Buffer.from([]);
+      compressorTransformer.on('data', compressedPacket => {
+        outputAccumulator = Buffer.concat([
+          outputAccumulator,
+          compressedPacket
+        ]);
+      });
 
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
-        Buffer.from([ 
-          0x00,
-          0x01,
-          ////
-          0x61,
+      compressorTransformer.on('finish', () => {
+        expect(outputAccumulator).toMatchObject(
+          Buffer.from([
+            0x00,
+            0x04,
+            ////
+            0x6c,
+            0x69,
+            0x73,
+            0x61,
 
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
+            0x01,
+            0x05,
+            ////
+            0x6c,
+            0x01,
+            0x00,
+            0x04,
+            0x00,
 
-          0x00,
-          0x01,
-          ////
-          0x61,
-        ])
-      );
-    });
+            0x01,
+            0x05,
+            ////
+            0x61,
+            0x03,
+            0x00,
+            0x06,
+            0x00
+          ])
+        );
+      });
 
-    compressorTransformer.write(Buffer.from([97, 97, 97, 97]));
-    compressorTransformer.end();
-  });
-
-  it('compresses aaaaaaaab', () => {
-    let compressorTransformer = new CompressorTransformer();
-
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
-
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
+      compressorTransformer.write(
         Buffer.from([
-          0x00,
-          0x01,
-          ////
-          0x61,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x03,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
-          0x62,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-        ])
-      );
-    });
-
-    compressorTransformer.write(
-      Buffer.from([0x61, 97, 97, 97, 97, 97, 97, 97, 98])
-    );
-    compressorTransformer.end();
-  });
-
-  it('compresses aaaaaaaaaaaaaaaa', () => {
-    let compressorTransformer = new CompressorTransformer();
-
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
-
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
-        Buffer.from([
-          0x00,
-          0x01,
-          ////
-          0x61,
-    
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x03,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x07,
-          0x00,
-        ])
-      );
-    });
-
-    compressorTransformer.write(
-      Buffer.from([97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97])
-    );
-    compressorTransformer.end();
-  });
-
-  it('compresses lisalisalisa', () => {
-    let compressorTransformer = new CompressorTransformer();
-
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
-
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
-        Buffer.from([
-          0x00,
-          0x04,
-          ////
-          0x6C,
+          0x6c,
           0x69,
           0x73,
           0x61,
-
-          0x01,
-          0x05,
-          ////
-          0x6C,
-          0x01,
-          0x00,
-          0x04,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x03,
-          0x00,
-          0x02,
-          0x00
-        ])
-      );
-    });
-
-    compressorTransformer.write(
-      Buffer.from([
-        0x6c,
-        0x69,
-        0x73,
-        0x61,
-        0x6c,
-        0x69,
-        0x73,
-        0x61,
-        0x6c,
-        0x69,
-        0x73,
-        0x61
-      ])
-    );
-    compressorTransformer.end();
-  });
-
-  it('compresses lisalisalisalisa', () => {
-    let compressorTransformer = new CompressorTransformer();
-
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
-
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
-        Buffer.from([
-          0x00,
-          0x04,
-          ////
-          0x6C,
+          0x6c,
           0x69,
           0x73,
           0x61,
-
-          0x01,
-          0x05,
-          ////
-          0x6C,
-          0x01,
-          0x00,
-          0x04,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
+          0x6c,
+          0x69,
+          0x73,
           0x61,
-          0x03,
-          0x00,
-          0x06,
-          0x00
+          0x6c,
+          0x69,
+          0x73,
+          0x61
         ])
       );
+      compressorTransformer.end();
     });
-
-    compressorTransformer.write(
-      Buffer.from([
-        0x6c,
-        0x69,
-        0x73,
-        0x61,
-        0x6c,
-        0x69,
-        0x73,
-        0x61,
-        0x6c,
-        0x69,
-        0x73,
-        0x61,
-        0x6c,
-        0x69,
-        0x73,
-        0x61
-      ])
-    );
-    compressorTransformer.end();
-  });
-
-  it('compresses aaabbc', () => {
-    let compressorTransformer = new CompressorTransformer();
-
-    let outputAccumulator = Buffer.from([]);
-    compressorTransformer.on('data', compressedPacket => {
-      outputAccumulator = Buffer.concat([outputAccumulator, compressedPacket]);
-    });
-
-    compressorTransformer.on('finish', () => {
-      expect(outputAccumulator).toMatchObject(
-        Buffer.from([
-          0x00,
-          0x01,
-          ////
-          0x61,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-
-          0x00,
-          0x01,
-          ////
-          0x62,
-
-          0x01,
-          0x05,
-          ////
-          0x63,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-
-        ])
-      );
-    });
-
-    compressorTransformer.write(Buffer.from([97, 97, 97, 98, 98, 99]));
-    compressorTransformer.end();
   });
 
   it('compresses £ (UTF-8, 2 byte representation))', () => {
@@ -489,8 +327,8 @@ describe('CompressorTransformer', () => {
         );
       });
 
-      compressorTransformer.write(Buffer.from([97, 97, 97, 97, 97]));
-      compressorTransformer.write(Buffer.from([97, 97]));
+      compressorTransformer.write(Buffer.from([0x61, 0x61, 0x61, 0x61, 0x61]));
+      compressorTransformer.write(Buffer.from([0x61, 0x61]));
 
       compressorTransformer.end();
     });
