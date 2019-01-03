@@ -29,7 +29,7 @@ The compression process produces a series of compressed frames, each one describ
 
 - [X] Refactor the decompression stream, it can be reduced to one step which should also make it slightly faster. I don't care much about this right now, the decompression process is approximately 90 times faster than compression.
 - [X] Remove the 4 byte threshold code. It overcomplicates everything for a neglegible impact on the storage requirements of real files, it also complicates testing.
-- [ ] The current packet header is just an 8-bit integer representing the packet length in bytes. The prefix detection is tied to a size of 5. The prefix value needs to be seperated from the packet size so that the program can deal with variable length packets with variable length tokens. The new header should be 5-byte, the first 4-bytes describing the size, the last byte describing operation mode modifier switches. **Justification:** If the program encounters 32000 new tokens in a row and isn't able to find a repetition in its dictionary, it will generate 32000 packets, each with an additional 8-bit overhead, which doubles the space requirements to 64000. If the program was using the new 48-bit serialisation header, it would enable the program to generate a single packet for the 32000 new tokens, which gives a new size of 32048. The 32 bit size indicator will allow it generate packets with sizes of up to 4096-megabytes.
+- [X] The current packet header is just an 8-bit integer representing the packet length in bytes. The prefix detection is tied to a size of 5. The prefix value needs to be seperated from the packet size so that the program can deal with variable length packets with variable length tokens. The new header should start with a 1-byte field of packet mode modifier switches. The last bit indicates the presence of a 4-byte prefix field at the end of the field and the other bit fields will be used to describe the packet field byte widths. This will allow it to use a minimual number of bytes to represent a packet while still providing flexibility larger files will benefit from.
 - [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
 - [ ] If we have four prefixless packets with 8-bit tokens, it would technically be possible to store them as a single packet with a 32-bit token, saving 3 bytes of overhead.
 - [ ] Substring code is O(NlogN) (was O(n^2)), but a suffix tree would be O(m + n). ~~The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree.~~ See above.
@@ -96,23 +96,39 @@ Ran all test suites.
 
 # Serialisation format
 
-Field 1 **[8_ bits]**  
-Field 2 **[8_ bits]**  
-Field 3 **[16 bits]**  
-Field 4 **[16 bits]**
+| Field | Bytes | Use |
+|-------|-------|-----|
+|   1   |1 byte |Packet mode modifier switches|
+|   2   |1 byte |Packet byte width|
+|   3   |1 byte |Packet token|
+|   4   |2 bytes|Prefix start|
+|   5   |2 bytes|Prefix end|
 
 **Field 1**  
-An 8-bit value representing the packet size. A packet size of 1 signals a token with no prefix; A packet size of 5 signals a token with a prefix.  
+An 8-bit bit field of packet mode modifier switches.
+| Index | Meaning |
+|-------|---------|
+|   0   | Future  |
+|   1   | Future  |
+|   2   | Future  |
+|   3   | Future  |
+|   4   | Future  |
+|   5   | Future  |
+|   6   | Future  |
+|   7   | Packet ends with a 16-bit prefix field |
 
 **Field 2**  
-An 8-bit value representing the token  
+An 8-bit field representing the packet size.
 
 **Field 3**  
-*(Only required for a packet size >1)*  
-Indicates the start index of a prefix value in the history window.  
+An 8-bit value representing the token  
 
 **Field 4**  
-*(Only required for a packet size >1)*  
+*(Only required for a packets with the prefix bit field (7) enabled)*  
+Indicates the start index of a prefix value in the history window.  
+
+**Field 5**  
+*(Only required for a packets with the prefix bit field (7) enabled)*  
 Indicates the length of the prefix value in the history window.
 
 # Examples

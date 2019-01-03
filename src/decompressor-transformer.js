@@ -30,17 +30,14 @@ class DecompressorTransformer extends Transform {
         );
         this.push(result[i]);          
       }
-      packet.t.forEach(item => {
-        this.push(Buffer.from([item]));
-      });
-    } else {
-      packet.t.forEach(item => {
-        this.push(Buffer.from([item]));
-      });
+     
     }
 
     packet.t.forEach(item => {
+      this.push(Buffer.from([item]));
+    });
 
+    packet.t.forEach(item => {
       this.history_buffer = consumeInput(
         this.history_buffer.buffer,
         this.historyBufferSize,

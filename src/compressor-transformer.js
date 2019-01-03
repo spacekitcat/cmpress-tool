@@ -29,7 +29,7 @@ class CompressorTransformer extends Transform {
     while (this.slidingWindow.lookAhead().length > 0) {
       let nextPacket = this.slidingWindow.slide(locateToken);
       
-      if ((nextPacket.p && nextPacket.p.length > 0) ||packetBuffer.length >= 255) {
+      if ((nextPacket.p && nextPacket.p.length > 0)) {
         let mergedPacketToken = Buffer.from([]);
         packetBuffer.forEach(packet => {
           mergedPacketToken = Buffer.concat([mergedPacketToken, packet.t], mergedPacketToken.length + packet.t.length)
