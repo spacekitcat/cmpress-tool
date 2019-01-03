@@ -24,7 +24,7 @@ describe('The packetHeaderToBinary function', () => {
     });
   });
 
-  describe('Packet of size 4294967295', () => {
+  describe('Packet of size 255', () => {
     it('should serialize the packet metadata', () => {
       expect(
         packetHeaderToBinary({
