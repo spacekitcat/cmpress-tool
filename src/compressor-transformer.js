@@ -22,6 +22,22 @@ class CompressorTransformer extends Transform {
     );
   }
 
+  mergeSerializePackets(packetList) {
+    let mergedPacket = Buffer.from([]);
+    let mergedPacketToken = Buffer.from([]);
+
+    packetList.forEach(packet => {
+      mergedPacketToken = Buffer.concat([mergedPacketToken, packet.t], mergedPacketToken.length + packet.t.length)
+    });
+
+    if (mergedPacketToken.length > 0) {
+      let serializedPacket = serializePacketToBinary({ t: mergedPacketToken });
+      mergedPacket = Buffer.concat([packetHeaderToBinary({ size: serializedPacket.length, hasPrefix: false }), serializedPacket]);
+    }
+
+    return mergedPacket;
+  }
+
   _transform(chunk, encoding, callback) {
     this.slidingWindow.setInput(chunk);
 
@@ -30,15 +46,7 @@ class CompressorTransformer extends Transform {
       let nextPacket = this.slidingWindow.slide(locateToken);
       
       if ((nextPacket.p && nextPacket.p.length > 0)) {
-        let mergedPacketToken = Buffer.from([]);
-        packetBuffer.forEach(packet => {
-          mergedPacketToken = Buffer.concat([mergedPacketToken, packet.t], mergedPacketToken.length + packet.t.length)
-        });
-        
-        if (mergedPacketToken.length > 0) {
-          let serializedPacket = serializePacketToBinary({ t: mergedPacketToken });
-          this.push(Buffer.concat([packetHeaderToBinary({ size: serializedPacket.length, hasPrefix: false }), serializedPacket]));
-        }
+        this.push(this.mergeSerializePackets(packetBuffer));
         packetBuffer = [];
 
         let serialized = serializePacketToBinary(nextPacket);
@@ -48,16 +56,7 @@ class CompressorTransformer extends Transform {
       }
     }
 
-    let mergedPacketToken = Buffer.from([]);
-    packetBuffer.forEach(packet => {
-      mergedPacketToken = Buffer.concat([mergedPacketToken, packet.t], mergedPacketToken.length + packet.t.length)
-    });
-    
-    if (mergedPacketToken.length > 0) {
-      let serializedPacket = serializePacketToBinary({ t: mergedPacketToken });
-      this.push(Buffer.concat([packetHeaderToBinary({ size: serializedPacket.length, hasPrefix: false }), serializedPacket]));
-    }
-
+    this.push(this.mergeSerializePackets(packetBuffer));
     callback();
   }
 }

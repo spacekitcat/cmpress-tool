@@ -1,7 +1,7 @@
 const consumeInput = (buffer, bufferSize, input) => {
-  let discard = [];
+  let discard = Buffer.from([]);
   if (!buffer) {
-    buffer = [];
+    buffer = Buffer.from([]);
   }
 
   if (!input || input.length === 0) {
@@ -10,7 +10,7 @@ const consumeInput = (buffer, bufferSize, input) => {
       buffer = buffer.slice(1, buffer.length);
     }
   } else {
-    buffer = buffer.concat(input);
+    buffer = Buffer.concat([buffer, input], buffer.length + input.length);
     let overflow = buffer.length - bufferSize;
     if (overflow > 0) {
       discard = buffer.slice(0, overflow);

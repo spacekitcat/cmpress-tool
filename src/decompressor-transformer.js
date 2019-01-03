@@ -1,13 +1,20 @@
 import { Transform } from 'stream';
 import consumeInput from './consume-input';
 import deserializePacketFromBinary from './serialization/deserialize-packet-from-binary';
-import { packetHeaderFromBinary, packetHeaderSizeFieldWidth } from './serialization/packet-header-from-binary';
+import {
+  packetHeaderFromBinary,
+  packetHeaderSizeFieldWidth
+} from './serialization/packet-header-from-binary';
 
 class DecompressorTransformer extends Transform {
   constructor(options) {
     super(options);
     this.historyBufferSize = 2600;
-    this.history_buffer = consumeInput([], this.historyBufferSize, []);
+    this.history_buffer = consumeInput(
+      Buffer.from([]),
+      this.historyBufferSize,
+      Buffer.from([])
+    );
     this.expectingNewToken = true;
     this.missingPackets = 0;
     this.buffer = Buffer.from([]);
@@ -22,38 +29,31 @@ class DecompressorTransformer extends Transform {
         startPosition
       );
 
-      for (let i = 0; i < result.length; ++i) {
-        this.history_buffer = consumeInput(
-          this.history_buffer.buffer,
-          this.historyBufferSize,
-          result[i]
-        );
-        this.push(result[i]);          
-      }
-     
-    }
-
-    packet.t.forEach(item => {
-      this.push(Buffer.from([item]));
-    });
-
-    packet.t.forEach(item => {
       this.history_buffer = consumeInput(
         this.history_buffer.buffer,
         this.historyBufferSize,
-        Buffer.from([item])
+        Buffer.from(result)
       );
-    });
-  }
+      this.push(Buffer.from(result));
+    }
+
+    this.push(packet.t);
+
+    this.history_buffer = consumeInput(
+      this.history_buffer.buffer,
+      this.historyBufferSize,
+      packet.t
+    );  }
 
   _transform(chunk, encoding, callback) {
     let currentChunkPointer = 0;
     while (currentChunkPointer < chunk.length) {
       if (this.expectingNewToken) {
-        this.missingHeaderBytes = packetHeaderSizeFieldWidth(currentChunkPointer) + 1;
+        this.missingHeaderBytes =
+          packetHeaderSizeFieldWidth(currentChunkPointer) + 1;
         this.expectingNewToken = false;
       }
-      
+
       if (this.missingHeaderBytes > 0) {
         this.headerBuffer = Buffer.concat([
           this.headerBuffer,
@@ -61,7 +61,7 @@ class DecompressorTransformer extends Transform {
         ]);
         currentChunkPointer += 1;
         this.missingHeaderBytes -= 1;
-      
+
         if (this.missingHeaderBytes === 0) {
           this.header = packetHeaderFromBinary(this.headerBuffer);
           this.headerBuffer = Buffer.from([]);

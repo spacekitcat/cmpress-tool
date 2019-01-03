@@ -64,34 +64,41 @@ Successfully compiled 1 file with Babel.
 > libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
 > jest --coverage
 
- PASS  __tests__/deserialize-packet-from-binary.test.spec.js
- PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/sliding-window.test.spec.js
- PASS  __tests__/serialize-packet-to-binary.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/compressor-transformer.test.spec.js
+ PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
  PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/unpack-integer-to-byte.test.spec.js
------------------------------------|----------|----------|----------|----------|-------------------|
-File                               |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
------------------------------------|----------|----------|----------|----------|-------------------|
-All files                          |      100 |      100 |      100 |      100 |                   |
- compressor-transformer.js         |      100 |      100 |      100 |      100 |                   |
- consume-input.js                  |      100 |      100 |      100 |      100 |                   |
- decompressor-transformer.js       |      100 |      100 |      100 |      100 |                   |
- deserialize-packet-from-binary.js |      100 |      100 |      100 |      100 |                   |
- find-index-of-subarray.js         |      100 |      100 |      100 |      100 |                   |
- locate-token.js                   |      100 |      100 |      100 |      100 |                   |
- serialize-packet-to-binary.js     |      100 |      100 |      100 |      100 |                   |
- sliding-window.js                 |      100 |      100 |      100 |      100 |                   |
- unpack-integer-to-byte.js         |      100 |      100 |      100 |      100 |                   |
------------------------------------|----------|----------|----------|----------|-------------------|
+ PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
+ PASS  __tests__/serialization/serialize-packet-to-binary.test.spec.js
+ PASS  __tests__/serialization/deserialize-packet-from-binary.test.spec.js
+ PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
+ PASS  __tests__/serialization/packet-header-from-binary.test.spec.js
+ PASS  __tests__/sliding-window.test.spec.js
+------------------------------------|----------|----------|----------|----------|-------------------|
+File                                |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+------------------------------------|----------|----------|----------|----------|-------------------|
+All files                           |      100 |    98.82 |      100 |      100 |                   |
+ src                                |      100 |    98.21 |      100 |      100 |                   |
+  compressor-transformer.js         |      100 |      100 |      100 |      100 |                   |
+  consume-input.js                  |      100 |      100 |      100 |      100 |                   |
+  decompressor-transformer.js       |      100 |    91.67 |      100 |      100 |                75 |
+  find-index-of-subarray.js         |      100 |      100 |      100 |      100 |                   |
+  locate-token.js                   |      100 |      100 |      100 |      100 |                   |
+  sliding-window.js                 |      100 |      100 |      100 |      100 |                   |
+ src/serialization                  |      100 |      100 |      100 |      100 |                   |
+  deserialize-packet-from-binary.js |      100 |      100 |      100 |      100 |                   |
+  header-flags-enum.js              |      100 |      100 |      100 |      100 |                   |
+  packet-header-from-binary.js      |      100 |      100 |      100 |      100 |                   |
+  packet-header-to-binary.js        |      100 |      100 |      100 |      100 |                   |
+  serialize-packet-to-binary.js     |      100 |      100 |      100 |      100 |                   |
+  unpack-integer-to-byte.js         |      100 |      100 |      100 |      100 |                   |
+------------------------------------|----------|----------|----------|----------|-------------------|
 
-Test Suites: 9 passed, 9 total
-Tests:       103 passed, 103 total
+Test Suites: 11 passed, 11 total
+Tests:       104 passed, 104 total
 Snapshots:   0 total
-Time:        2.197s
+Time:        1.929s
 Ran all test suites.
 ```
 
