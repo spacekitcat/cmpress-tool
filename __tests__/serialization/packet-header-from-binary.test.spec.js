@@ -1,4 +1,7 @@
-import { packetHeaderFromBinary, packetHeaderSizeFieldWidth } from '../../src/serialization/packet-header-from-binary';
+import {
+  packetHeaderFromBinary,
+  packetHeaderSizeFieldWidth
+} from '../../src/serialization/packet-header-from-binary';
 import headerFlagsEnum from '../../src/serialization/header-flags-enum';
 
 describe('The packetHeaderFromBinary function', () => {
@@ -23,11 +26,29 @@ describe('The packetHeaderFromBinary function', () => {
           hasPrefix: true
         });
       });
+
+      describe('and has the PURE_PACKET_MODE flag', () => {
+        it('should serialize the packet metadata', () => {
+          let options = headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX | headerFlagsEnum.PURE_PACKET_MODE;
+
+          expect(
+            packetHeaderFromBinary(Buffer.from([options, 0x01]))
+          ).toMatchObject({
+            size: 1,
+            hasPrefix: true,
+            isPurePacket: true,
+          });
+        });
+      });
     });
 
     describe('and has the PREFIX_EXTRA_INT_BYTE_1 flag', () => {
       it('should extract the expected packet metadata', () => {
-        let options = headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX | headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1;
+        let options =
+          headerFlagsEnum.OFF |
+          headerFlagsEnum.HAS_PREFIX |
+          headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1;
+
         expect(
           packetHeaderFromBinary(Buffer.from([options, 0x01]))
         ).toMatchObject({
@@ -54,8 +75,8 @@ describe('The packetHeaderFromBinary function', () => {
       it('should extract the expected packet metadata', () => {
         let options = headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX;
         expect(
-            packetHeaderFromBinary(Buffer.from([options, 0xff]))
-            ).toMatchObject({
+          packetHeaderFromBinary(Buffer.from([options, 0xff]))
+        ).toMatchObject({
           size: 255,
           hasPrefix: true
         });
@@ -68,9 +89,7 @@ describe('The packetHeaderWordSize function', () => {
   describe('Packet of size 1', () => {
     it('should extract the expected packet metadata', () => {
       let options = headerFlagsEnum.OFF;
-      expect(
-        packetHeaderSizeFieldWidth(Buffer.from([options, 0x01]))
-      ).toBe(1);
+      expect(packetHeaderSizeFieldWidth(Buffer.from([options, 0x01]))).toBe(1);
     });
   });
 });

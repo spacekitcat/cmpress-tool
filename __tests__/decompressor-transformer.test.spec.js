@@ -1,7 +1,5 @@
 import { DecompressorTransformer } from '../src/decompressor-transformer';
 
-const COMMA_CHAR_CODE = 0x2c;
-
 describe('DecompressorTransformer', () => {
   describe('A blank input string', () => {
     it('inflates ``', () => {
