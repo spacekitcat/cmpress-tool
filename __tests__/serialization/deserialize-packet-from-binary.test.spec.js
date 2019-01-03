@@ -45,15 +45,29 @@ describe('deserializePacketFromBinary', () => {
     });
   });
 
+  describe('when the input has a blank field', () => {
+    beforeAll(() => {
+      argument = '';
+    });
+
+    beforeEach(() => {
+      result = deserializePacketFromBinary(Buffer.from(argument), {
+        size: 0,
+        hasPrefix: false
+      });
+    });
+
+    it('should deserialize with the expected token', () => {
+      expect(result).toMatchObject({ t: Buffer.from('') });
+    });
+  });
+
   describe('when the input has a prefix field', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(
-        Buffer.from([97, 0x00, 0x00, 0x09, 0x00]),
-        {
-          size: 5,
-          hasPrefix: true
-        }
-      );
+      result = deserializePacketFromBinary(Buffer.from([97, 0x00, 0x09]), {
+        size: 3,
+        hasPrefix: true
+      });
     });
 
     it('should deserialize with the expected prefix', () => {
@@ -63,29 +77,42 @@ describe('deserializePacketFromBinary', () => {
     describe('and the packet is packed with multiple tokens', () => {
       beforeEach(() => {
         result = deserializePacketFromBinary(
-          Buffer.from([97, 97, 97, 97, 0x00, 0x00, 0x09, 0x00]),
+          Buffer.from([0x61, 0x61, 0x61, 0x61]),
           {
-            size: 8,
-            hasPrefix: true
+            size: 4,
+            hasPrefix: false
           }
         );
       });
 
       it('should deserialize with the expected prefix', () => {
-        expect(result).toMatchObject({ t: Buffer.from('aaaa'), p: [0, 9] });
+        expect(result).toMatchObject({ t: Buffer.from('aaaa') });
+      });
+
+      describe('and the packet has a prefix', () => {
+        beforeEach(() => {
+          result = deserializePacketFromBinary(
+            Buffer.from([0x61, 0x61, 0x61, 0x61, 0x00, 0x09]),
+            {
+              size: 6,
+              hasPrefix: true
+            }
+          );
+        });
+
+        it('should deserialize with the expected prefix', () => {
+          expect(result).toMatchObject({ t: Buffer.from('aaaa'), p: [0, 9] });
+        });
       });
     });
   });
 
   describe('when the input has prefix values above 10', () => {
     beforeEach(() => {
-      result = deserializePacketFromBinary(
-        Buffer.from([97, 0x0a, 0x00, 0x7b, 0x00]),
-        {
-          size: 5,
-          hasPrefix: true
-        }
-      );
+      result = deserializePacketFromBinary(Buffer.from([97, 0x0a, 0x7b]), {
+        size: 3,
+        hasPrefix: true
+      });
     });
 
     it('should deserialize with the expected prefix', () => {
@@ -99,7 +126,8 @@ describe('deserializePacketFromBinary', () => {
         Buffer.from([97, 0x01, 0x02, 0x00, 0x04]),
         {
           size: 5,
-          hasPrefix: true
+          hasPrefix: true,
+          prefixByteExtOne: true
         }
       );
     });

@@ -1,8 +1,23 @@
 const invalidFatalInput = input => !input;
 
-const readPrefixValue = field => {
-  let prefixValue1 = field.readUInt16LE(0);
-  let prefixValue2 = field.readUInt16LE(2);
+const getPrefixFieldByteLen = packetHeader => {
+  let prefixIntegerByteLen = 0;
+  if (packetHeader.hasPrefix) {
+    prefixIntegerByteLen += 1;
+  }
+  if (packetHeader.prefixByteExtOne) {
+    prefixIntegerByteLen += 1;
+  }
+
+  return prefixIntegerByteLen;
+}
+
+const readPrefixValue = (serialisedBuffer, packetHeader) => {
+
+  const prefixByteLen = getPrefixFieldByteLen(packetHeader);
+  let field = serialisedBuffer.slice(serialisedBuffer.length - (prefixByteLen * 2));
+  let prefixValue1 = field.readUIntLE(0, prefixByteLen);
+  let prefixValue2 = field.readUIntLE(prefixByteLen, prefixByteLen);
   return [prefixValue1, prefixValue2];
 };
 
@@ -14,15 +29,12 @@ const deserializePacketFromBinary = (serialisedBuffer, packetHeader) => {
     );
   }
 
-  
   let output = {};
   if (packetHeader.hasPrefix) {
-    let fieldValue = serialisedBuffer.slice(serialisedBuffer.length - 4, serialisedBuffer.length);
-    output.p = readPrefixValue(fieldValue);
-    output.t = serialisedBuffer.slice(0, serialisedBuffer.length - 4);
-  } else {
-    output.t = serialisedBuffer.slice(0, serialisedBuffer.length);
+    output.p = readPrefixValue(serialisedBuffer, packetHeader);
   }
+
+  output.t = serialisedBuffer.slice(0, serialisedBuffer.length - (getPrefixFieldByteLen(packetHeader) * 2));
 
   return output;
 };

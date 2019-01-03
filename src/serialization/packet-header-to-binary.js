@@ -9,6 +9,10 @@ const packetHeaderToBinary = header => {
         flags |= headerFlagsEnum.HAS_PREFIX;
     }
 
+    if (header.prefixByteExtOne) {
+        flags |= headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1;
+    }
+
     return Buffer.concat([
         Buffer.from([flags]),
         unpackIntegerByte(header.size, 1)

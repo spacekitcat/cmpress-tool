@@ -24,9 +24,22 @@ describe('The packetHeaderFromBinary function', () => {
         });
       });
     });
+
+    describe('and has the PREFIX_EXTRA_INT_BYTE_1 flag', () => {
+      it('should extract the expected packet metadata', () => {
+        let options = headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX | headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1;
+        expect(
+          packetHeaderFromBinary(Buffer.from([options, 0x01]))
+        ).toMatchObject({
+          size: 1,
+          hasPrefix: true,
+          prefixByteExtOne: true
+        });
+      });
+    });
   });
 
-  describe('Packet of 4294967295 (32-bit unsigned integer maximum)', () => {
+  describe('Packet of 255 (8-bit unsigned integer maximum)', () => {
     it('should extract the expected packet metadata', () => {
       let options = headerFlagsEnum.OFF;
       expect(

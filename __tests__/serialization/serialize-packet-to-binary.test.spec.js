@@ -87,7 +87,7 @@ describe('serializePacketToBinary', () => {
     });
   });
 
-  describe('when the input has a valid prefix value, `p`', () => {
+  describe('when the input has 8-bit prefix values, `p`', () => {
     beforeAll(() => {
       argument = { t: Buffer.from([0x70]), p: [1, 3] };
     });
@@ -97,7 +97,50 @@ describe('serializePacketToBinary', () => {
     });
 
     it('should return a binary representation of the packet', () => {
-      expect(result).toMatchObject(Buffer.from([0x70, 0x01, 0x00, 0x03, 0x00]));
+      expect(result).toMatchObject(Buffer.from([0x70, 0x01, 0x03]));
+    });
+  });
+
+  describe('when the input has 16-bit prefix values, `p`', () => {
+    beforeAll(() => {
+      argument = { t: Buffer.from([0x70]), p: [256, 256] };
+    });
+
+    beforeEach(() => {
+      result = serializePacketToBinary(argument);
+    });
+
+    it('should return a binary representation of the packet', () => {
+      expect(result).toMatchObject(Buffer.from([0x70, 0x00, 0x01, 0x00, 0x01]));
+    });
+  });
+
+
+  describe('when the input has a 16-bit prefix start value and a 8-bit prefix end value, `p`', () => {
+    beforeAll(() => {
+      argument = { t: Buffer.from([0x70]), p: [256, 3] };
+    });
+
+    beforeEach(() => {
+      result = serializePacketToBinary(argument);
+    });
+
+    it('should return a binary representation of the packet with two 16-bit prefix fields', () => {
+      expect(result).toMatchObject(Buffer.from([0x70, 0x00, 0x01, 0x03, 0x00]));
+    });
+  });
+
+  describe('when the input has a 8-bit prefix start value and a 16-bit prefix end value, `p`', () => {
+    beforeAll(() => {
+      argument = { t: Buffer.from([0x70]), p: [3, 256] };
+    });
+
+    beforeEach(() => {
+      result = serializePacketToBinary(argument);
+    });
+
+    it('should return a binary representation of the packet with two 16-bit prefix fields', () => {
+      expect(result).toMatchObject(Buffer.from([0x70, 0x03, 0x00, 0x00, 0x01]));
     });
   });
 

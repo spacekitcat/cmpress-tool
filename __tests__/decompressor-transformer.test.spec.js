@@ -50,31 +50,25 @@ describe('DecompressorTransformer', () => {
           0x61,
 
           0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
           0x03,
-          0x00,
+          ////
+          0x61,
+          0x01,
+          0x01,
 
           0x01,
-          0x05,
+          0x03,
+          ////
+          0x61,
+          0x01,
+          0x03,
+
+          0x01,
+          0x03,
           ////
           0x62,
           0x01,
-          0x00,
-          0x01,
-          0x00
+          0x01
         ])
       );
       decompressorTransformer.end();
@@ -122,31 +116,25 @@ describe('DecompressorTransformer', () => {
           0x61,
 
           0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
-          0x01,
-          0x00,
-
-          0x01,
-          0x05,
-          ////
-          0x61,
-          0x01,
-          0x00,
           0x03,
-          0x00,
-
-          0x01,
-          0x05,
           ////
           0x61,
           0x01,
-          0x00,
-          0x07,
-          0x00
+          0x01,
+
+          0x01,
+          0x03,
+          ////
+          0x61,
+          0x01,
+          0x03,
+
+          0x01,
+          0x03,
+          ////
+          0x61,
+          0x01,
+          0x07
         ])
       );
       decompressorTransformer.end();
@@ -199,22 +187,18 @@ describe('DecompressorTransformer', () => {
           0x61,
 
           0x01,
-          0x05,
+          0x03,
           ////
           0x6c,
           0x01,
-          0x00,
           0x04,
-          0x00,
 
           0x01,
-          0x05,
+          0x03,
           ////
           0x61,
           0x03,
-          0x00,
-          0x06,
-          0x00
+          0x06
         ])
       );
       decompressorTransformer.end();

@@ -23,8 +23,19 @@ const serializePacketToBinary = compressionPackets => {
     prefixFieldExists(compressionPackets) &&
     validPrefixField(compressionPackets)
   ) {
+    let prefixStart = unpackIntegerByte(compressionPackets.p[0]);
+    let prefixEnd = unpackIntegerByte(compressionPackets.p[1]);
 
-    output = Buffer.concat([output, unpackIntegerByte(compressionPackets.p[0], 2), unpackIntegerByte(compressionPackets.p[1], 2)]);
+    let prefixByteWidth =
+      prefixStart.length > prefixEnd.length
+        ? prefixStart.length
+        : prefixEnd.length;
+    
+    output = Buffer.concat([
+      output,
+      unpackIntegerByte(compressionPackets.p[0], prefixByteWidth),
+      unpackIntegerByte(compressionPackets.p[1], prefixByteWidth)
+    ]);
   }
 
   return output;

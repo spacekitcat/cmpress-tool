@@ -30,7 +30,7 @@ The compression process produces a series of compressed frames, each one describ
 - [X] Refactor the decompression stream, it can be reduced to one step which should also make it slightly faster. I don't care much about this right now, the decompression process is approximately 90 times faster than compression.
 - [X] Remove the 4 byte threshold code. It overcomplicates everything for a neglegible impact on the storage requirements of real files, it also complicates testing.
 - [X] The current packet header is just an 8-bit integer representing the packet length in bytes. The prefix detection is tied to a size of 5. The prefix value needs to be seperated from the packet size so that the program can deal with variable length packets with variable length tokens. The new header should start with a 1-byte field of packet mode modifier switches. The last bit indicates the presence of a 4-byte prefix field at the end of the field and the other bit fields will be used to describe the packet field byte widths. This will allow it to use a minimual number of bytes to represent a packet while still providing flexibility larger files will benefit from.
-- [ ] 
+- [X] Use the new header to implement variable byte width prefix addressing. It should be 8-bit from 0 to 255, 16-bit from 256 etc.
 - [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
 - [ ] If we have four prefixless packets with 8-bit tokens, it would technically be possible to store them as a single packet with a 32-bit token, saving 3 bytes of overhead.
 - [ ] Substring code is O(NlogN) (was O(n^2)), but a suffix tree would be O(m + n). ~~The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree.~~ See above.
@@ -64,25 +64,26 @@ Successfully compiled 1 file with Babel.
 > libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
 > jest --coverage
 
+ PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
  PASS  __tests__/decompressor-transformer.test.spec.js
  PASS  __tests__/compressor-transformer.test.spec.js
- PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
- PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
  PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/serialization/serialize-packet-to-binary.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
  PASS  __tests__/serialization/deserialize-packet-from-binary.test.spec.js
- PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
- PASS  __tests__/serialization/packet-header-from-binary.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
+ PASS  __tests__/serialization/serialize-packet-to-binary.test.spec.js
+ PASS  __tests__/serialization/packet-header-generator.test.spec.js
+ PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/serialization/packet-header-from-binary.test.spec.js
 ------------------------------------|----------|----------|----------|----------|-------------------|
 File                                |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 ------------------------------------|----------|----------|----------|----------|-------------------|
-All files                           |      100 |    98.82 |      100 |      100 |                   |
+All files                           |      100 |    99.03 |      100 |      100 |                   |
  src                                |      100 |    98.21 |      100 |      100 |                   |
   compressor-transformer.js         |      100 |      100 |      100 |      100 |                   |
   consume-input.js                  |      100 |      100 |      100 |      100 |                   |
-  decompressor-transformer.js       |      100 |    91.67 |      100 |      100 |                75 |
+  decompressor-transformer.js       |      100 |    91.67 |      100 |      100 |                74 |
   find-index-of-subarray.js         |      100 |      100 |      100 |      100 |                   |
   locate-token.js                   |      100 |      100 |      100 |      100 |                   |
   sliding-window.js                 |      100 |      100 |      100 |      100 |                   |
@@ -90,15 +91,16 @@ All files                           |      100 |    98.82 |      100 |      100 
   deserialize-packet-from-binary.js |      100 |      100 |      100 |      100 |                   |
   header-flags-enum.js              |      100 |      100 |      100 |      100 |                   |
   packet-header-from-binary.js      |      100 |      100 |      100 |      100 |                   |
+  packet-header-generator.js        |      100 |      100 |      100 |      100 |                   |
   packet-header-to-binary.js        |      100 |      100 |      100 |      100 |                   |
   serialize-packet-to-binary.js     |      100 |      100 |      100 |      100 |                   |
   unpack-integer-to-byte.js         |      100 |      100 |      100 |      100 |                   |
 ------------------------------------|----------|----------|----------|----------|-------------------|
 
-Test Suites: 11 passed, 11 total
-Tests:       104 passed, 104 total
+Test Suites: 12 passed, 12 total
+Tests:       116 passed, 116 total
 Snapshots:   0 total
-Time:        1.929s
+Time:        2.545s
 Ran all test suites.
 ```
 
@@ -147,16 +149,17 @@ The **./sampletarget** folder contains small demonstration scripts which demonst
 ### Integration test (integrationtest.sh)
 
 ```bash
+
 I compressed the devil outta ./resources/testinput01.txt
 
     Input size: 1408
-    Ouput size: 144
-    IO   ratio: 0.10227272727272728
+    Ouput size: 116
+    IO   ratio: 0.08238636363636363
 
-        0.14 real         0.12 user         0.03 sys
+        0.15 real         0.12 user         0.03 sys
 0.13
 I inflated the devil outta ./resources/testinput01.txt.bzz
-0.10
+0.09
 
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt
 afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflate
@@ -166,13 +169,13 @@ afc36de9b6fa04d767b3fd3823507d76f1ef86c2  ./resources/testinput01.txt.bzz.inflat
 I compressed the devil outta ./resources/testinput02.txt
 
     Input size: 11380
-    Ouput size: 167
-    IO   ratio: 0.014674868189806678
+    Ouput size: 159
+    IO   ratio: 0.01397188049209139
 
-        0.19 real         0.17 user         0.03 sys
+        0.18 real         0.16 user         0.03 sys
 0.17
 I inflated the devil outta ./resources/testinput02.txt.bzz
-0.38
+0.07
 
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt
 014c2644798763fe3ed176602addfe7b7edf1b6a  ./resources/testinput02.txt.bzz.inflate
@@ -182,13 +185,13 @@ I inflated the devil outta ./resources/testinput02.txt.bzz
 I compressed the devil outta ./resources/blue.jpg
 
     Input size: 65879
-    Ouput size: 213050
-    IO   ratio: 3.2339592282821537
+    Ouput size: 180250
+    IO   ratio: 2.736076746763005
 
-       20.33 real        20.07 user         1.74 sys
-20.07
+       19.93 real        19.79 user         1.65 sys
+19.80
 I inflated the devil outta ./resources/blue.jpg.bzz
-3.59
+1.93
 
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg
 15566f7c74f6db40da040312100d89345beebdc8  ./resources/blue.jpg.bzz.inflate
@@ -198,13 +201,13 @@ I inflated the devil outta ./resources/blue.jpg.bzz
 I compressed the devil outta ./resources/sample-ppp.pptx
 
     Input size: 47372
-    Ouput size: 114720
-    IO   ratio: 2.4216836950097105
+    Ouput size: 98329
+    IO   ratio: 2.0756776154690533
 
-       11.47 real        11.49 user         0.73 sys
-11.49
+       10.72 real        10.79 user         0.61 sys
+10.80
 I inflated the devil outta ./resources/sample-ppp.pptx.bzz
-2.34
+0.90
 
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx
 955b6d57c0ffa8ba129d01abbf91988e298a8445  ./resources/sample-ppp.pptx.bzz.inflate
@@ -214,13 +217,13 @@ I inflated the devil outta ./resources/sample-ppp.pptx.bzz
 I compressed the devil outta ./resources/sails.bmp
 
     Input size: 394294
-    Ouput size: 770185
-    IO   ratio: 1.9533267054532912
+    Ouput size: 688269
+    IO   ratio: 1.745573100275429
 
-       79.63 real        76.82 user        11.88 sys
-76.83
+       80.38 real        77.68 user        11.49 sys
+77.69
 I inflated the devil outta ./resources/sails.bmp.bzz
-46.60
+20.55
 
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp
 65fb675d23b2dd658e4f43f143988579e76fe515  ./resources/sails.bmp.bzz.inflate

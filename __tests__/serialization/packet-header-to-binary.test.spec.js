@@ -19,7 +19,9 @@ describe('The packetHeaderToBinary function', () => {
             size: 1,
             hasPrefix: true
           })
-        ).toMatchObject(Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX, 0x01]));
+        ).toMatchObject(
+          Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX, 0x01])
+        );
       });
     });
   });
@@ -33,16 +35,32 @@ describe('The packetHeaderToBinary function', () => {
         })
       ).toMatchObject(Buffer.from([headerFlagsEnum.OFF, 0xff]));
     });
-      
+
     describe('and has the HAS_PREFIX flag', () => {
-        it('should serialize the packet metadata', () => {
-          expect(
-            packetHeaderToBinary({
-              size: 255,
-              hasPrefix: true
-            })
-          ).toMatchObject(Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX, 0xFF]));
-        });
+      it('should serialize the packet metadata', () => {
+        expect(
+          packetHeaderToBinary({
+            size: 255,
+            hasPrefix: true
+          })
+        ).toMatchObject(
+          Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX, 0xff])
+        );
       });
+    });
+
+    describe('and has the PREFIX_EXTRA_INT_BYTE_1 flag', () => {
+      it('should serialize the packet metadata', () => {
+        expect(
+          packetHeaderToBinary({
+            size: 255,
+            hasPrefix: true,
+            prefixByteExtOne: true
+          })
+        ).toMatchObject(
+          Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX | headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1, 0xff])
+        );
+      });
+    });
   });
 });
