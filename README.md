@@ -107,6 +107,7 @@ Ran all test suites.
 
 **Field 1**  
 An 8-bit bit field of packet mode modifier switches.
+
 | Index | Meaning |
 |-------|---------|
 |   0   | Future  |
