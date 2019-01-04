@@ -12,7 +12,6 @@ describe('The packetHeaderFromBinary function', () => {
         packetHeaderFromBinary(Buffer.from([options, 0x01]))
       ).toMatchObject({
         size: 1,
-        hasPrefix: false
       });
     });
 
@@ -42,6 +41,19 @@ describe('The packetHeaderFromBinary function', () => {
       });
     });
 
+    describe('and has the PURE_PACKET_MODE flag', () => {
+      it('should serialize the packet metadata', () => {
+        let options = headerFlagsEnum.OFF | headerFlagsEnum.PURE_PACKET_MODE;
+
+        expect(
+          packetHeaderFromBinary(Buffer.from([options, 0x01]))
+        ).toMatchObject({
+          size: 1,
+          isPurePacket: true,
+        });
+      });
+    });
+
     describe('and has the PREFIX_EXTRA_INT_BYTE_1 flag', () => {
       it('should extract the expected packet metadata', () => {
         let options =
@@ -67,7 +79,6 @@ describe('The packetHeaderFromBinary function', () => {
         packetHeaderFromBinary(Buffer.from([options, 0xff]))
       ).toMatchObject({
         size: 255,
-        hasPrefix: false
       });
     });
 

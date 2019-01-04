@@ -40,6 +40,21 @@ describe('The packetHeaderToBinary function', () => {
         });
       });
     });
+
+    describe('and has the PURE_PACKET_MODE flag', () => {
+      it('should serialize the packet metadata', () => {
+        expect(
+          packetHeaderToBinary({
+            size: 1,
+            isPurePacket: true,
+          })
+        ).toMatchObject(
+          Buffer.from([
+            headerFlagsEnum.OFF | headerFlagsEnum.PURE_PACKET_MODE
+          ])
+        );
+      });
+    });
   });
 
   describe('Packet of size 255', () => {

@@ -1,21 +1,31 @@
 import headerFlagsEnum from './header-flags-enum';
 
 const packetHeaderSizeFieldWidth = firstHeaderByte => {
-    return 1;
-}
+  return 1;
+};
 
 const packetHeaderFromBinary = headerBytes => {
-    const headerBitField = headerBytes[0];
-    const isPurePacket = headerBitField & headerFlagsEnum.PURE_PACKET_MODE !== 0 ? true : false;
-    const hasPrefix = headerBitField & headerFlagsEnum.HAS_PREFIX ? true : false;
-    const prefixByteExtOne = headerBitField & headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1 ? true : false;
+  const headerBitField = headerBytes[0];
 
-    return ({
-        size: headerBytes.readUIntLE(1, packetHeaderSizeFieldWidth(headerBytes[0])),
-        isPurePacket,
-        hasPrefix,
-        prefixByteExtOne,
-    });
-}
+  let packetHeader = {};
+  if (headerBitField & headerFlagsEnum.PURE_PACKET_MODE) {
+    packetHeader.isPurePacket = true;
+  }
+
+  if (headerBitField & headerFlagsEnum.HAS_PREFIX) {
+    packetHeader.hasPrefix = true;
+  }
+
+  if (headerBitField & headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1) {
+    packetHeader.prefixByteExtOne = true;
+  }
+
+  packetHeader.size = headerBytes.readUIntLE(
+    1,
+    packetHeaderSizeFieldWidth(headerBytes[0])
+  );
+
+  return packetHeader;
+};
 
 export { packetHeaderFromBinary, packetHeaderSizeFieldWidth };

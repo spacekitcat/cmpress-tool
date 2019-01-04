@@ -13,12 +13,12 @@ const packetHeaderToBinary = header => {
     flags |= headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1;
   }
 
-  let result = Buffer.from([flags]);
   if (header.isPurePacket) {
     flags |= headerFlagsEnum.PURE_PACKET_MODE;
     packetSize = undefined;
   }
 
+  let result = Buffer.from([flags]);
   if (packetSize) {
     result = Buffer.concat([result, unpackIntegerByte(packetSize, 1)], 2);
   }
