@@ -16,12 +16,28 @@ describe('The packetHeaderToBinary function', () => {
       it('should serialize the packet metadata', () => {
         expect(
           packetHeaderToBinary({
-            size: 1,
+            size: 3,
             hasPrefix: true
           })
         ).toMatchObject(
-          Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX, 0x01])
+          Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX, 0x03])
         );
+      });
+
+      describe('and has the PURE_PACKET_MODE flag', () => {
+        it('should serialize the packet metadata', () => {
+          expect(
+            packetHeaderToBinary({
+              size: 3,
+              hasPrefix: true,
+              isPurePacket: true
+            })
+          ).toMatchObject(
+            Buffer.from([
+              headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX | headerFlagsEnum.PURE_PACKET_MODE
+            ])
+          );
+        });
       });
     });
   });
@@ -58,7 +74,12 @@ describe('The packetHeaderToBinary function', () => {
             prefixByteExtOne: true
           })
         ).toMatchObject(
-          Buffer.from([headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX | headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1, 0xff])
+          Buffer.from([
+            headerFlagsEnum.OFF |
+              headerFlagsEnum.HAS_PREFIX |
+              headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1,
+            0xff
+          ])
         );
       });
     });
