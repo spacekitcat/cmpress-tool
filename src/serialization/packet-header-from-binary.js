@@ -10,6 +10,12 @@ const packetHeaderFromBinary = headerBytes => {
   let packetHeader = {};
   if (headerBitField & headerFlagsEnum.PURE_PACKET_MODE) {
     packetHeader.isPurePacket = true;
+    packetHeader.size = 1;
+  } else {
+    packetHeader.size = headerBytes.readUIntLE(
+      1,
+      packetHeaderSizeFieldWidth(headerBytes[0])
+    );
   }
 
   if (headerBitField & headerFlagsEnum.HAS_PREFIX) {
@@ -19,11 +25,6 @@ const packetHeaderFromBinary = headerBytes => {
   if (headerBitField & headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1) {
     packetHeader.prefixByteExtOne = true;
   }
-
-  packetHeader.size = headerBytes.readUIntLE(
-    1,
-    packetHeaderSizeFieldWidth(headerBytes[0])
-  );
 
   return packetHeader;
 };

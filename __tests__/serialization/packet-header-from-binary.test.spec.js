@@ -31,7 +31,7 @@ describe('The packetHeaderFromBinary function', () => {
           let options = headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX | headerFlagsEnum.PURE_PACKET_MODE;
 
           expect(
-            packetHeaderFromBinary(Buffer.from([options, 0x01]))
+            packetHeaderFromBinary(Buffer.from([options]))
           ).toMatchObject({
             size: 1,
             hasPrefix: true,
@@ -46,7 +46,7 @@ describe('The packetHeaderFromBinary function', () => {
         let options = headerFlagsEnum.OFF | headerFlagsEnum.PURE_PACKET_MODE;
 
         expect(
-          packetHeaderFromBinary(Buffer.from([options, 0x01]))
+          packetHeaderFromBinary(Buffer.from([options]))
         ).toMatchObject({
           size: 1,
           isPurePacket: true,

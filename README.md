@@ -56,29 +56,22 @@ Successfully compiled 1 file with Babel.
 # Unit tests
 
 ```
-/libz7
-> npm run test
-
-
-> libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
-> jest --coverage
-
- PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
  PASS  __tests__/decompressor-transformer.test.spec.js
  PASS  __tests__/compressor-transformer.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
- PASS  __tests__/serialization/deserialize-packet-from-binary.test.spec.js
- PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/serialization/serialize-packet-to-binary.test.spec.js
  PASS  __tests__/serialization/packet-header-generator.test.spec.js
+ PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/serialization/serialize-packet-to-binary.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
  PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
- PASS  __tests__/sliding-window.test.spec.js
  PASS  __tests__/serialization/packet-header-from-binary.test.spec.js
+ PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/serialization/deserialize-packet-from-binary.test.spec.js
 ------------------------------------|----------|----------|----------|----------|-------------------|
 File                                |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 ------------------------------------|----------|----------|----------|----------|-------------------|
-All files                           |      100 |    99.03 |      100 |      100 |                   |
+All files                           |      100 |    99.08 |      100 |      100 |                   |
  src                                |      100 |    98.21 |      100 |      100 |                   |
   compressor-transformer.js         |      100 |      100 |      100 |      100 |                   |
   consume-input.js                  |      100 |      100 |      100 |      100 |                   |
@@ -97,9 +90,9 @@ All files                           |      100 |    99.03 |      100 |      100 
 ------------------------------------|----------|----------|----------|----------|-------------------|
 
 Test Suites: 12 passed, 12 total
-Tests:       116 passed, 116 total
+Tests:       120 passed, 120 total
 Snapshots:   0 total
-Time:        2.545s
+Time:        1.452s
 Ran all test suites.
 ```
 
