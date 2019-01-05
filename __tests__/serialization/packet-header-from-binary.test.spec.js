@@ -15,6 +15,15 @@ describe('The packetHeaderFromBinary function', () => {
       });
     });
 
+    describe('and the packet contains 1 byte out of the expected 2 (partial)', () => {
+      it('should return empty object', () => {
+        let options = headerFlagsEnum.OFF;
+        expect(
+          packetHeaderFromBinary(Buffer.from([options]))
+        ).toMatchObject({});
+      });
+    });
+
     describe('and has the HAS_PREFIX flag', () => {
       it('should extract the expected packet metadata', () => {
         let options = headerFlagsEnum.OFF | headerFlagsEnum.HAS_PREFIX;

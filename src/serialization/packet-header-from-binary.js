@@ -11,7 +11,7 @@ const packetHeaderFromBinary = headerBytes => {
   if (headerBitField & headerFlagsEnum.PURE_PACKET_MODE) {
     packetHeader.isPurePacket = true;
     packetHeader.size = 1;
-  } else {
+  } else if (headerBytes.length > 1) {
     packetHeader.size = headerBytes.readUIntLE(
       1,
       packetHeaderSizeFieldWidth(headerBytes[0])
