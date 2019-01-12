@@ -1,6 +1,6 @@
 import { Transform } from 'stream';
 import consumeInput from './consume-input';
-import deserializePacketFromBinary from './serialization/deserialize-packet-from-binary';
+import packetFromBinary from './serialization/packet-from-binary';
 import {
   packetHeaderFromBinary,
   packetHeaderSizeFieldWidth
@@ -81,7 +81,7 @@ class DecompressorTransformer extends Transform {
       }
 
       if (this.missingPackets === 0) {
-        let packet = deserializePacketFromBinary(this.buffer, this.header);
+        let packet = packetFromBinary(this.buffer, this.header);
         this.expandPacket(packet);
         this.expectingNewToken = true;
         this.buffer = Buffer.from([]);

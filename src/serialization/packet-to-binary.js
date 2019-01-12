@@ -11,7 +11,7 @@ const invalidInput = input =>
   !validTokenField(input) ||
   (prefixFieldExists(input) && !validPrefixField(input));
 
-const serializePacketToBinary = compressionPackets => {
+const packetToBinary = compressionPackets => {
   if (invalidInput(compressionPackets)) {
     throw new Error(
       `Error: Invalid compression packet format: ${compressionPackets}`
@@ -41,4 +41,4 @@ const serializePacketToBinary = compressionPackets => {
   return output;
 };
 
-export default serializePacketToBinary;
+export default packetToBinary;

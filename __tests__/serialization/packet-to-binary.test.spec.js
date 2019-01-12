@@ -1,4 +1,4 @@
-import serializePacketToBinary from '../../src/serialization/serialize-packet-to-binary';
+import serializePacketToBinary from '../../src/serialization/packet-to-binary';
 describe('serializePacketToBinary', () => {
   let result;
   let argument;

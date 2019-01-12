@@ -21,7 +21,7 @@ const readPrefixValue = (serialisedBuffer, packetHeader) => {
   return [prefixValue1, prefixValue2];
 };
 
-const deserializePacketFromBinary = (serialisedBuffer, packetHeader) => {
+const packetFromBinary = (serialisedBuffer, packetHeader) => {
 
   if (invalidFatalInput(serialisedBuffer)) {
     throw new Error(
@@ -39,4 +39,4 @@ const deserializePacketFromBinary = (serialisedBuffer, packetHeader) => {
   return output;
 };
 
-export default deserializePacketFromBinary;
+export default packetFromBinary;

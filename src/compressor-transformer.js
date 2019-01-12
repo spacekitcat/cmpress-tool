@@ -1,7 +1,7 @@
 import { Transform } from 'stream';
 import { SlidingWindow } from './sliding-window.js';
 import locateToken from './locate-token.js';
-import serializePacketToBinary from './serialization/serialize-packet-to-binary';
+import packetFromBinary from './serialization/packet-to-binary';
 import packetHeaderToBinary from './serialization/packet-header-to-binary';
 import packetHeaderGenerator from './serialization/packet-header-generator';
 
@@ -33,7 +33,7 @@ class CompressorTransformer extends Transform {
 
     if (mergedPacketToken.length > 0) {
       let nextPacket = { t: mergedPacketToken };
-      let serializedPacket = serializePacketToBinary(nextPacket);
+      let serializedPacket = packetFromBinary(nextPacket);
       this.push(Buffer.concat([packetHeaderToBinary(packetHeaderGenerator(nextPacket)), serializedPacket]));
     }
 
@@ -51,7 +51,7 @@ class CompressorTransformer extends Transform {
         this.push(this.mergeSerializePackets(packetBuffer));
         packetBuffer = [];
 
-        let serialized = serializePacketToBinary(nextPacket);
+        let serialized = packetFromBinary(nextPacket);
         this.push(Buffer.concat([packetHeaderToBinary(packetHeaderGenerator(nextPacket)), serialized]));
       } else {
         packetBuffer.push(nextPacket);
