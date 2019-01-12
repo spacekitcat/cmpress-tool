@@ -12,6 +12,7 @@ describe('The packetHeaderFromBinary function', () => {
         packetHeaderFromBinary(Buffer.from([options, 0x01]))
       ).toMatchObject({
         size: 1,
+        unreadByteCount: 0
       });
     });
 
@@ -20,7 +21,9 @@ describe('The packetHeaderFromBinary function', () => {
         let options = headerFlagsEnum.OFF;
         expect(
           packetHeaderFromBinary(Buffer.from([options]))
-        ).toMatchObject({});
+        ).toMatchObject({
+          unreadByteCount: 1
+        });
       });
     });
 
@@ -31,7 +34,8 @@ describe('The packetHeaderFromBinary function', () => {
           packetHeaderFromBinary(Buffer.from([options, 0x01]))
         ).toMatchObject({
           size: 1,
-          hasPrefix: true
+          hasPrefix: true,
+          unreadByteCount: 0
         });
       });
 
@@ -45,6 +49,7 @@ describe('The packetHeaderFromBinary function', () => {
             size: 1,
             hasPrefix: true,
             isPurePacket: true,
+            unreadByteCount: 0
           });
         });
       });
@@ -59,6 +64,7 @@ describe('The packetHeaderFromBinary function', () => {
         ).toMatchObject({
           size: 1,
           isPurePacket: true,
+          unreadByteCount: 0
         });
       });
     });
@@ -75,7 +81,8 @@ describe('The packetHeaderFromBinary function', () => {
         ).toMatchObject({
           size: 1,
           hasPrefix: true,
-          prefixByteExtOne: true
+          prefixByteExtOne: true,
+          unreadByteCount: 0
         });
       });
     });
@@ -88,6 +95,7 @@ describe('The packetHeaderFromBinary function', () => {
         packetHeaderFromBinary(Buffer.from([options, 0xff]))
       ).toMatchObject({
         size: 255,
+        unreadByteCount: 0
       });
     });
 
@@ -98,7 +106,8 @@ describe('The packetHeaderFromBinary function', () => {
           packetHeaderFromBinary(Buffer.from([options, 0xff]))
         ).toMatchObject({
           size: 255,
-          hasPrefix: true
+          hasPrefix: true,
+          unreadByteCount: 0
         });
       });
     });
