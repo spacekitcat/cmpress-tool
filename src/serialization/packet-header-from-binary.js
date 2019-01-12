@@ -1,36 +1,50 @@
 import headerFlagsEnum from './header-flags-enum';
 
 const packetHeaderSizeFieldWidth = firstHeaderByte => {
-  return 1;
+  let size = 1;
+  
+  if (firstHeaderByte & headerFlagsEnum.SIZE_FIELD_EXTRA_INT_BYTE_1) {
+    size += 1;
+  }
+
+  if (firstHeaderByte & headerFlagsEnum.SIZE_FIELD_EXTRA_INT_BYTE_2) {
+    size += 1;
+  }
+
+  if (firstHeaderByte & headerFlagsEnum.SIZE_FIELD_EXTRA_INT_BYTE_3) {
+    size += 1;
+  }
+
+  return size;
 };
 
 const packetHeaderFromBinary = headerBytes => {
-  const headerBitField = headerBytes[0];
-  let unreadByteCount = 0;
 
-  let packetHeader = {};
-  if (headerBitField & headerFlagsEnum.PURE_PACKET_MODE) {
+  let packetHeader = { unreadByteCount: 0 };
+  if (headerBytes[0] & headerFlagsEnum.PURE_PACKET_MODE) {
     packetHeader.isPurePacket = true;
-    packetHeader.size = 1;
-  } else if (headerBytes.length > 1) {
+    if (headerBytes[0] & headerFlagsEnum.HAS_PREFIX) {
+      packetHeader.size = 3;
+    } else {
+      packetHeader.size = 1;
+    }
+  } else if (headerBytes.length > packetHeaderSizeFieldWidth(headerBytes[0])) {
     packetHeader.size = headerBytes.readUIntLE(
       1,
       packetHeaderSizeFieldWidth(headerBytes[0])
     );
   } else {
-    unreadByteCount = 1;
+    packetHeader.unreadByteCount = 1 + (packetHeaderSizeFieldWidth(headerBytes[0]) - headerBytes.length);
   }
 
-  if (headerBitField & headerFlagsEnum.HAS_PREFIX) {
+  if (headerBytes[0] & headerFlagsEnum.HAS_PREFIX) {
     packetHeader.hasPrefix = true;
   }
 
-  if (headerBitField & headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1) {
+  if (headerBytes[0] & headerFlagsEnum.PREFIX_EXTRA_INT_BYTE_1) {
     packetHeader.prefixByteExtOne = true;
   }
   
-  packetHeader.unreadByteCount = unreadByteCount;
-
   return packetHeader;
 };
 
