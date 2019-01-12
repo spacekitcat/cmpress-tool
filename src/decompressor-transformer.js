@@ -43,7 +43,8 @@ class DecompressorTransformer extends Transform {
       this.history_buffer.buffer,
       this.historyBufferSize,
       packet.t
-    );  }
+    );
+  }
 
   _transform(chunk, encoding, callback) {
     let currentChunkPointer = 0;
@@ -82,6 +83,12 @@ class DecompressorTransformer extends Transform {
 
       if (this.missingPackets === 0) {
         let packet = packetFromBinary(this.buffer, this.header);
+        this.emit('packet-unpack', {
+          history_buffer: this.history_buffer,
+          header: this.header,
+          packet: packet,
+          buffer: this.buffer
+        });
         this.expandPacket(packet);
         this.expectingNewToken = true;
         this.buffer = Buffer.from([]);

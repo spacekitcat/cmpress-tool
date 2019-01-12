@@ -14,11 +14,6 @@ let fileWriteStream = fs.createWriteStream(`${filePath}.bzz`);
 
 let compressorTransformer = new CompressorTransformer();
 
-let accumulator = Buffer.from([]);
-compressorTransformer.on('data', chunk => {
-  accumulator = Buffer.concat([accumulator, chunk]);
-});
-
 compressorTransformer.on('end', () => {
   console.log(`I compressed the devil outta ${filePath}`);
   const statsBefore = fs.statSync(filePath);
