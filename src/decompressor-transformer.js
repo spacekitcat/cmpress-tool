@@ -50,8 +50,11 @@ class DecompressorTransformer extends Transform {
     let currentChunkPointer = 0;
     while (currentChunkPointer < chunk.length) {
       if (this.expectingNewToken) {
+        // TODO: Fix hack.
         this.missingHeaderBytes =
-          packetHeaderSizeFieldWidth(currentChunkPointer) + 1;
+          packetHeaderSizeFieldWidth(currentChunkPointer);
+        this.missingHeaderBytes = 2;
+        
         this.expectingNewToken = false;
       }
 
