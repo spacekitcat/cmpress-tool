@@ -33,7 +33,6 @@ The compression process produces a series of compressed frames, each one describ
 - [X] Use the new header to implement variable byte width prefix addressing. It should be 8-bit from 0 to 255, 16-bit from 256 etc.
 - [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
 - [ ] Substring code is O(NlogN) (was O(n^2)), but a suffix tree would be O(m + n). ~~The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree.~~ See above.
-- [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
 - [ ] Release system
 
 
@@ -56,43 +55,46 @@ Successfully compiled 1 file with Babel.
 # Unit tests
 
 ```
+ PASS  __tests__/serialization/packet-from-binary.test.spec.js
  PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/compressor-transformer.test.spec.js
- PASS  __tests__/serialization/packet-header-generator.test.spec.js
- PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
- PASS  __tests__/serialization/serialize-packet-to-binary.test.spec.js
  PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
+ PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/serialization/packet-header-from-binary.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
+ PASS  __tests__/serialization/packet-header-generator.test.spec.js
+ PASS  __tests__/config/config.test.spec.js
+ PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
+ PASS  __tests__/serialization/packet-to-binary.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
- PASS  __tests__/serialization/deserialize-packet-from-binary.test.spec.js
-------------------------------------|----------|----------|----------|----------|-------------------|
-File                                |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
-------------------------------------|----------|----------|----------|----------|-------------------|
-All files                           |      100 |    99.08 |      100 |      100 |                   |
- src                                |      100 |    98.21 |      100 |      100 |                   |
-  compressor-transformer.js         |      100 |      100 |      100 |      100 |                   |
-  consume-input.js                  |      100 |      100 |      100 |      100 |                   |
-  decompressor-transformer.js       |      100 |    91.67 |      100 |      100 |                74 |
-  find-index-of-subarray.js         |      100 |      100 |      100 |      100 |                   |
-  locate-token.js                   |      100 |      100 |      100 |      100 |                   |
-  sliding-window.js                 |      100 |      100 |      100 |      100 |                   |
- src/serialization                  |      100 |      100 |      100 |      100 |                   |
-  deserialize-packet-from-binary.js |      100 |      100 |      100 |      100 |                   |
-  header-flags-enum.js              |      100 |      100 |      100 |      100 |                   |
-  packet-header-from-binary.js      |      100 |      100 |      100 |      100 |                   |
-  packet-header-generator.js        |      100 |      100 |      100 |      100 |                   |
-  packet-header-to-binary.js        |      100 |      100 |      100 |      100 |                   |
-  serialize-packet-to-binary.js     |      100 |      100 |      100 |      100 |                   |
-  unpack-integer-to-byte.js         |      100 |      100 |      100 |      100 |                   |
-------------------------------------|----------|----------|----------|----------|-------------------|
+-------------------------------|----------|----------|----------|----------|-------------------|
+File                           |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+-------------------------------|----------|----------|----------|----------|-------------------|
+All files                      |      100 |     99.1 |      100 |      100 |                   |
+ src                           |      100 |    98.21 |      100 |      100 |                   |
+  compressor-transformer.js    |      100 |      100 |      100 |      100 |                   |
+  consume-input.js             |      100 |      100 |      100 |      100 |                   |
+  decompressor-transformer.js  |      100 |    91.67 |      100 |      100 |                75 |
+  find-index-of-subarray.js    |      100 |      100 |      100 |      100 |                   |
+  locate-token.js              |      100 |      100 |      100 |      100 |                   |
+  sliding-window.js            |      100 |      100 |      100 |      100 |                   |
+ src/config                    |      100 |      100 |      100 |      100 |                   |
+  config.js                    |      100 |      100 |      100 |      100 |                   |
+ src/serialization             |      100 |      100 |      100 |      100 |                   |
+  header-flags-enum.js         |      100 |      100 |      100 |      100 |                   |
+  packet-from-binary.js        |      100 |      100 |      100 |      100 |                   |
+  packet-header-from-binary.js |      100 |      100 |      100 |      100 |                   |
+  packet-header-generator.js   |      100 |      100 |      100 |      100 |                   |
+  packet-header-to-binary.js   |      100 |      100 |      100 |      100 |                   |
+  packet-to-binary.js          |      100 |      100 |      100 |      100 |                   |
+  unpack-integer-to-byte.js    |      100 |      100 |      100 |      100 |                   |
+-------------------------------|----------|----------|----------|----------|-------------------|
 
-Test Suites: 12 passed, 12 total
-Tests:       120 passed, 120 total
+Test Suites: 13 passed, 13 total
+Tests:       122 passed, 122 total
 Snapshots:   0 total
-Time:        1.452s
+Time:        1.791s
 Ran all test suites.
 ```
 
@@ -112,13 +114,13 @@ An 8-bit bit field of packet mode modifier switches.
 | Index | Meaning |
 |-------|---------|
 |   0   | Future  |
-|   1   | Future  |
-|   2   | Future  |
-|   3   | Future  |
-|   4   | Future  |
+|   1   | Add an additional byte to the size field (partially implemented) |
+|   2   | Add an additional byte to the size field (partially implemented) |
+|   3   | Add an additional byte to the size field (partially implemented) |
+|   4   | Pure packet mode, a special packed format for small packets (partially implemented) |
 |   5   | Future  |
 |   6   | Future  |
-|   7   | Packet ends with a 16-bit prefix field |
+|   7   | Packet has a prefix field (default is 2 16-bit fields) |
 
 **Field 2**  
 An 8-bit field representing the packet size.
@@ -271,6 +273,43 @@ I compressed the devil outta resources/testinput01.txt
 ```bash
 samplestarget/fileinflate.js resources/testinput01.txt.bzz
 I inflated the devil outta resources/testinput01.txt.bzz
+```
+
+### bzz-decompress-debug.js
+
+This is a quick and dirty convenience tool. It parses a `.bzz` binary format 
+  file (generated by `filecompress.js`), deserializes the packet, and it 
+  outputs each compression packet in the order they would be parsed. It also
+  attaches context state, such contents of the dictionary
+```bash
+/libz7 ‹master*› % ./samplestarget/bzz-decompress-debug.js resources/testinput01.txt.bzz
+╔═══════════════════════════╤═══════════════════════════╤═══════════════════════════╤═══════════════════════════╤═══════════════════════════╗
+║ Token field               │ Prefix field              │ Packet header             │ Packet raw source buffer  │ History buffer            ║
+╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
+							Press Enter to advanced.
+
+╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
+║ 74686520717569636b        │ N/A                       │ size=9, prefix=N/A prefix │ 74686520717569636b        │                           ║
+║                           │                           │ ByteExtOne=N/A            │                           │                           ║
+╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
+║ 62                        │ 6,1                       │ size=3, prefix=true prefi │ 620601                    │ 74686520717569636b        ║
+║                           │                           │ xByteExtOne=N/A           │                           │                           ║
+╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
+							Press Enter to advanced.
+
+╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
+║ 726f776e                  │ N/A                       │ size=4, prefix=N/A prefix │ 726f776e                  │ 74686520717569636b2062    ║
+║                           │                           │ ByteExtOne=N/A            │                           │                           ║
+╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
+║ 66                        │ 6,1                       │ size=3, prefix=true prefi │ 660601                    │ 74686520717569636b2062726 ║
+║                           │                           │ xByteExtOne=N/A           │                           │ f776e                     ║
+╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
+║ 78                        │ 5,1                       │ size=3, prefix=true prefi │ 780501                    │ 74686520717569636b2062726 ║
+║                           │                           │ xByteExtOne=N/A           │                           │ f776e2066                 ║
+╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
+							Press Enter to advanced.
+
+
 ```
 
 ## Observations
