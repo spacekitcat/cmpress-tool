@@ -55,23 +55,36 @@ Successfully compiled 1 file with Babel.
 # Unit tests
 
 ```
- PASS  __tests__/serialization/packet-from-binary.test.spec.js
+> libz7@0.1.0 prebuild /Users/burtol86/lisa-workspace/libz7
+> babel src --out-dir lib --source-maps && babel samples --out-dir samplestarget --source-maps
+
+Successfully compiled 15 files with Babel.
+Successfully compiled 6 files with Babel.
+
+> libz7@0.1.0 build /Users/burtol86/lisa-workspace/libz7
+> npm run test
+
+
+> libz7@0.1.0 test /Users/burtol86/lisa-workspace/libz7
+> jest --coverage
+
  PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
- PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
  PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/serialization/packet-header-from-binary.test.spec.js
+ PASS  __tests__/serialization/packet-from-binary.test.spec.js
  PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/serialization/packet-header-generator.test.spec.js
- PASS  __tests__/config/config.test.spec.js
- PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
+ PASS  __tests__/consume-input.test.spec.js
  PASS  __tests__/serialization/packet-to-binary.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
+ PASS  __tests__/serialization/packet-header-generator.test.spec.js
+ PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
+ PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
+ PASS  __tests__/config/config.test.spec.js
 -------------------------------|----------|----------|----------|----------|-------------------|
 File                           |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -------------------------------|----------|----------|----------|----------|-------------------|
-All files                      |      100 |     99.1 |      100 |      100 |                   |
+All files                      |      100 |    99.16 |      100 |      100 |                   |
  src                           |      100 |    98.21 |      100 |      100 |                   |
   compressor-transformer.js    |      100 |      100 |      100 |      100 |                   |
   consume-input.js             |      100 |      100 |      100 |      100 |                   |
@@ -92,9 +105,9 @@ All files                      |      100 |     99.1 |      100 |      100 |    
 -------------------------------|----------|----------|----------|----------|-------------------|
 
 Test Suites: 13 passed, 13 total
-Tests:       122 passed, 122 total
+Tests:       134 passed, 134 total
 Snapshots:   0 total
-Time:        1.791s
+Time:        1.618s
 Ran all test suites.
 ```
 
@@ -114,7 +127,7 @@ An 8-bit bit field of packet mode modifier switches.
 | Index | Meaning |
 |-------|---------|
 |   0   | Future  |
-|   1   | Add an additional byte to the size field (partially implemented) |
+|   1   | Add an additional byte to the size field |
 |   2   | Add an additional byte to the size field (partially implemented) |
 |   3   | Add an additional byte to the size field (partially implemented) |
 |   4   | Pure packet mode, a special packed format for small packets (partially implemented) |
@@ -228,36 +241,27 @@ I inflated the devil outta ./resources/sails.bmp.bzz
 ```bash
 /libz7 ‹master*› % samplestarget/runcompress.js ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewroma
 noilovematthew
-<Buffer 01 69>
-<Buffer 01 6c>
-<Buffer 01 6f>
-<Buffer 01 76>
-<Buffer 01 65>
-<Buffer 01 6d>
-<Buffer 01 61>
-<Buffer 01 74>
-<Buffer 01 74>
-<Buffer 01 68>
-<Buffer 01 65>
-<Buffer 01 77>
-<Buffer 01 72>
-<Buffer 01 6f>
-<Buffer 01 6d>
-<Buffer 01 61>
-<Buffer 01 6e>
-<Buffer 01 6f>
-<Buffer 05 69 01 00 12 00>
-<Buffer 05 6c 01 00 24 00>
-<Buffer 05 77 0a 00 1b 00>
+<Buffer 00 08 69 6c 6f 76 65 6d 61 74>
+<Buffer 01 03 68 01 01>
+<Buffer 01 03 77 06 01>
+<Buffer 00 01 72>
+<Buffer 01 03 6d 0b 01>
+<Buffer 01 03 6e 09 01>
+<Buffer 01 03 69 04 01>
+<Buffer 01 03 6c 01 12>
+<Buffer 01 03 6f 01 24>
+<Buffer 01 03 77 0b 1a>
 📥         input : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
-💤    compressed : ilovematthewromanoil$w
+💤    compressed :ilovemathwrm
+                             n	ilo$w
 
-         ratio : 52.94117647058824%
+🙌         ratio : 51.9607843137255%
 
-📥         input : ilovematthewromanoil$w
+📥         input :ilovemathwrm
+                             n	ilo$w
 
-  decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
-🙌         ratio : 188.88888888888889%
+💤  decompressed : ilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthewromanoilovematthew
+🙌         ratio : 192.45283018867926%
 ```
 
 ### filecompress.js
@@ -281,35 +285,34 @@ This is a quick and dirty convenience tool. It parses a `.bzz` binary format
   file (generated by `filecompress.js`), deserializes the packet, and it 
   outputs each compression packet in the order they would be parsed. It also
   attaches context state, such contents of the dictionary
+
 ```bash
 /libz7 ‹master*› % ./samplestarget/bzz-decompress-debug.js resources/testinput01.txt.bzz
 ╔═══════════════════════════╤═══════════════════════════╤═══════════════════════════╤═══════════════════════════╤═══════════════════════════╗
 ║ Token field               │ Prefix field              │ Packet header             │ Packet raw source buffer  │ History buffer            ║
 ╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
-							Press Enter to advanced.
+							Press Enter to advance.
 
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
 ║ 74686520717569636b        │ N/A                       │ size=9, prefix=N/A prefix │ 74686520717569636b        │                           ║
 ║                           │                           │ ByteExtOne=N/A            │                           │                           ║
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 62                        │ 6,1                       │ size=3, prefix=true prefi │ 620601                    │ 74686520717569636b        ║
-║                           │                           │ xByteExtOne=N/A           │                           │                           ║
+║ 62                        │ 6,1                       │ size=3, prefix=true prefi │ 620601                    │ 74,68,65,20,71,75,69,63,6 ║
+║                           │                           │ xByteExtOne=N/A           │                           │ b                         ║
 ╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
-							Press Enter to advanced.
+							Press Enter to advance.
 
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 726f776e                  │ N/A                       │ size=4, prefix=N/A prefix │ 726f776e                  │ 74686520717569636b2062    ║
-║                           │                           │ ByteExtOne=N/A            │                           │                           ║
+║ 726f776e                  │ N/A                       │ size=4, prefix=N/A prefix │ 726f776e                  │ 74,68,65,20,71,75,69,63,6 ║
+║                           │                           │ ByteExtOne=N/A            │                           │ b,20,62                   ║
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 66                        │ 6,1                       │ size=3, prefix=true prefi │ 660601                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e                     ║
+║ 66                        │ 6,1                       │ size=3, prefix=true prefi │ 660601                    │ 74,68,65,20,71,75,69,63,6 ║
+║                           │                           │ xByteExtOne=N/A           │                           │ b,20,62,72,6f,77,6e       ║
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 78                        │ 5,1                       │ size=3, prefix=true prefi │ 780501                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e2066                 ║
+║ 78                        │ 5,1                       │ size=3, prefix=true prefi │ 780501                    │ 74,68,65,20,71,75,69,63,6 ║
+║                           │                           │ xByteExtOne=N/A           │                           │ b,20,62,72,6f,77,6e,20,66 ║
 ╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
-							Press Enter to advanced.
-
-
+							Press Enter to advance.
 ```
 
 ## Observations
