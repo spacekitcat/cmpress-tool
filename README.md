@@ -33,7 +33,6 @@ The compression process produces a series of compressed frames, each one describ
 - [X] Use the new header to implement variable byte width prefix addressing. It should be 8-bit from 0 to 255, 16-bit from 256 etc.
 - [ ] The token locate code needs to be several times faster. The code needs to deal with a window size of 65000. I think it would need a window size in this sort of ballpark to actually have the ability to compress above the compression packet storage overhead. See next bullet point:
 - [ ] Substring code is O(NlogN) (was O(n^2)), but a suffix tree would be O(m + n). ~~The dynamic solution for a 4096 byte dictionary could theoretically perform 16777216 (4096^2) operations per cycle (it starts a new cycle every single time it finds a new token), in comparison to 8192 with a suffix tree.~~ See above.
-- [ ] The sliding window doesn't have any kind back pressure or ability to queue stream data
 - [ ] Release system
 
 
@@ -56,43 +55,46 @@ Successfully compiled 1 file with Babel.
 # Unit tests
 
 ```
+ PASS  __tests__/serialization/packet-from-binary.test.spec.js
  PASS  __tests__/decompressor-transformer.test.spec.js
- PASS  __tests__/compressor-transformer.test.spec.js
- PASS  __tests__/serialization/packet-header-generator.test.spec.js
- PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
- PASS  __tests__/find-index-of-subarray.test.spec.js
- PASS  __tests__/serialization/serialize-packet-to-binary.test.spec.js
  PASS  __tests__/consume-input.test.spec.js
- PASS  __tests__/locate-token.test.spec.js
- PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
+ PASS  __tests__/find-index-of-subarray.test.spec.js
+ PASS  __tests__/serialization/packet-header-to-binary.test.spec.js
+ PASS  __tests__/compressor-transformer.test.spec.js
  PASS  __tests__/serialization/packet-header-from-binary.test.spec.js
+ PASS  __tests__/locate-token.test.spec.js
+ PASS  __tests__/serialization/packet-header-generator.test.spec.js
+ PASS  __tests__/config/config.test.spec.js
+ PASS  __tests__/serialization/unpack-integer-to-byte.test.spec.js
+ PASS  __tests__/serialization/packet-to-binary.test.spec.js
  PASS  __tests__/sliding-window.test.spec.js
- PASS  __tests__/serialization/deserialize-packet-from-binary.test.spec.js
-------------------------------------|----------|----------|----------|----------|-------------------|
-File                                |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
-------------------------------------|----------|----------|----------|----------|-------------------|
-All files                           |      100 |    99.08 |      100 |      100 |                   |
- src                                |      100 |    98.21 |      100 |      100 |                   |
-  compressor-transformer.js         |      100 |      100 |      100 |      100 |                   |
-  consume-input.js                  |      100 |      100 |      100 |      100 |                   |
-  decompressor-transformer.js       |      100 |    91.67 |      100 |      100 |                74 |
-  find-index-of-subarray.js         |      100 |      100 |      100 |      100 |                   |
-  locate-token.js                   |      100 |      100 |      100 |      100 |                   |
-  sliding-window.js                 |      100 |      100 |      100 |      100 |                   |
- src/serialization                  |      100 |      100 |      100 |      100 |                   |
-  deserialize-packet-from-binary.js |      100 |      100 |      100 |      100 |                   |
-  header-flags-enum.js              |      100 |      100 |      100 |      100 |                   |
-  packet-header-from-binary.js      |      100 |      100 |      100 |      100 |                   |
-  packet-header-generator.js        |      100 |      100 |      100 |      100 |                   |
-  packet-header-to-binary.js        |      100 |      100 |      100 |      100 |                   |
-  serialize-packet-to-binary.js     |      100 |      100 |      100 |      100 |                   |
-  unpack-integer-to-byte.js         |      100 |      100 |      100 |      100 |                   |
-------------------------------------|----------|----------|----------|----------|-------------------|
+-------------------------------|----------|----------|----------|----------|-------------------|
+File                           |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+-------------------------------|----------|----------|----------|----------|-------------------|
+All files                      |      100 |     99.1 |      100 |      100 |                   |
+ src                           |      100 |    98.21 |      100 |      100 |                   |
+  compressor-transformer.js    |      100 |      100 |      100 |      100 |                   |
+  consume-input.js             |      100 |      100 |      100 |      100 |                   |
+  decompressor-transformer.js  |      100 |    91.67 |      100 |      100 |                75 |
+  find-index-of-subarray.js    |      100 |      100 |      100 |      100 |                   |
+  locate-token.js              |      100 |      100 |      100 |      100 |                   |
+  sliding-window.js            |      100 |      100 |      100 |      100 |                   |
+ src/config                    |      100 |      100 |      100 |      100 |                   |
+  config.js                    |      100 |      100 |      100 |      100 |                   |
+ src/serialization             |      100 |      100 |      100 |      100 |                   |
+  header-flags-enum.js         |      100 |      100 |      100 |      100 |                   |
+  packet-from-binary.js        |      100 |      100 |      100 |      100 |                   |
+  packet-header-from-binary.js |      100 |      100 |      100 |      100 |                   |
+  packet-header-generator.js   |      100 |      100 |      100 |      100 |                   |
+  packet-header-to-binary.js   |      100 |      100 |      100 |      100 |                   |
+  packet-to-binary.js          |      100 |      100 |      100 |      100 |                   |
+  unpack-integer-to-byte.js    |      100 |      100 |      100 |      100 |                   |
+-------------------------------|----------|----------|----------|----------|-------------------|
 
-Test Suites: 12 passed, 12 total
-Tests:       120 passed, 120 total
+Test Suites: 13 passed, 13 total
+Tests:       122 passed, 122 total
 Snapshots:   0 total
-Time:        1.452s
+Time:        1.791s
 Ran all test suites.
 ```
 
@@ -275,18 +277,26 @@ I inflated the devil outta resources/testinput01.txt.bzz
 
 ### bzz-decompress-debug.js
 
-Generates a human readable packet list for a given *.bzz file (output from filecompress.js)
-
+This is a quick and dirty convenience tool. It parses a `.bzz` binary format 
+  file (generated by `filecompress.js`), deserializes the packet, and it 
+  outputs each compression packet in the order they would be parsed. It also
+  attaches context state, such contents of the dictionary
 ```bash
 /libz7 ‹master*› % ./samplestarget/bzz-decompress-debug.js resources/testinput01.txt.bzz
 ╔═══════════════════════════╤═══════════════════════════╤═══════════════════════════╤═══════════════════════════╤═══════════════════════════╗
 ║ Token field               │ Prefix field              │ Packet header             │ Packet raw source buffer  │ History buffer            ║
+╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
+							Press Enter to advanced.
+
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
 ║ 74686520717569636b        │ N/A                       │ size=9, prefix=N/A prefix │ 74686520717569636b        │                           ║
 ║                           │                           │ ByteExtOne=N/A            │                           │                           ║
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
 ║ 62                        │ 6,1                       │ size=3, prefix=true prefi │ 620601                    │ 74686520717569636b        ║
 ║                           │                           │ xByteExtOne=N/A           │                           │                           ║
+╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
+							Press Enter to advanced.
+
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
 ║ 726f776e                  │ N/A                       │ size=4, prefix=N/A prefix │ 726f776e                  │ 74686520717569636b2062    ║
 ║                           │                           │ ByteExtOne=N/A            │                           │                           ║
@@ -296,174 +306,12 @@ Generates a human readable packet list for a given *.bzz file (output from filec
 ╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
 ║ 78                        │ 5,1                       │ size=3, prefix=true prefi │ 780501                    │ 74686520717569636b2062726 ║
 ║                           │                           │ xByteExtOne=N/A           │                           │ f776e2066                 ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 6a                        │ 4,1                       │ size=3, prefix=true prefi │ 6a0401                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78             ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 6d                        │ 16,1                      │ size=3, prefix=true prefi │ 6d1001                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a         ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 7073                      │ N/A                       │ size=2, prefix=N/A prefix │ 7073                      │ 74686520717569636b2062726 ║
-║                           │                           │ ByteExtOne=N/A            │                           │ f776e20666f78206a756d     ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 6f                        │ 6,1                       │ size=3, prefix=true prefi │ 6f0601                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 76                        │ N/A                       │ size=1, prefix=N/A prefix │ 76                        │ 74686520717569636b2062726 ║
-║                           │                           │ ByteExtOne=N/A            │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f                      ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 72                        │ 26,1                      │ size=3, prefix=true prefi │ 721a01                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76                    ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 74                        │ 5,1                       │ size=3, prefix=true prefi │ 740501                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f766572                ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 6c                        │ 29,3                      │ size=3, prefix=true prefi │ 6c1d03                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f7665722074            ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 617a79                    │ N/A                       │ size=3, prefix=N/A prefix │ 617a79                    │ 74686520717569636b2062726 ║
-║                           │                           │ ByteExtOne=N/A            │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c    ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 64                        │ 5,1                       │ size=3, prefix=true prefi │ 640501                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a79                       ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 67                        │ 15,1                      │ size=3, prefix=true prefi │ 670f01                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a792064                   ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 0a                        │ N/A                       │ size=1, prefix=N/A prefix │ 0a                        │ 74686520717569636b2062726 ║
-║                           │                           │ ByteExtOne=N/A            │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a7920646f67               ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 74                        │ 1,44                      │ size=3, prefix=true prefi │ 74012c                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a7920646f670a             ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 68                        │ 1,88                      │ size=3, prefix=true prefi │ 680158                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a7920646f670a746865207175 ║
-║                           │                           │                           │                           │ 69636b2062726f776e20666f7 ║
-║                           │                           │                           │                           │ 8206a756d7073206f76657220 ║
-║                           │                           │                           │                           │ 746865206c617a7920646f670 ║
-║                           │                           │                           │                           │ a74                       ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 65                        │ 1,176                     │ size=3, prefix=true prefi │ 6501b0                    │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=N/A           │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a7920646f670a746865207175 ║
-║                           │                           │                           │                           │ 69636b2062726f776e20666f7 ║
-║                           │                           │                           │                           │ 8206a756d7073206f76657220 ║
-║                           │                           │                           │                           │ 746865206c617a7920646f670 ║
-║                           │                           │                           │                           │ a74686520717569636b206272 ║
-║                           │                           │                           │                           │ 6f776e20666f78206a756d707 ║
-║                           │                           │                           │                           │ 3206f76657220746865206c61 ║
-║                           │                           │                           │                           │ 7a7920646f670a74686520717 ║
-║                           │                           │                           │                           │ 569636b2062726f776e20666f ║
-║                           │                           │                           │                           │ 78206a756d7073206f7665722 ║
-║                           │                           │                           │                           │ 0746865206c617a7920646f67 ║
-║                           │                           │                           │                           │ 0a7468                    ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 20                        │ 1,352                     │ size=5, prefix=true prefi │ 2001006001                │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=true          │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a7920646f670a746865207175 ║
-║                           │                           │                           │                           │ 69636b2062726f776e20666f7 ║
-║                           │                           │                           │                           │ 8206a756d7073206f76657220 ║
-║                           │                           │                           │                           │ 746865206c617a7920646f670 ║
-║                           │                           │                           │                           │ a74686520717569636b206272 ║
-║                           │                           │                           │                           │ 6f776e20666f78206a756d707 ║
-║                           │                           │                           │                           │ 3206f76657220746865206c61 ║
-║                           │                           │                           │                           │ 7a7920646f670a74686520717 ║
-║                           │                           │                           │                           │ 569636b2062726f776e20666f ║
-║                           │                           │                           │                           │ 78206a756d7073206f7665722 ║
-║                           │                           │                           │                           │ 0746865206c617a7920646f67 ║
-║                           │                           │                           │                           │ 0a74686520717569636b20627 ║
-║                           │                           │                           │                           │ 26f776e20666f78206a756d70 ║
-║                           │                           │                           │                           │ 73206f76657220746865206c6 ║
-║                           │                           │                           │                           │ 17a7920646f670a7468652071 ║
-║                           │                           │                           │                           │ 7569636b2062726f776e20666 ║
-║                           │                           │                           │                           │ f78206a756d7073206f766572 ║
-║                           │                           │                           │                           │ 20746865206c617a7920646f6 ║
-║                           │                           │                           │                           │ 70a74686520717569636b2062 ║
-║                           │                           │                           │                           │ 726f776e20666f78206a756d7 ║
-║                           │                           │                           │                           │ 073206f76657220746865206c ║
-║                           │                           │                           │                           │ 617a7920646f670a746865207 ║
-║                           │                           │                           │                           │ 17569636b2062726f776e2066 ║
-║                           │                           │                           │                           │ 6f78206a756d7073206f76657 ║
-║                           │                           │                           │                           │ 220746865206c617a7920646f ║
-║                           │                           │                           │                           │ 670a746865                ║
-╟───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────┼───────────────────────────╢
-║ 0a                        │ 6,699                     │ size=5, prefix=true prefi │ 0a0600bb02                │ 74686520717569636b2062726 ║
-║                           │                           │ xByteExtOne=true          │                           │ f776e20666f78206a756d7073 ║
-║                           │                           │                           │                           │ 206f76657220746865206c617 ║
-║                           │                           │                           │                           │ a7920646f670a746865207175 ║
-║                           │                           │                           │                           │ 69636b2062726f776e20666f7 ║
-║                           │                           │                           │                           │ 8206a756d7073206f76657220 ║
-║                           │                           │                           │                           │ 746865206c617a7920646f670 ║
-║                           │                           │                           │                           │ a74686520717569636b206272 ║
-║                           │                           │                           │                           │ 6f776e20666f78206a756d707 ║
-║                           │                           │                           │                           │ 3206f76657220746865206c61 ║
-║                           │                           │                           │                           │ 7a7920646f670a74686520717 ║
-║                           │                           │                           │                           │ 569636b2062726f776e20666f ║
-║                           │                           │                           │                           │ 78206a756d7073206f7665722 ║
-║                           │                           │                           │                           │ 0746865206c617a7920646f67 ║
-║                           │                           │                           │                           │ 0a74686520717569636b20627 ║
-║                           │                           │                           │                           │ 26f776e20666f78206a756d70 ║
-║                           │                           │                           │                           │ 73206f76657220746865206c6 ║
-║                           │                           │                           │                           │ 17a7920646f670a7468652071 ║
-║                           │                           │                           │                           │ 7569636b2062726f776e20666 ║
-║                           │                           │                           │                           │ f78206a756d7073206f766572 ║
-║                           │                           │                           │                           │ 20746865206c617a7920646f6 ║
-║                           │                           │                           │                           │ 70a74686520717569636b2062 ║
-║                           │                           │                           │                           │ 726f776e20666f78206a756d7 ║
-║                           │                           │                           │                           │ 073206f76657220746865206c ║
-║                           │                           │                           │                           │ 617a7920646f670a746865207 ║
-║                           │                           │                           │                           │ 17569636b2062726f776e2066 ║
-║                           │                           │                           │                           │ 6f78206a756d7073206f76657 ║
-║                           │                           │                           │                           │ 220746865206c617a7920646f ║
-║                           │                           │                           │                           │ 670a74686520717569636b206 ║
-║                           │                           │                           │                           │ 2726f776e20666f78206a756d ║
-║                           │                           │                           │                           │ 7073206f76657220746865206 ║
-║                           │                           │                           │                           │ c617a7920646f670a74686520 ║
-║                           │                           │                           │                           │ 717569636b2062726f776e206 ║
-║                           │                           │                           │                           │ 66f78206a756d7073206f7665 ║
-║                           │                           │                           │                           │ 7220746865206c617a7920646 ║
-║                           │                           │                           │                           │ f670a74686520717569636b20 ║
-║                           │                           │                           │                           │ 62726f776e20666f78206a756 ║
-║                           │                           │                           │                           │ d7073206f7665722074686520 ║
-║                           │                           │                           │                           │ 6c617a7920646f670a7468652 ║
-║                           │                           │                           │                           │ 0717569636b2062726f776e20 ║
-║                           │                           │                           │                           │ 666f78206a756d7073206f766 ║
-║                           │                           │                           │                           │ 57220746865206c617a792064 ║
-║                           │                           │                           │                           │ 6f670a74686520717569636b2 ║
-║                           │                           │                           │                           │ 062726f776e20666f78206a75 ║
-║                           │                           │                           │                           │ 6d7073206f766572207468652 ║
-║                           │                           │                           │                           │ 06c617a7920646f670a746865 ║
-║                           │                           │                           │                           │ 20717569636b2062726f776e2 ║
-║                           │                           │                           │                           │ 0666f78206a756d7073206f76 ║
-║                           │                           │                           │                           │ 657220746865206c617a79206 ║
-║                           │                           │                           │                           │ 46f670a74686520717569636b ║
-║                           │                           │                           │                           │ 2062726f776e20666f78206a7 ║
-║                           │                           │                           │                           │ 56d7073206f76657220746865 ║
-║                           │                           │                           │                           │ 206c617a7920646f670a74686 ║
-║                           │                           │                           │                           │ 520717569636b2062726f776e ║
-║                           │                           │                           │                           │ 20666f78206a756d7073206f7 ║
-║                           │                           │                           │                           │ 6657220746865206c617a7920 ║
-║                           │                           │                           │                           │ 646f670a74686520          ║
 ╚═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╧═══════════════════════════╝
-Boom, done.
+							Press Enter to advanced.
+
+
 ```
+
 ## Observations
 
 LZ77 is a very old compression algorithm. It isn't the most optimal, but it's the spark for a whole generation of compression systems and a very nice one to look at for a side project. I thought I'd list some observations I found interesting.
