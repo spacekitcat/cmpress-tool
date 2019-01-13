@@ -52,7 +52,7 @@ process.stdin.on('keypress', (str, key) => {
   if (data) {
     decompressorTransformer.write(data);
     process.stdout.write(
-      `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advanced.\n`
+      `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advance.\n`
     );
   } else {
     decompressorTransformer.end();
@@ -93,5 +93,5 @@ decompressorTransformer.on('finish', () => {
 decompressorTransformer.pipe(fileWriteStream);
 // application-execute: user instructions, get them telt.
 process.stdout.write(
-  `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advanced.\n`
+  `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advance.\n`
 );
