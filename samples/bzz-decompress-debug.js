@@ -52,7 +52,7 @@ process.stdin.on('keypress', (str, key) => {
   if (data) {
     decompressorTransformer.write(data);
     process.stdout.write(
-      `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advanced.\n`
+      `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advance.\n`
     );
   } else {
     decompressorTransformer.end();
@@ -65,17 +65,19 @@ process.stdin.setRawMode(false);
 decompressorTransformer.on('packet-unpack', data => {
   // decompress-unpack-event: extract prefix value for display
   let prefix = data.packet.p ? data.packet.p : 'N/A';
+  // tokenize the dictionary into octet digits
+  let buffer = data.history_buffer.buffer.toString('hex').match(/.{1,2}/g);
   // decompress-unpack-event: write stats to status (table formatter) stream
   statusStream.write([
     data.packet.t.toString('hex'),
     prefix,
     `size=${data.header.size}, prefix=${
-      data.header.hasPrefix ? data.header.hasPrefix : 'N/A'
+    data.header.hasPrefix ? data.header.hasPrefix : 'N/A'
     } prefixByteExtOne=${
-      data.header.prefixByteExtOne ? data.header.prefixByteExtOne : 'N/A'
+    data.header.prefixByteExtOne ? data.header.prefixByteExtOne : 'N/A'
     }`,
     data.buffer.toString('hex'),
-    data.history_buffer.buffer.toString('hex')
+    buffer
   ]);
 });
 
@@ -91,5 +93,5 @@ decompressorTransformer.on('finish', () => {
 decompressorTransformer.pipe(fileWriteStream);
 // application-execute: user instructions, get them telt.
 process.stdout.write(
-  `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advanced.\n`
+  `\n\t\t\t\t\t\t\tPress ${colors.red('Enter')} to advance.\n`
 );
