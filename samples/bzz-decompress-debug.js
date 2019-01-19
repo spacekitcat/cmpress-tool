@@ -48,7 +48,7 @@ readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 // stdin-next-page-event: register key-press listened
 process.stdin.on('keypress', (str, key) => {
-  let data = fileReadStream.read(16);
+  let data = fileReadStream.read(64);
   if (data) {
     decompressorTransformer.write(data);
     process.stdout.write(
@@ -72,16 +72,16 @@ decompressorTransformer.on('packet-unpack', data => {
     data.packet.t.toString('hex'),
     prefix,
     `size=${data.header.size}, prefix=${
-    data.header.hasPrefix ? data.header.hasPrefix : 'N/A'
+      data.header.hasPrefix ? data.header.hasPrefix : 'N/A'
     } prefixByteExtOne=${
-    data.header.prefixByteExtOne ? data.header.prefixByteExtOne : 'N/A'
+      data.header.prefixByteExtOne ? data.header.prefixByteExtOne : 'N/A'
     }`,
     data.buffer.toString('hex'),
     buffer
   ]);
 });
 
-// decompress-finish-event: register callback for when the caller of decompressor is done with it. 
+// decompress-finish-event: register callback for when the caller of decompressor is done with it.
 decompressorTransformer.on('finish', () => {
   // decompress-finish-event: get the user telt.
   process.stdout.write(`\n${colors.red('Boom, done.')}\n`);
