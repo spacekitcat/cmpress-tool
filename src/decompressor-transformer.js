@@ -53,28 +53,21 @@ class DecompressorTransformer extends Transform {
     while (currentChunkPointer < chunk.length) {
       switch (this.mode) {
         case MODE.READ_HEADER:
-          if (this.headerBuffer.length === 0) {
-            this.missingHeaderBytes =
-              packetHeaderFromBinary(
-                chunk.slice(currentChunkPointer, currentChunkPointer + 1)
-              ).unreadByteCount + 1;
-          }
-          if (this.missingHeaderBytes > 0) {
-            this.headerBuffer = Buffer.concat([
-              this.headerBuffer,
-              chunk.slice(currentChunkPointer, currentChunkPointer + 1)
-            ]);
-            currentChunkPointer += 1;
-            this.missingHeaderBytes -= 1;
+          this.headerBuffer = Buffer.concat([
+            this.headerBuffer,
+            chunk.slice(currentChunkPointer, currentChunkPointer + 1)
+          ]);
 
-            if (this.missingHeaderBytes === 0) {
-              this.header = packetHeaderFromBinary(this.headerBuffer);
-              this.headerBuffer = Buffer.from([]);
-              this.missingPackets = this.header.size;
-              this.mode = MODE.READ_PACKET;
-            } else {
-              continue;
-            }
+          if (packetHeaderFromBinary(this.headerBuffer).unreadByteCount > 0) {
+            currentChunkPointer += 1;
+          }
+
+          if (packetHeaderFromBinary(this.headerBuffer).unreadByteCount === 0) {
+            this.header = packetHeaderFromBinary(this.headerBuffer);
+            this.headerBuffer = Buffer.from([]);
+            this.missingPackets = this.header.size;
+            this.mode = MODE.READ_PACKET;
+            ++currentChunkPointer;
           }
           break;
 
@@ -87,6 +80,7 @@ class DecompressorTransformer extends Transform {
             this.missingPackets -= 1;
             currentChunkPointer += 1;
           }
+
           if (this.missingPackets === 0) {
             let packet = packetFromBinary(this.buffer, this.header);
             this.emit('packet-unpack', {
