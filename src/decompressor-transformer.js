@@ -3,6 +3,11 @@ import consumeInput from './consume-input';
 import packetFromBinary from './serialization/packet-from-binary';
 import { packetHeaderFromBinary } from './serialization/packet-header-from-binary';
 
+const MODE = {
+  READ_HEADER: 0,
+  READ_PACKET: 1
+};
+
 class DecompressorTransformer extends Transform {
   constructor(options) {
     super(options);
@@ -12,10 +17,10 @@ class DecompressorTransformer extends Transform {
       this.historyBufferSize,
       Buffer.from([])
     );
-    this.expectingNewToken = true;
     this.missingPackets = 0;
     this.buffer = Buffer.from([]);
     this.headerBuffer = Buffer.from([]);
+    this.mode = MODE.READ_HEADER;
   }
 
   expandPacket(packet) {
@@ -46,51 +51,55 @@ class DecompressorTransformer extends Transform {
   _transform(chunk, encoding, callback) {
     let currentChunkPointer = 0;
     while (currentChunkPointer < chunk.length) {
-      if (this.expectingNewToken) {
-        this.missingHeaderBytes =
-          packetHeaderFromBinary(
-            chunk.slice(currentChunkPointer, currentChunkPointer + 1)
-          ).unreadByteCount + 1;
-        this.expectingNewToken = false;
-      }
+      switch (this.mode) {
+        case MODE.READ_HEADER:
+          if (this.headerBuffer.length === 0) {
+            this.missingHeaderBytes =
+              packetHeaderFromBinary(
+                chunk.slice(currentChunkPointer, currentChunkPointer + 1)
+              ).unreadByteCount + 1;
+          }
+          if (this.missingHeaderBytes > 0) {
+            this.headerBuffer = Buffer.concat([
+              this.headerBuffer,
+              chunk.slice(currentChunkPointer, currentChunkPointer + 1)
+            ]);
+            currentChunkPointer += 1;
+            this.missingHeaderBytes -= 1;
 
-      if (this.missingHeaderBytes > 0) {
-        this.headerBuffer = Buffer.concat([
-          this.headerBuffer,
-          chunk.slice(currentChunkPointer, currentChunkPointer + 1)
-        ]);
-        currentChunkPointer += 1;
-        this.missingHeaderBytes -= 1;
+            if (this.missingHeaderBytes === 0) {
+              this.header = packetHeaderFromBinary(this.headerBuffer);
+              this.headerBuffer = Buffer.from([]);
+              this.missingPackets = this.header.size;
+              this.mode = MODE.READ_PACKET;
+            } else {
+              continue;
+            }
+          }
+          break;
 
-        if (this.missingHeaderBytes === 0) {
-          this.header = packetHeaderFromBinary(this.headerBuffer);
-          this.headerBuffer = Buffer.from([]);
-          this.missingPackets = this.header.size;
-        } else {
-          continue;
-        }
-      }
-
-      if (currentChunkPointer < chunk.length) {
-        this.buffer = Buffer.concat([
-          this.buffer,
-          chunk.slice(currentChunkPointer, currentChunkPointer + 1)
-        ]);
-        this.missingPackets -= 1;
-        currentChunkPointer += 1;
-      }
-
-      if (this.missingPackets === 0) {
-        let packet = packetFromBinary(this.buffer, this.header);
-        this.emit('packet-unpack', {
-          history_buffer: this.history_buffer,
-          header: this.header,
-          packet: packet,
-          buffer: this.buffer
-        });
-        this.expandPacket(packet);
-        this.expectingNewToken = true;
-        this.buffer = Buffer.from([]);
+        case MODE.READ_PACKET:
+          if (currentChunkPointer < chunk.length) {
+            this.buffer = Buffer.concat([
+              this.buffer,
+              chunk.slice(currentChunkPointer, currentChunkPointer + 1)
+            ]);
+            this.missingPackets -= 1;
+            currentChunkPointer += 1;
+          }
+          if (this.missingPackets === 0) {
+            let packet = packetFromBinary(this.buffer, this.header);
+            this.emit('packet-unpack', {
+              history_buffer: this.history_buffer,
+              header: this.header,
+              packet: packet,
+              buffer: this.buffer
+            });
+            this.expandPacket(packet);
+            this.buffer = Buffer.from([]);
+            this.mode = MODE.READ_HEADER;
+          }
+          break;
       }
     }
 
