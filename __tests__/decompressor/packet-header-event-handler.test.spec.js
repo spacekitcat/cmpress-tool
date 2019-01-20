@@ -18,6 +18,12 @@ const verifyCall = (
 
 describe('The `packetHeaderEventHandler` function', () => {
   describe('When both lists are empty', () => {
+    beforeEach(() => {
+      packetHeaderFromBinary.mockReturnValueOnce({
+        unreadByteCount: 0
+      });
+    });
+
     it('should return the expected response', () => {
       verifyCall(Buffer.from([]), Buffer.from([]), {
         updatedHeaderBuffer: Buffer.from([]),
@@ -25,12 +31,12 @@ describe('The `packetHeaderEventHandler` function', () => {
       });
     });
   });
-
+    
   describe('When the next unread header is 2-bytes', () => {
     describe('and all of the required bytes are in `currentStreamChunk`', () => {
       beforeEach(() => {
         packetHeaderFromBinary.mockReturnValueOnce({
-          unreadByteCount: 0
+          unreadByteCount: 2
         });
       });
 
@@ -74,7 +80,7 @@ describe('The `packetHeaderEventHandler` function', () => {
     describe('and the 2nd (of two) byte is in `currentStreamChunk`', () => {
       beforeEach(() => {
         packetHeaderFromBinary.mockReturnValueOnce({
-          unreadByteCount: 0
+          unreadByteCount: 1
         });
       });
 
@@ -94,7 +100,7 @@ describe('The `packetHeaderEventHandler` function', () => {
     });
   });
 
-  describe('When the 2-byte header in in the `currentHeaderBuffer`', () => {
+  describe('When the 2-byte header is already in `currentHeaderBuffer`', () => {
     beforeEach(() => {
       packetHeaderFromBinary.mockReturnValueOnce({
         unreadByteCount: 0
@@ -102,8 +108,30 @@ describe('The `packetHeaderEventHandler` function', () => {
     });
 
     it('should return the expected response', () => {
-      verifyCall(Buffer.from([0xFF, 0xFF]), Buffer.from([0x01, 0x01]), {
+      verifyCall(Buffer.from([0xff, 0xff]), Buffer.from([0x01, 0x01]), {
         updatedHeaderBuffer: Buffer.from([0x01, 0x01]),
+        headerReadComplete: true
+      });
+    });
+  });
+
+  describe('When the next unread header is 3-bytes', () => {
+    beforeEach(() => {
+      packetHeaderFromBinary.mockReturnValueOnce({
+        unreadByteCount: 3
+      });
+    });
+
+    it('should return the expected response', () => {
+      verifyCall(Buffer.from([0x34, 0x45, 0x76]), Buffer.from([]), {
+        updatedHeaderBuffer: Buffer.from([0x34, 0x45, 0x76]),
+        headerReadComplete: true
+      });
+    });
+
+    it('should return the expected response (varied values, equivalent scenario)', () => {
+      verifyCall(Buffer.from([0x11, 0x22, 0x33]), Buffer.from([]), {
+        updatedHeaderBuffer: Buffer.from([0x11, 0x22, 0x33]),
         headerReadComplete: true
       });
     });
