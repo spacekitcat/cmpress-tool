@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { DecompressorTransformer } from '../lib/decompressor-transformer';
+import { DecompressorTransformer } from '../lib/decompressor/decompressor-transformer';
 import fs from 'fs';
 import { createStream } from 'table';
 import colors from 'ansi-colors';

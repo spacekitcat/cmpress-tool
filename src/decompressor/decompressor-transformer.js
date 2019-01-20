@@ -1,7 +1,7 @@
 import { Transform } from 'stream';
-import consumeInput from './consume-input';
-import packetFromBinary from './serialization/packet-from-binary';
-import { packetHeaderFromBinary } from './serialization/packet-header-from-binary';
+import consumeInput from '../consume-input';
+import packetFromBinary from '../serialization/packet-from-binary';
+import { packetHeaderFromBinary } from '../serialization/packet-header-from-binary';
 
 const MODE = {
   READ_HEADER: 0,

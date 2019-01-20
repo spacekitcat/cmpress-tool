@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { CompressorTransformer } from '../lib/compressor-transformer';
-import { DecompressorTransformer } from '../lib/decompressor-transformer';
+import { DecompressorTransformer } from '../lib/decompressor/decompressor-transformer';
 
 let rawInput = process.argv[2];
 if (!rawInput) {

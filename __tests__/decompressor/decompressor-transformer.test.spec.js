@@ -1,4 +1,4 @@
-import { DecompressorTransformer } from '../src/decompressor-transformer';
+import { DecompressorTransformer } from '../../src/decompressor/decompressor-transformer';
 
 describe('DecompressorTransformer', () => {
   describe('A blank input string', () => {
