@@ -1,8 +1,6 @@
 # libz77 implementation of LZ77
 
-Theory vs practice rating: Research nuclear fusion reactor (as in, consumes more than it generates, but the gap is closing) .   
-
-This is a project in progress. The `samplestarget` folder (created during the trasnspile stage of the build) provides some file I/O examples and some string compression examples.
+This is prototype project. The `samplestarget` folder (created during the trasnspile stage of the build) provides some file I/O examples and some string compression examples.
 
 ## synopsis
 
