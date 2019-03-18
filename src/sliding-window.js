@@ -1,10 +1,13 @@
+import ToatieCache from 'tiny-toatie-cache';
 class SlidingWindow {
   constructor(dictionarySize) {
     this.dictionarySize = dictionarySize;
     this.cursor = 0;
+    this.cache = ToatieCache.build(dictionarySize);
   }
 
   setInput(inputStream) {
+    this.cache.append(Buffer.from(inputStream));
     this.inputStream = Buffer.from(inputStream);
     this.cursor = 0;
   }
